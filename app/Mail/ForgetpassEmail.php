@@ -7,21 +7,20 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class VerificationEmail extends Mailable
+class ForgetpassEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $email, $token, $role;
+    public $email, $token;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($email, $token, $role)
+    public function __construct($email, $token)
     {
         $this->email = $email;
         $this->token = $token;
-        $this->role = $role;
     }
 
     /**
@@ -32,15 +31,15 @@ class VerificationEmail extends Mailable
     public function build()
     {
         $param = [
-            'url' => route('verify', [
+            'url' => route('resetpass', [
                 'email' => $this->email,
                 'token' => $this->token 
             ]),
-            'role' => $this->role,
+            'email' => $this->email,
         ];
-
-        return $this->markdown('emails.verification')
-                    ->subject('Verifikasi - MagangHub')
+        
+        return $this->markdown('emails.forgetpass')
+                    ->subject('Reset Password - MagangHub')
                     ->with('param', $param);
     }
 }

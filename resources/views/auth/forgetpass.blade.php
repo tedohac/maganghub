@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Verifikasi Diperlukan - MagangHub'])
+@extends('layouts.app', ['title' => 'Lupa Password - MagangHub'])
 
 @section('head')
     <!-- SB Admin Template -->
@@ -22,9 +22,8 @@
 @section('content')
     <div class="container mt-5">
         <div class="card-login mx-auto shadow px-4 py-5" id="content">
-            <h4>Membutuhkan Verifikasi E-mail</h4>
-            <p>Silahkan periksa e-mail anda, klik pada tautan yang telah kami kirim untuk melakukan verifikasi.</p>
-            <p>Tidak menemukan e-mail yang kami kirim?</p>
+            <h4>Lupa Password</h4>
+            <p class="text-justify">Silahkan masukan alamat e-mail akun anda. Akan kami kirim tautan untuk melakukan proses perubahan password ke e-mail anda.</p>
             
             @if(session('errors'))
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -49,7 +48,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('verifyneeded') }}" method="post" id="registform">
+            <form action="{{ route('forgetpass') }}" method="post" id="registform">
             @csrf
             <div class="form-label-group mb-3">
                 <input id="emailKampus" class="form-control" placeholder="E-mail" name="email" required="required" autofocus="autofocus" type="email"
@@ -65,7 +64,7 @@
                 @enderror
             </div>
 
-            <input class="btn btn-success btn-block" value="Kirim Ulang Tautan Verifikasi" type="submit">
+            <input class="btn btn-success btn-block" value="Kirim Tautan Reset Password" type="submit">
             </form>
                 
         </div>

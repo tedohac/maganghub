@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Verifikasi Diperlukan - MagangHub'])
+@extends('layouts.app', ['title' => 'Reset Password - MagangHub'])
 
 @section('head')
     <!-- SB Admin Template -->
@@ -22,9 +22,8 @@
 @section('content')
     <div class="container mt-5">
         <div class="card-login mx-auto shadow px-4 py-5" id="content">
-            <h4>Membutuhkan Verifikasi E-mail</h4>
-            <p>Silahkan periksa e-mail anda, klik pada tautan yang telah kami kirim untuk melakukan verifikasi.</p>
-            <p>Tidak menemukan e-mail yang kami kirim?</p>
+            <h4>Reset Password</h4>
+            <p class="text-justify">Silahkan masukan password baru anda.</p>
             
             @if(session('errors'))
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -49,23 +48,38 @@
                 </div>
             @endif
 
-            <form action="{{ route('verifyneeded') }}" method="post" id="registform">
+            <form action="{{ route('resetpassprocess') }}" method="post" id="registform">
             @csrf
+            
             <div class="form-label-group mb-3">
-                <input id="emailKampus" class="form-control" placeholder="E-mail" name="email" required="required" autofocus="autofocus" type="email"
-                    data-parsley-type="email"
+                <input type="hidden" name="email" value="{{ $email }}">
+                <input type="hidden" name="token" value="{{ $token }}">
+                <input id="passKampus" class="form-control" placeholder="Password" name="pass" required="required" autofocus="autofocus"  type="password"
                     data-parsley-required
-                    data-parsley-required-message="Masukan e-mail"
-                    data-parsley-type-message="Format e-mail tidak valid">
-                <label for="emailKampus">E-mail</label>
-                @error('email')
+                    data-parsley-required-message="Masukkan password">
+                <label for="passKampus">Password</label>
+                @error('pass')
+                    <span class="form-text text-danger">
+                        {{ $message }}
+                    </span>    
+                @enderror
+            </div>
+        
+            <div class="form-label-group mb-3">
+                <input id="copassKampus" class="form-control" placeholder="Confirm Password" name="pass_confirmation" required="required" autofocus="autofocus"  type="password"
+                    data-parsley-required
+                    data-parsley-required-message="Masukkan password"
+                    data-parsley-equalto="#passKampus"
+                    data-parsley-equalto-message="Password harus sama">
+                <label for="copassKampus">Konfirmasi Password</label>
+                @error('pass_confirmation')
                     <span class="form-text text-danger">
                         {{ $message }}
                     </span>    
                 @enderror
             </div>
 
-            <input class="btn btn-success btn-block" value="Kirim Ulang Tautan Verifikasi" type="submit">
+            <input class="btn btn-success btn-block" value="Ubah Password" type="submit">
             </form>
                 
         </div>

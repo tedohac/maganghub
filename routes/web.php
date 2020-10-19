@@ -14,16 +14,27 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('home');
+})->name('/');
 
 Route::namespace('Auth')->group(function () {
-    Route::get('/login', 'LoginController@loginform')->name('login');
-    Route::post('/login', 'LoginController@loginprocess');
+    Route::get('/demoverify','VerifyController@demoverify');
+    
+    Route::get('/forgetpass', 'ForgetpassController@form')->name('forgetpass');
+    Route::post('/forgetpass', 'ForgetpassController@process');
+
+    Route::get('/login', 'LoginController@form')->name('login');
+    Route::post('/login', 'LoginController@process');
+
     Route::get('/registkampus','RegisterController@kampusform')->name('registkampus');
     Route::post('/registkampus','RegisterController@kampusprocess');
+
+    Route::get('/resetpass/{email}/{token}', 'ForgetpassController@resetpassform')->name('resetpass');
+    
+    Route::post('/resetpassprocess', 'ForgetpassController@resetpassprocess')->name('resetpassprocess');
+
     Route::get('/verify/{email}/{token}', 'VerifyController@verifyemail')->name('verify');
-    Route::get('/demoverify','VerifyController@demoverify');
+
     Route::get('/verifyneeded','VerifyController@verifyneededform')->name('verifyneeded');
     Route::post('/verifyneeded','VerifyController@verifyneededprocess');
   });

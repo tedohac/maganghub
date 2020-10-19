@@ -25,7 +25,7 @@
         <div class="card card-login mx-auto">
             <div class="card-body">
                 
-                <h3 class="mb-5 text-center">MASUK KE AKUN ANDA</h3>
+                <h3 class="mb-5 text-center">Login ke MagangHub</h3>
 
                     @if(session('errors'))
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -81,6 +81,9 @@
                 
                 <input class="btn btn-success btn-block" value="LOGIN" type="submit">
                 </form>
+                <div class="text-center">
+                    <a class="btn btn-link px-1 py-0" href="{{ route('forgetpass') }}">Lupa password</a>
+                </div>
             </div>
         </div>
     </div>

@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Registrasi Kampus - MagangHub'])
+@extends('layouts.app', ['title' => 'Daftar Kampus Baru - MagangHub'])
 
 @section('head')
     <!-- SB Admin Template -->
@@ -140,7 +140,7 @@
                                 data-parsley-required-message="Masukkan password"
                                 data-parsley-equalto="#passKampus"
                                 data-parsley-equalto-message="Password harus sama">
-                            <label for="copassKampus">Confirm Password</label>
+                            <label for="copassKampus">Konfirmasi Password</label>
                             @error('univ_copass')
                                 <span class="form-text text-danger">
                                     {{ $message }}
