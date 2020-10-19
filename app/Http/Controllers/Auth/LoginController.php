@@ -11,12 +11,12 @@ use Session;
 
 class LoginController extends Controller
 {
-    public function loginform()
+    public function form()
     {
     	return view('auth.login');
     }
 
-    public function loginprocess(Request $request)
+    public function process(Request $request)
     {
     	
         $rules = [

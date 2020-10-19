@@ -64,15 +64,7 @@ class RegisterController extends Controller
 
         if($simpanuser && $simpanuniv)
         {
-            $param = [
-                'url' => route('verify', [
-                    'token' => $user->verify_token, 
-                    'email' => $user->email
-                ]),
-                'role' => $user->role,
-            ];
-    
-            Mail::to($user->email)->send(new VerificationEmail($param));
+            Mail::to($user->email)->send(new VerificationEmail($user->email, $user->verify_token, $user->role));
 
             Session::flash('success', 'Register berhasil! Periksa email anda untuk melakukan verifikasi');
             return redirect()->route('registkampus');

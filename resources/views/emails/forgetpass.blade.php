@@ -1,6 +1,7 @@
 @component('mail::message')
-# Selamat datang di MagangHub!
-Terimakasih telah mendaftar sebagai {{ $param['role'] }} di MagangHub. Mohon lakukan verifikasi e-mail dengan cara klik pada tautan di bawah ini untuk dapat mulai menggunakan MagangHub.
+# Reset Password Akun MagangHub
+Anda akan melalukan perubahan password pada akun dengan email {{ $param['email'] }}<br>
+Silahkan klik pada tautan di bawah ini untuk melakukan perubahan password pada akun MagangHub anda.
 
 @component('mail::button', ['url' => $param['url']])
 Verifikasi Sekarang
@@ -10,3 +11,4 @@ atau click: <a href="{{ $param['url'] }}">{{ $param['url'] }}</a><br><br>
 Terimakasih,<br>
 {{ config('app.name') }}
 @endcomponent
+

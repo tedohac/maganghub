@@ -25,3 +25,7 @@ header img {
   width: auto;
   max-width: 100%;
 }
+.navbar-brand img {
+  max-height: 30px;
+  vertical-align: top;
+}

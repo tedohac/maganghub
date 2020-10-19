@@ -29,15 +29,7 @@ class VerifyController extends Controller
         $user->password = Hash::make('polman');
         $user->verify_token = Str::random(32);
 
-        $param = [
-            'url' => route('verify', [
-                'token' => $user->verify_token, 
-                'email' => $user->email
-            ]),
-            'role' => $user->role,
-        ];
-
-        Mail::to($user->email)->send(new VerificationEmail($param));
+        Mail::to($user->email)->send(new VerificationEmail($user->email, $user->verify_token, $user->role));
 
         dd("Mail Send Successfully");
 
@@ -57,23 +49,29 @@ class VerifyController extends Controller
 
         if($user == null )
         {
-            Session::flash('error', 'URL verifikasi salah');
+            Session::flash('error', 'Tautan salah atau anda sudah melalukan verifikasi sebelumnya');
             return redirect()->route('login');
         }
-        else
-        {
-            if($user->status == 1)
-            {
-                $user->update([
-                    'status' => 2,
-                    'email_verified_at' => Carbon::now(),
-                    'verify_token' => ''
-                ]);
-            }
 
-            Session::flash('success', 'Verifikasi e-mail berhasil, silahkan Login');
-            return redirect()->route('login');
+        if($user->status == 1)
+        {
+            try
+            {
+                User::where('email',$email)
+                    ->where('verify_token',$token)
+                    ->update([
+                        'status' => '2',
+                        'email_verified_at' => Carbon::now(),
+                        'verify_token' => null,
+                    ]);
+            } catch (\Illuminate\Database\QueryException $e) {
+                Session::flash('error', 'Proses gagal, mohon coba kembali beberapa saat lagi');
+                return redirect()->route('login');
+            }
         }
+
+        Session::flash('success', 'Verifikasi e-mail berhasil, silahkan Login');
+        return redirect()->route('login');
 
     }
     
@@ -103,15 +101,7 @@ class VerifyController extends Controller
         
         $user = User::where('email',$request->email)->first();
                     
-        $param = [
-            'url' => route('verify', [
-                'token' => $user->verify_token, 
-                'email' => $user->email
-            ]),
-            'role' => $user->role,
-        ];
-
-        Mail::to($user->email)->send(new VerificationEmail($param));
+        Mail::to($user->email)->send(new VerificationEmail($user->email, $user->verify_token, $user->role));
 
         Session::flash('success', 'Tautan verifikasi telah kami kirim kembali');
         return redirect()->back();
