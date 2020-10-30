@@ -3,22 +3,26 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Traits\RoleTrait;
 use App\User;
 use Validator;
 use Session;
+use Auth;
 
 class LoginController extends Controller
 {
+    use RoleTrait;
+
     public function form()
     {
-    	return view('auth.login');
+        if(Auth::check()) return $this->redirectRole();
+        
+        return view('auth.login');
     }
 
     public function process(Request $request)
     {
-    	
         $rules = [
             'login_email'   => 'required|email',
             'login_pass'    => 'required'
@@ -40,29 +44,22 @@ class LoginController extends Controller
             'email'     => $request->login_email,
             'password'  => $request->login_pass
         ];
- 
-        Auth::attempt($data);
         
-        if(!Auth::check())
+        if(!Auth::attempt($data, isset($request->login_remember)))
         {
             //Login Fail
             Session::flash('error', 'Email atau password salah');
             return redirect()->route('login');
         }
-        else
-        {
-            // check verification
-            $user = User::where('email',$request->email)->first();
 
-            if(!isset($user['status']) || $user['status'] == 1)
-            {
-                return redirect()->route('verifyneeded');
-            }
-            else
-            {
-                return redirect()->route('/');
-            }
-        }
-       
+        Session::flash('success', 'Selamat datang, '.Auth::user()->role.'!');
+        if(Auth::check()) return $this->redirectRole();
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        Session::flash('success', 'Logout berhasil, sampai jumpa!');
+        return redirect()->route('login');
     }
 }

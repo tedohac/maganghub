@@ -6,18 +6,22 @@ use App\Http\Controllers\Controller;
 use App\Mail\VerificationEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use App\Traits\RoleTrait;
 use App\User;
 use App\Univ;
 use Validator;
 use Session;
 use Hash;
 use Mail;
+use Auth;
 
 class RegisterController extends Controller
 {
-    
+    use RoleTrait;
+
     public function kampusform()
     {
+        if(Auth::check()) return $this->redirectRole();
         return view('auth.registkampus');
     }
  
@@ -64,7 +68,7 @@ class RegisterController extends Controller
 
         if($simpanuser && $simpanuniv)
         {
-            Mail::to($user->email)->send(new VerificationEmail($user->email, $user->verify_token, $user->role));
+            Mail::to($request->univ_email)->send(new VerificationEmail($request->univ_email, $user->verify_token, $user->role));
 
             Session::flash('success', 'Register berhasil! Periksa email anda untuk melakukan verifikasi');
             return redirect()->route('registkampus');

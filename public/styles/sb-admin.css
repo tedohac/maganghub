@@ -10636,22 +10636,22 @@ body {
 }
 
 .navbar-nav .nav-item.dropdown .dropdown-toggle::after {
-  width: 1rem;
+  /* width: 1rem;
   text-align: center;
   float: right;
   vertical-align: 0;
   border: 0;
   font-weight: 900;
   content: '\f105';
-  font-family: 'Font Awesome 5 Free';
+  font-family: 'Font Awesome 5 Free'; */
 }
 
 .navbar-nav .nav-item.dropdown.show .dropdown-toggle::after {
-  content: '\f107';
+  /* content: '\f107'; */
 }
 
 .navbar-nav .nav-item.dropdown.no-arrow .dropdown-toggle::after {
-  display: none;
+  /* display: none; */
 }
 
 .navbar-nav .nav-item .nav-link:focus {

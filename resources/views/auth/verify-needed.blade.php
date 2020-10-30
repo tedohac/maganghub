@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Verifikasi Diperlukan - MagangHub'])
+@extends('layouts.landing', ['title' => 'Verifikasi Diperlukan - MagangHub'])
 
 @section('head')
     <!-- SB Admin Template -->

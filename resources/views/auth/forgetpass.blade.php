@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Lupa Password - MagangHub'])
+@extends('layouts.landing', ['title' => 'Lupa Password - MagangHub'])
 
 @section('head')
     <!-- SB Admin Template -->
