@@ -3,16 +3,9 @@
  * Copyright 2013-2020 Start Bootstrap
  * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-business-frontpage/blob/master/LICENSE)
  */
+ 
 body {
-  /* padding-top: 56px; */
   font-family: Ubuntu;
-  background-image: url("../img/bg.png");
-  background-position: center top;
-  background-repeat: no-repeat;
-  background-size: 100% auto;
-}
-header img {
-  width: 100%;
 }
 .bg-abu {
   background-color: #f3f3f3;
@@ -20,12 +13,22 @@ header img {
 .bg-abu2 {
   background-color: #e9ebee;
 }
-#kampus img {
-  height: 100px;
-  width: auto;
-  max-width: 100%;
-}
 .navbar-brand img {
   max-height: 30px;
   vertical-align: top;
+}
+.greybox {
+  background:#f1f1f1;
+  color:#666;
+}
+.longtext {
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis; 
+}
+
+@media (min-width: 990px) {
+  .dropdown-menu {
+    max-width: 200px;
+  }
 }

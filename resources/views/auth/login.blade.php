@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'LogIn - MagangHub'])
+@extends('layouts.landing', ['title' => 'LogIn - MagangHub'])
 
 @section('head')
     <!-- SB Admin Template -->
@@ -79,11 +79,21 @@
                     @enderror
                 </div>
                 
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <input id="rememberLogin" type="checkbox" name="login_remember">
+                        <label for="rememberLogin">
+                            Ingat saya
+                        </label>
+                    </div>
+
+                    <div>
+                        <a class="btn btn-link px-1 py-0" href="{{ route('forgetpass') }}">Lupa password</a>
+                    </div>
+                </div>
+                    
                 <input class="btn btn-success btn-block" value="LOGIN" type="submit">
                 </form>
-                <div class="text-center">
-                    <a class="btn btn-link px-1 py-0" href="{{ route('forgetpass') }}">Lupa password</a>
-                </div>
             </div>
         </div>
     </div>

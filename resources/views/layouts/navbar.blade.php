@@ -12,14 +12,35 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item ml-2 mb-1">
-                    <a class="btn btn-light btn-block px-1 py-0" href="#">Cari Kampus</a>
+                    <a class="btn btn-light btn-block px-1 py-0 text-left" href="#">Cari Kampus</a>
                 </li>
                 <li class="nav-item ml-2 mb-1">
-                    <a class="btn btn-light btn-block px-1 py-0" href="#">Cari Tempat Magang</a>
+                    <a class="btn btn-light btn-block px-1 py-0 text-left" href="#">Cari Tempat Magang</a>
                 </li>
+                
+                @if(Auth::check() && Auth::user()->role='admin kampus')
+
+                <li class="nav-item ml-2 mb-1 dropdown">
+                    <a class="btn btn-success btn-block px-1 py-0 dropdown-toggle h-100" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-user"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                        @php ($univ = \App\Univ::where('email', Auth::user()->email )->first())
+                        <a class="dropdown-item disabled longtext" href="#" tabindex="-1" aria-disabled="true">{{ Auth::user()->role }} :<br>{{ $univ->nama }}</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{ route('kampus.manage') }}">Kelola Kampus</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
+                    </div>
+                </li>
+                
+                @else
+                
                 <li class="nav-item ml-2 mb-1">
                     <a class="btn btn-success btn-block px-1 py-0" href="{{ route('login') }}">Login</a>
                 </li>
+                
+                @endif
             </ul>
         </div>
         </div>

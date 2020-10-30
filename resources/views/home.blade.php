@@ -1,4 +1,23 @@
-@extends('layouts.app', ['title' => 'MagangHub - Pusat Magang Indonesia'])
+@extends('layouts.landing', ['title' => 'MagangHub - Pusat Magang Indonesia'])
+
+@section('head')
+    <style rel="stylesheet">
+      body {
+        background-image: url("{{ url('img/bg.png') }}");
+        background-position: center top;
+        background-repeat: no-repeat;
+        background-size: 100% auto;
+      }
+      header img {
+        width: 100%;
+      }
+      #kampus img {
+        height: 100px;
+        width: auto;
+        max-width: 100%;
+      }
+    </style>
+@endsection
 
 @section('content')
 

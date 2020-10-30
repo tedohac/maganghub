@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Daftar Kampus Baru - MagangHub'])
+@extends('layouts.landing', ['title' => 'Daftar Kampus Baru - MagangHub'])
 
 @section('head')
     <!-- SB Admin Template -->
@@ -54,27 +54,27 @@
                 <h3 class="mb-5">DAFTAR KAMPUS BARU</h3>
 
                 @if(session('errors'))
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            <ul>
-                            @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                            @endforeach
-                            </ul>
-                        </div>
-                    @endif
-                    @if (Session::has('success'))
-                        <div class="alert alert-success">
-                            {{ Session::get('success') }}
-                        </div>
-                    @endif
-                    @if (Session::has('error'))
-                        <div class="alert alert-danger">
-                            {{ Session::get('error') }}
-                        </div>
-                    @endif
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <ul>
+                        @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                        </ul>
+                    </div>
+                @endif
+                @if (Session::has('success'))
+                    <div class="alert alert-success">
+                        {{ Session::get('success') }}
+                    </div>
+                @endif
+                @if (Session::has('error'))
+                    <div class="alert alert-danger">
+                        {{ Session::get('error') }}
+                    </div>
+                @endif
 
 			    <form action="{{ route('registkampus') }}" method="post" id="registform">
                 @csrf
@@ -160,8 +160,8 @@
     
 
 @section('bottom')
-    <!-- Bootstrap core JavaScript -->
-    <script src="{{ url('jquery/parsley.min.js') }}"></script>
+    <!-- Parsley Form Validation -->
+    <script src="{{ url('js/parsley.min.js') }}"></script>
 	<script>
         $("#registform").parsley({
             errorClass: 'is-invalid text-danger',
