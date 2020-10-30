@@ -42,6 +42,8 @@ Route::group(['namespace' => 'Auth', 'middleware' => 'web'], function () {
 });
 
 Route::group(['prefix' => 'kampus', 'middleware' => 'web'], function () {
-    Route::get('manage','KampusController@manage')->name('kampus.manage');
+    Route::get('detail/{id}','KampusController@detail')->name('kampus.detail');
+
+    Route::get('edit','KampusController@edit')->name('kampus.edit');
     Route::post('update','KampusController@update')->name('kampus.update');
 });

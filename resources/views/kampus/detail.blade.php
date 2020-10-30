@@ -1,194 +1,182 @@
 @extends('layouts.front', ['title' => 'Kampus - MagangHub'])
 
 @section('head')
-    <style rel="stylesheet">
-      body {
-        background-image: url("{{ url('img/bg2.png') }}");
-        background-position: center top;
-        background-repeat: no-repeat;
-        background-size: 100% 400px;
-      }
-      .panel {
-        height: 110px;
-        width: 100%;
-      }
-      .profile-text {
-        float: left;
-        height: auto;
-        margin-top: 50px;
-        /* position: relative; */
-      }
-      .profile-thumb {
-        float: left;
-        position: relative;
-        width: 140px;
-        height: 110px;
-      }
-      .profile-thumb img {
-        position: absolute;
-        max-width: 140px;
-        max-height: 140px;
-        bottom: -30px;
-      }
-      .fb-name  {
-        /* bottom: 0;
-        left: 140px;
-        position: absolute; */
-      }
+    
+    <!-- SB Admin Template -->
+    <link href="{{ asset('styles/sb-admin.css?v=').time() }}" rel="stylesheet">
+
+    <!-- DataTable-->
+    <link href="{{ url('datatables/dataTables.bootstrap4.css') }}" rel="stylesheet">
+
+    <!-- Profile -->
+    <link href="{{ asset('styles/profile.css?v=').time() }}" rel="stylesheet">
+
+    <style>
+        .font-20 {
+            font-size: 20px;
+        }
     </style>
-    <link rel="stylesheet" type="text/css" href="{{ url('styles/card-carousel.css') }}">
 @endsection
 
 @section('content')
-    <div class="panel px-2 px-lg-3">
-        <div class="profile-thumb">
-            <img src="{{ url('img/logo-ui.png') }}" class="bg-light border p-2 shadow-sm">
+    @if(session('errors'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+            </ul>
         </div>
-        <div class="profile-text">
-            <div class="fb-name ml-2">
-                <h2 class="p-0 m-0">Universitas Indonesia</h2>
-                <i><small>Menunggu verifikasi MagangHub</small></i>
-            </div>
+    @endif
+    @if (Session::has('success'))
+        <div class="alert alert-success">
+            {{ Session::get('success') }}
+        </div>
+    @endif
+    @if (Session::has('error'))
+        <div class="alert alert-danger">
+            {{ Session::get('error') }}
+        </div>
+    @endif
+
+    <div class="row m-0 mt-5 panel">
+
+        <div class="profile-thumb col-lg-3 col-md-4 pr-md-0">
+            @if($univ->profile_pict == "")
+            <i class="fas fa-university bg-light border p-2 shadow-sm" style="font-size: 130px"></i>
+            @else
+            <img src="{{ url('storage/univ/'.$univ->profile_pict) }}" class="bg-light border p-2 shadow-sm">
+            @endif
+        </div>
+        <div class="profile-text col-lg-9 col-md-8 p-md-0 mb-2">
+            <h3 class="m-0">{{ $univ->nama }}</h3>
+            <small>Menunggu kelengkapan profil untuk verifikasi</small>
         </div>
     </div>
 
-    <div class="bg-light shadow-sm border px-2 px-lg-3 pt-5 pb-3">
-        <table>
-            <tr valign="top">
-                <td class="pb-3"><i class="fas fa-phone"></i></td>
-                <td>(021) 123123</td>
+    <!-- detail info -->
+    <div class="bg-white shadow-sm border px-2 px-lg-3 pt-5 pb-3 mb-5">
+        
+
+        <table class="table" cellspacing="0">
+            <tr>
+                <td width="100"><b>Akreditasi</b></td>
+                <td>
+                    <span class="font-20 fa fa-star {{ ord($univ->akreditasi)-96>0 ? 'text-warning' : '' }}"></span>
+                    <span class="font-20 fa fa-star {{ ord($univ->akreditasi)-96>1 ? 'text-warning' : '' }}"></span>
+                    <span class="font-20 fa fa-star {{ ord($univ->akreditasi)-96>2 ? 'text-warning' : '' }}"></span>
+                    <span class="font-20 fa fa-star {{ ord($univ->akreditasi)-96>3 ? 'text-warning' : '' }}"></span>
+                    <span class="font-20 fa fa-star {{ ord($univ->akreditasi)-96>4 ? 'text-warning' : '' }}"></span>
+                    <span class="font-20">({{ strtoupper($univ->akreditasi) }})</span>
+                </td>
             </tr>
-            <tr valign="top">
-                <td class="pb-3"><i class="fas fa-map-marker-alt"></i></td>
-                <td>Jl. Margonda Raya, Pondok Cina, Kecamatan Beji, Kota Depok, Jawa Barat 16424</td>
+            <tr>
+                <td class="greybox"><b>No. SKPT</b></td>
+                <td>
+                    {{ $univ->no_skpt }}
+                </td>
+            </tr>
+            <tr>
+                <td class="greybox"><b>Tanggal SKPT</b></td>
+                <td>
+                    {{ $univ->tgl_skpt }}
+                </td>
+            </tr>
+            <tr>
+                <td class="greybox"><b>Tanggal Berdiri</b></td>
+                <td>
+                    {{ $univ->tgl_berdiri }}
+                </td>
+            </tr>
+            <tr>
+                <td class="greybox"><b>Telepon</b></td>
+                <td>
+                    {{ $univ->no_tlp }}
+                </td>
+            </tr>
+            <tr>
+                <td class="greybox"><b>Website</b></td>
+                <td>
+                    <a href="{{ $univ->website }}">{{ $univ->website }}</a>
+                </td>
+            </tr>
+            <tr>
+                <td class="greybox"><b>Alamat</b></td>
+                <td>
+                    {{ $univ->alamat }}
+                </td>
             </tr>
         </table>
-        <div class="MultiCarousel" data-items="1,3,5,6" data-slide="1" id="MultiCarousel"  data-interval="1000">
-            <div class="MultiCarousel-inner">
-                <div class="item">
-                    <div class="pad15">
-                        <p class="lead">Multi Item Carousel</p>
-                        <p>₹ 1</p>
-                        <p>₹ 6000</p>
-                        <p>50% off</p>
-                    </div>
-                </div>
-            </div>
-            <button class="btn btn-primary leftLst"><</button>
-            <button class="btn btn-primary rightLst">></button>
-        </div>
     </div>
 
+    <!-- prodi list -->
+    <h4 class="mb-2 p-0">Program Studi</h4>
+    <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-5">
+        <table class="table table-sm table-striped table-hover" id="dataTable" width="100%" cellspacing="0">
+            <thead class="greybox">
+                <tr>
+                    <th>Program Studi</th>
+                    <th>Jenjang</th>
+                    <th>Akreditasi</th>
+                    <th><small>Pencari<br>Magang</small></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Manajemen Informatika</td>
+                    <td>D3</td>
+                    <td>A</td>
+                    <td>13</td>
+                </tr>
+                <tr>
+                    <td>Mesin Otomotif</td>
+                    <td>D3</td>
+                    <td>A</td>
+                    <td>13</td>
+                </tr>
+                <tr>
+                    <td>Pembuatan Peralatan dan Perkakas Produksi</td>
+                    <td>D3</td>
+                    <td>A</td>
+                    <td>13</td>
+                </tr>
+                <tr>
+                    <td>Teknik Produksi dan Proses Manufaktur</td>
+                    <td>D3</td>
+                    <td>A</td>
+                    <td>13</td>
+                </tr>
+                <tr>
+                    <td>Mekatronika</td>
+                    <td>D3</td>
+                    <td>A</td>
+                    <td>13</td>
+                </tr>
+                <tr>
+                    <td>Teknik Konstruksi Bangunan Gedung</td>
+                    <td>D3</td>
+                    <td>A</td>
+                    <td>13</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 @endsection
 
 @section('bottom')
-  <script>
-    $(document).ready(function () {
-      var itemsMainDiv = ('.MultiCarousel');
-      var itemsDiv = ('.MultiCarousel-inner');
-      var itemWidth = "";
+<!-- DataTable-->
+<script src="{{ url('datatables/jquery.dataTables.js') }}"></script>
+<script src="{{ url('datatables/dataTables.bootstrap4.js') }}"></script>
 
-      $('.leftLst, .rightLst').click(function () {
-          var condition = $(this).hasClass("leftLst");
-          if (condition)
-              click(0, this);
-          else
-              click(1, this)
-      });
+<!-- SB-Admin-->
+<script src="{{ url('js/sb-admin.min.js') }}"></script>
 
-      ResCarouselSize();
-
-
-
-
-      $(window).resize(function () {
-          ResCarouselSize();
-      });
-
-      //this function define the size of the items
-      function ResCarouselSize() {
-          var incno = 0;
-          var dataItems = ("data-items");
-          var itemClass = ('.item');
-          var id = 0;
-          var btnParentSb = '';
-          var itemsSplit = '';
-          var sampwidth = $(itemsMainDiv).width();
-          var bodyWidth = $('body').width();
-          $(itemsDiv).each(function () {
-              id = id + 1;
-              var itemNumbers = $(this).find(itemClass).length;
-              btnParentSb = $(this).parent().attr(dataItems);
-              itemsSplit = btnParentSb.split(',');
-              $(this).parent().attr("id", "MultiCarousel" + id);
-
-
-              if (bodyWidth >= 1200) {
-                  incno = itemsSplit[3];
-                  itemWidth = sampwidth / incno;
-              }
-              else if (bodyWidth >= 992) {
-                  incno = itemsSplit[2];
-                  itemWidth = sampwidth / incno;
-              }
-              else if (bodyWidth >= 768) {
-                  incno = itemsSplit[1];
-                  itemWidth = sampwidth / incno;
-              }
-              else {
-                  incno = itemsSplit[0];
-                  itemWidth = sampwidth / incno;
-              }
-              $(this).css({ 'transform': 'translateX(0px)', 'width': itemWidth * itemNumbers });
-              $(this).find(itemClass).each(function () {
-                  $(this).outerWidth(itemWidth);
-              });
-
-              $(".leftLst").addClass("over");
-              $(".rightLst").removeClass("over");
-
-          });
-      }
-
-
-      //this function used to move the items
-      function ResCarousel(e, el, s) {
-          var leftBtn = ('.leftLst');
-          var rightBtn = ('.rightLst');
-          var translateXval = '';
-          var divStyle = $(el + ' ' + itemsDiv).css('transform');
-          var values = divStyle.match(/-?[\d\.]+/g);
-          var xds = Math.abs(values[4]);
-          if (e == 0) {
-              translateXval = parseInt(xds) - parseInt(itemWidth * s);
-              $(el + ' ' + rightBtn).removeClass("over");
-
-              if (translateXval <= itemWidth / 2) {
-                  translateXval = 0;
-                  $(el + ' ' + leftBtn).addClass("over");
-              }
-          }
-          else if (e == 1) {
-              var itemsCondition = $(el).find(itemsDiv).width() - $(el).width();
-              translateXval = parseInt(xds) + parseInt(itemWidth * s);
-              $(el + ' ' + leftBtn).removeClass("over");
-
-              if (translateXval >= itemsCondition - itemWidth / 2) {
-                  translateXval = itemsCondition;
-                  $(el + ' ' + rightBtn).addClass("over");
-              }
-          }
-          $(el + ' ' + itemsDiv).css('transform', 'translateX(' + -translateXval + 'px)');
-      }
-
-      //It is used to get some elements from btn
-      function click(ell, ee) {
-          var Parent = "#" + $(ee).parent().attr("id");
-          var slide = $(Parent).attr("data-slide");
-          ResCarousel(ell, Parent, slide);
-      }
-
-  });
-
-  </script>
+<script>
+    $(document).ready(function (){
+        var table = $('#dataTable').DataTable();
+    });
+</script>
 @endsection
