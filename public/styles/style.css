@@ -26,9 +26,41 @@ body {
   overflow: hidden;
   text-overflow: ellipsis; 
 }
+.sidebar-maganghub {
+  position: fixed;
+  color: #666;
+}
+.sidebar-profile-top {
+  background-color: #C5C6F4;
+  height: 70px;
+}
+.sidebar-profile-bot {
+  position: relative;
+  border-bottom: 1px solid rgba(0,0,0,.15);
+}
+.sidebar-profile-thumb {
+  position: absolute;
+  height: 80px;
+  top: -40px;
+  left: 0;
+  right: 0;
+}
+.sidebar-profile-thumb img {
+  max-height: 80px;
+  display: block;
+}
+.sidebar-name {
+  margin-top: 40px;
+}
 
 @media (min-width: 990px) {
   .dropdown-menu {
     max-width: 200px;
+  }
+}
+@media (max-width: 768px)
+{
+  .sidebar-maganghub {
+    position: relative;
   }
 }

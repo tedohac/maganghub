@@ -16,13 +16,21 @@ class KampusController extends Controller
     {
     }
 
-    public function manage()
+    public function detail($id)
+    {
+        $univ = Univ::where('id', $id )->first();
+
+    	return view('kampus.detail', [
+            'univ' => $univ,
+        ]);
+    }
+
+    public function edit()
     {
         $this->middleware('auth');
 
         if(Auth::user()->role != 'admin kampus') abort(404);
         $univ = Univ::where('email', Auth::user()->email )->first();
-        // echo $univ->nama;
 
     	return view('kampus.edit', [
             'univ' => $univ,
@@ -67,7 +75,7 @@ class KampusController extends Controller
                     'alamat' => $request->univ_alamat!="" ? $request->univ_alamat : null,
                     'no_tlp' => $request->univ_notlp!="" ? $request->univ_notlp : null,
                     'website' => $request->univ_website!="" ? $request->univ_website : null,
-                    'profile_pict' => $request->univ_profilepict!="" ? $filename : null,
+                    'profile_pict' => $request->univ_profilepict!="" ? $filename : $univ->profile_pict,
                 ]);
         } catch (\Illuminate\Database\QueryException $e) {
             Session::flash('error', 'Proses gagal, mohon coba kembali beberapa saat lagi ');

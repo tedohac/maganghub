@@ -1,0 +1,91 @@
+
+body {
+background: linear-gradient(to bottom, #ffb4b0 33%, #6562cf 100%);
+background: linear-gradient(to bottom, rgba(255,144,139,1), rgba(255,144,139,0));
+background-repeat: no-repeat;
+}
+
+/* Rating */
+div.stars {
+    display: inline-block;
+}
+
+input.star { display: none; }
+
+label.star {
+    color: #444;
+    float: right;
+    padding: 5px;
+    font-size: 18px;
+}
+
+input.star:checked ~ label.star {
+    content: '\f005';
+    color: #b99800;
+}
+
+input.star-5:checked ~ label.star {
+    text-shadow: 0 0 20px #FE7;
+}
+
+input.star-1:checked ~ label.star { color: #F62; }
+
+label.star:before {
+    content: '\f005';
+    font-family: "Font Awesome 5 Free";
+}
+/* Rating */
+
+.profile-thumb {
+height: 140px;
+}
+.profile-thumb img {
+max-width: 180px;
+max-height: 140px;
+}
+
+@media (min-width: 768px)
+{
+    .panel {
+        height: 110px;
+    }
+    .profile-text {
+        float: left;
+        height: auto;
+        margin-top: auto;
+        /* position: relative; */
+    }
+    .profile-thumb {
+        float: left;
+        position: relative;
+        height: 110px;
+    }
+    .profile-thumb img {
+        position: absolute;
+        bottom: -30px;
+    }
+}
+@media (max-width: 1200px)
+{
+    .profile-thumb img {
+        max-width: 160px;
+    }
+}
+
+@media (max-width: 990px)
+{
+    .profile-thumb img {
+        max-width: 140px;
+    }
+}
+@media (max-width: 768px)
+{
+    .profile-thumb img {
+        display: block;
+        max-width: 180px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+    

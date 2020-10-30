@@ -4,7 +4,7 @@ Anda akan melalukan perubahan password pada akun dengan email {{ $param['email']
 Silahkan klik pada tautan di bawah ini untuk melakukan perubahan password pada akun MagangHub anda.
 
 @component('mail::button', ['url' => $param['url']])
-Verifikasi Sekarang
+Reset Password Sekarang
 @endcomponent
 
 atau click: <a href="{{ $param['url'] }}">{{ $param['url'] }}</a><br><br>

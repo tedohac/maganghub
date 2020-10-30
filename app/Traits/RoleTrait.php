@@ -17,7 +17,7 @@ trait RoleTrait {
     {
         if(Auth::user()->status == 1) return redirect()->route('verifyneeded');
 
-        if(Auth::user()->role == 'admin kampus') return redirect()->route('kampus.manage');
+        if(Auth::user()->role == 'admin kampus') return redirect()->route('kampus.detail');
         echo Auth::user()->role."asd";
         // abort(404);
     }

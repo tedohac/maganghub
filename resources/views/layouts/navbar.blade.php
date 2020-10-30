@@ -25,10 +25,10 @@
                         <i class="fas fa-user"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                        @php ($univ = \App\Univ::where('email', Auth::user()->email )->first())
-                        <a class="dropdown-item disabled longtext" href="#" tabindex="-1" aria-disabled="true">{{ Auth::user()->role }} :<br>{{ $univ->nama }}</a>
+                        @php ($univnb = \App\Univ::where('email', Auth::user()->email )->first())
+                        <a class="dropdown-item disabled longtext" href="#" tabindex="-1" aria-disabled="true">{{ Auth::user()->role }} :<br>{{ $univnb->nama }}</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{ route('kampus.manage') }}">Kelola Kampus</a>
+                        <a class="dropdown-item" href="{{ url('kampus/detail/'.$univnb->id) }}">Lihat Kampus</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
                     </div>
