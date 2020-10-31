@@ -41,11 +41,16 @@ class User extends Authenticatable
 
     public function getRoleAttribute($value)
     {
-        return strtolower(ucfirst($value));
+        return $value;
     }
 
     public function getStatusAttribute($value)
     {
-        return ucfirst($value);
+        return $value;
+    }
+
+    public function getEmailAttribute($value)
+    {
+        return $value;
     }
 }

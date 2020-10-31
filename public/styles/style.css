@@ -27,8 +27,10 @@ body {
   text-overflow: ellipsis; 
 }
 .sidebar-maganghub {
-  position: fixed;
   color: #666;
+}
+.sidebar-maganghub div {
+  display: block;
 }
 .sidebar-profile-top {
   background-color: #C5C6F4;
@@ -52,15 +54,11 @@ body {
 .sidebar-name {
   margin-top: 40px;
 }
-
+.breadcrumb {
+  font-size: 13px;
+}
 @media (min-width: 990px) {
   .dropdown-menu {
     max-width: 200px;
-  }
-}
-@media (max-width: 768px)
-{
-  .sidebar-maganghub {
-    position: relative;
   }
 }

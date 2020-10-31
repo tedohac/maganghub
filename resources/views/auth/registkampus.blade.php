@@ -92,11 +92,11 @@
                 </div>
 
 				<div class="form-label-group mb-3">
-                    <input id="noskptKampus" class="form-control" placeholder="No. SKPT" name="univ_noskpt" required="required" autofocus="autofocus" type="text"
+                    <input id="npsnKampus" class="form-control" placeholder="NPSN" name="univ_npsn" required="required" autofocus="autofocus" type="text"
                         data-parsley-required
-                        data-parsley-required-message="Masukan nomor registrasi akreditasi kampus">
-                    <label for="noskptKampus">No. SKPT</label>
-                    @error('univ_noskpt')
+                        data-parsley-required-message="Masukan nomor NPSN kampus">
+                    <label for="npsnKampus">NPSN</label>
+                    @error('univ_npsn')
                         <span class="form-text text-danger">
                             {{ $message }}
                         </span>    
