@@ -12,7 +12,7 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item ml-2 mb-1">
-                    <a class="btn btn-light btn-block px-1 py-0 text-left" href="#">Cari Kampus</a>
+                    <a class="btn btn-light btn-block px-1 py-0 text-left" href="{{ route('kampus.list') }}">Cari Kampus</a>
                 </li>
                 <li class="nav-item ml-2 mb-1">
                     <a class="btn btn-light btn-block px-1 py-0 text-left" href="#">Cari Tempat Magang</a>
@@ -26,7 +26,7 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                         @php ($univnb = \App\Univ::where('email', Auth::user()->email )->first())
-                        <a class="dropdown-item disabled longtext" href="#" tabindex="-1" aria-disabled="true">{{ Auth::user()->role }} :<br>{{ $univnb->nama }}</a>
+                        <a class="dropdown-item disabled longtext" href="#" tabindex="-1" aria-disabled="true"><small>{{ Auth::user()->role }} :<br>{{ $univnb->nama }}</small></a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ url('kampus/detail/'.$univnb->id) }}">Lihat Kampus</a>
                         <div class="dropdown-divider"></div>

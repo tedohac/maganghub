@@ -1,4 +1,4 @@
-@extends('layouts.front', ['title' => 'Kampus - MagangHub'])
+@extends('layouts.front', ['title' => $univ->nama.' - MagangHub'])
 
 @section('head')
     
@@ -18,7 +18,30 @@
     </style>
 @endsection
 
+@section('banner-front')
+<div class="row m-0 mt-5 panel">
+    <div class="profile-thumb col-lg-3 col-md-4 pr-md-0 text-center">
+        @if($univ->profile_pict == "")
+        <i class="fas fa-university bg-white border p-2 shadow-sm" style="font-size: 130px"></i>
+        @else
+        <img src="{{ url('storage/univ/'.$univ->profile_pict) }}" class="bg-white border p-2 shadow-sm">
+        @endif
+    </div>
+    <div class="profile-text col-lg-9 col-md-8 p-md-0 mb-2">
+        <h3 class="m-0">{{ $univ->nama }}</h3>
+        <small>Menunggu kelengkapan profil untuk verifikasi</small>
+    </div>
+</div>
+@endsection
+
+
 @section('content')
+    <ol class="breadcrumb p-1 ml-auto">
+        <li class="breadcrumb-item ml-auto"><a href="{{ route('/') }}">MagangHub</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('kampus.list') }}">Cari Kampus</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Detail Kampus</li>
+    </ol>
+
     @if(session('errors'))
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -42,47 +65,33 @@
         </div>
     @endif
 
-    <div class="row m-0 mt-5 panel">
-
-        <div class="profile-thumb col-lg-3 col-md-4 pr-md-0">
-            @if($univ->profile_pict == "")
-            <i class="fas fa-university bg-light border p-2 shadow-sm" style="font-size: 130px"></i>
-            @else
-            <img src="{{ url('storage/univ/'.$univ->profile_pict) }}" class="bg-light border p-2 shadow-sm">
-            @endif
-        </div>
-        <div class="profile-text col-lg-9 col-md-8 p-md-0 mb-2">
-            <h3 class="m-0">{{ $univ->nama }}</h3>
-            <small>Menunggu kelengkapan profil untuk verifikasi</small>
-        </div>
-    </div>
-
     <!-- detail info -->
-    <div class="bg-white shadow-sm border px-2 px-lg-3 pt-5 pb-3 mb-5">
+    <h5 class="mb-2 p-0">
+        Profil Kampus
         
-
+        @if(Auth::check() && Auth::user()->email == $univ->email)
+        <a class="btn btn-outline-info p-1 float-right" href="{{ url('kampus/edit/') }}">
+            <small><i class="fas fa-edit"></i> Edit Detail Kampus</small>
+        </a>
+        @endif
+    </h5>
+    <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-5">
         <table class="table" cellspacing="0">
             <tr>
-                <td width="100"><b>Akreditasi</b></td>
+                <td class="greybox" width="100"><b>Akreditasi</b></td>
                 <td>
-                    <span class="font-20 fa fa-star {{ ord($univ->akreditasi)-96>0 ? 'text-warning' : '' }}"></span>
-                    <span class="font-20 fa fa-star {{ ord($univ->akreditasi)-96>1 ? 'text-warning' : '' }}"></span>
-                    <span class="font-20 fa fa-star {{ ord($univ->akreditasi)-96>2 ? 'text-warning' : '' }}"></span>
-                    <span class="font-20 fa fa-star {{ ord($univ->akreditasi)-96>3 ? 'text-warning' : '' }}"></span>
-                    <span class="font-20 fa fa-star {{ ord($univ->akreditasi)-96>4 ? 'text-warning' : '' }}"></span>
+                    <span class="font-20 fa fa-star {{ $univ->akreditasi!='' && ord($univ->akreditasi)-96<6 ? 'text-warning' : '' }}"></span>
+                    <span class="font-20 fa fa-star {{ $univ->akreditasi!='' && ord($univ->akreditasi)-96<5 ? 'text-warning' : '' }}"></span>
+                    <span class="font-20 fa fa-star {{ $univ->akreditasi!='' && ord($univ->akreditasi)-96<4 ? 'text-warning' : '' }}"></span>
+                    <span class="font-20 fa fa-star {{ $univ->akreditasi!='' && ord($univ->akreditasi)-96<3 ? 'text-warning' : '' }}"></span>
+                    <span class="font-20 fa fa-star {{ $univ->akreditasi!='' && ord($univ->akreditasi)-96<2 ? 'text-warning' : '' }}"></span>
                     <span class="font-20">({{ strtoupper($univ->akreditasi) }})</span>
                 </td>
             </tr>
             <tr>
-                <td class="greybox"><b>No. SKPT</b></td>
+                <td class="greybox"><b>NPSN</b></td>
                 <td>
-                    {{ $univ->no_skpt }}
-                </td>
-            </tr>
-            <tr>
-                <td class="greybox"><b>Tanggal SKPT</b></td>
-                <td>
-                    {{ $univ->tgl_skpt }}
+                    {{ $univ->npsn }}
                 </td>
             </tr>
             <tr>
@@ -109,11 +118,25 @@
                     {{ $univ->alamat }}
                 </td>
             </tr>
+            <tr>
+                <td class="greybox"><b>Kota</b></td>
+                <td>
+                    {{ $univ->city_nama }}
+                </td>
+            </tr>
         </table>
     </div>
 
     <!-- prodi list -->
-    <h4 class="mb-2 p-0">Program Studi</h4>
+    <h5 class="mb-2 p-0">
+        Program Studi
+        
+        @if(Auth::check() && Auth::user()->email == $univ->email)
+        <a class="btn btn-outline-info p-1 float-right" href="#">
+            <small><i class="fas fa-edit"></i> Kelola Program Studi</small>
+        </a>
+        @endif
+    </h5>
     <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-5">
         <table class="table table-sm table-striped table-hover" id="dataTable" width="100%" cellspacing="0">
             <thead class="greybox">

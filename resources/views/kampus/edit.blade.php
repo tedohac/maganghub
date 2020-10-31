@@ -1,4 +1,4 @@
-@extends('layouts.front', ['title' => 'Kampus - MagangHub'])
+@extends('layouts.front', ['title' => 'Edit Kampus - MagangHub'])
 
 @section('head')
     
@@ -10,11 +10,36 @@
 
     <!-- Profile -->
     <link href="{{ asset('styles/profile.css?v=').time() }}" rel="stylesheet">
+    
+    <!-- Auto complete -->
+    <link href="{{ url('styles/select2.min.css') }}" rel="stylesheet" />
+@endsection
+
+@section('banner-front')
+<div class="row m-0 mt-5 panel">
+
+<div class="profile-thumb col-lg-3 col-md-4 pr-md-0 text-center">
+    @if($univ->profile_pict == "")
+    <i class="fas fa-university bg-white border p-2 shadow-sm" style="font-size: 130px"></i>
+    @else
+    <img src="{{ url('storage/univ/'.$univ->profile_pict) }}" class="bg-white border p-2 shadow-sm">
+    @endif
+</div>
+<div class="profile-text col-lg-9 col-md-8 p-md-0 mb-2">
+    <h3 class="m-0">{{ $univ->nama }}</h3>
+    <small>Menunggu kelengkapan profil untuk verifikasi</small>
+</div>
+</div>
 @endsection
 
 @section('content')
-<form action="{{ route('kampus.update') }}" method="post" id="registform" enctype="multipart/form-data">
-@csrf
+    <ol class="breadcrumb p-1 ml-auto">
+        <li class="breadcrumb-item ml-auto"><a href="{{ route('/') }}">MagangHub</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('kampus.list') }}">Cari Kampus</a></li>
+        <li class="breadcrumb-item"><a href="{{ url('kampus/detail/'.$univ->id) }}">Detail Kampus</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Edit Kampus</li>
+    </ol>
+
     @if(session('errors'))
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -37,39 +62,35 @@
             {{ Session::get('error') }}
         </div>
     @endif
+    
+<form action="{{ route('kampus.update') }}" method="post" id="registform" enctype="multipart/form-data">
+@csrf
 
     <div class="alert alert-warning">
         - Lengkapi data untuk mendapatkan verifikasi kampus dari MagangHub.<br>
         - Perubahan data kampus akan menunggu verifikasi ulang dari MagangHub.
     </div>
 
-    <div class="row m-0 mt-5 panel">
-
-        <div class="profile-thumb col-lg-3 col-md-4 pr-md-0">
-            @if($univ->profile_pict == "")
-            <i class="fas fa-university bg-light border p-2 shadow-sm" style="font-size: 130px"></i>
-            @else
-            <img src="{{ url('storage/univ/'.$univ->profile_pict) }}" class="bg-light border p-2 shadow-sm">
-            @endif
-        </div>
-        <div class="profile-text col-lg-9 col-md-8 p-md-0 mb-2">
-            <h3>Edit Detail Kampus</h3>
-            <input id="namaKampus" class="form-control" placeholder="Nama Kampus" name="univ_nama" required="required" autofocus="autofocus" type="text"
-                value="{{ $univ->nama }}"
-                data-parsley-required
-                data-parsley-required-message="Masukan nama kampus">
-            @error('univ_nama')
-                <span class="form-text text-danger">
-                    {{ $message }}
-                </span>    
-            @enderror
-        </div>
-    </div>
-
-    <div class="bg-white shadow-sm border px-2 px-lg-3 pt-5 pb-3">
-        
-
+    <!-- detail info -->
+    <h5 class="mb-2 p-0">
+        Edit Kampus
+    </h5>
+    <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-5">
         <table class="table table-sm" cellspacing="0">
+            <tr>
+                <td valign="center" width="50" class="greybox"><b>Nama</b></td>
+                <td>
+                    <input id="namaKampus" class="form-control" placeholder="Nama Kampus" name="univ_nama" required="required" autofocus="autofocus" type="text"
+                        value="{{ $univ->nama }}"
+                        data-parsley-required
+                        data-parsley-required-message="Masukan nama kampus">
+                    @error('univ_nama')
+                        <span class="form-text text-danger">
+                            {{ $message }}
+                        </span>    
+                    @enderror
+                </td>
+            </tr>
             <tr>
                 <td valign="center" width="50" class="greybox"><b>Logo</b></td>
                 <td>
@@ -102,28 +123,13 @@
                 </td>
             </tr>
             <tr>
-                <td valign="center" width="50" class="greybox"><b>No. SKPT</b></td>
+                <td valign="center" width="50" class="greybox"><b>NPSN</b></td>
                 <td>
-                    <input id="noskptKampus" class="form-control" placeholder="No. SKPT" name="univ_noskpt" required="required" type="text"
-                        value="{{ $univ->no_skpt }}"
+                    <input id="npsnKampus" class="form-control" placeholder="NPSN" name="univ_npsn" required="required" type="text"
+                        value="{{ $univ->npsn }}"
                         data-parsley-required
-                        data-parsley-required-message="Masukan No. SKPT">
-                    @error('univ_noskpt')
-                        <span class="form-text text-danger">
-                            {{ $message }}
-                        </span>    
-                    @enderror
-
-                </td>
-            </tr>
-            <tr>
-                <td valign="center" width="100" class="greybox"><b>Tanggal SKPT</b></td>
-                <td>
-                    <input id="tglskptKampus" class="form-control" placeholder="Tanggal SKPT" name="univ_tglskpt" type="text"
-                        value="{{ $univ->tgl_skpt }}"
-                        data-parsley-type="date"
-                        data-parsley-type-message="Format tanggal YYYY-MM-DD">
-                    @error('univ_tglskpt')
+                        data-parsley-required-message="Masukan nomor NPSN kampus">
+                    @error('univ_npsn')
                         <span class="form-text text-danger">
                             {{ $message }}
                         </span>    
@@ -189,6 +195,16 @@
                 </td>
             </tr>
             <tr>
+                <td valign="center" width="50" class="greybox"><b>Kota</b></td>
+                <td>
+                    <select class="form-control univCity" name="univ_city">
+                        @if($univ->city_id!="")
+                            <option value="{{ $univ->city_id }}" selected>{{ $city_name }}</option>
+                        @endif
+                    </select>
+                </td>
+            </tr>
+            <tr>
                 <td valign="center" width="50" class="greybox"></td>
                 <td>
                     <input class="btn btn-success btn-block" value="SIMPAN" type="submit" id="btnsubmit">
@@ -212,9 +228,6 @@
                 orientation: "auto",
             };
 
-            var uploaded=$('input[name="univ_tglskpt"]');
-            uploaded.datepicker(options);
-            
             var uploaded=$('input[name="univ_tglberdiri"]');
             uploaded.datepicker(options);
         })
@@ -233,6 +246,7 @@
         // Parsley full doc is avalailable here : https://github.com/guillaumepotier/Parsley.js/
 	</script>
 
+    <!-- Preview Profile Pict -->
     <script>
         $(".custom-file-input").on("change", function() {
             var fileName = $(this).val().split("\\").pop();
@@ -264,6 +278,25 @@
                 }
                 
                 reader.readAsDataURL(this.files[0]); // convert to base64 string
+            }
+        });
+    </script>
+    
+    <!-- Auto Complete-->
+    <script src="{{ url('js/select2.min.js') }}"></script>
+    <script type="text/javascript">
+        $('.univCity').select2({
+            placeholder: '-- Pilih Kota --',
+            ajax: {
+            url: '{{ url('cityautocom') }}',
+            dataType: 'json',
+            delay: 250,
+            processResults: function (data) {
+                return {
+                    results: data
+                };
+            },
+            cache: true
             }
         });
     </script>

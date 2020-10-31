@@ -29,7 +29,7 @@ class RegisterController extends Controller
     {
         $rules = [
             'univ_nama'     => 'required|max:100',
-            'univ_noskpt'   => 'required|unique:univs,no_skpt',
+            'univ_npsn'     => 'required|unique:univs,npsn',
             'univ_email'    => 'required|email|unique:users,email',
             'univ_pass'     => 'required|confirmed'
         ];
@@ -37,8 +37,8 @@ class RegisterController extends Controller
         $messages = [
             'univ_nama.required'    => 'Masukan nama kampus',
             'univ_nama.max'         => 'Nama kampus maksimal 100 karakter',
-            'univ_noskpt.required'  => 'Masukan nomor SKPT',
-            'univ_noskpt.unique'    => 'Nomor SKPT sudah terdaftar',
+            'univ_npsn.required'    => 'Masukan nomor NPSN',
+            'univ_npsn.unique'      => 'Nomor NPSN sudah terdaftar',
             'univ_email.required'   => 'Masukan e-mail admin kampus',
             'univ_email.email'      => 'E-mail tidak valid',
             'univ_email.unique'     => 'E-mail sudah terdaftar',
@@ -63,7 +63,7 @@ class RegisterController extends Controller
         $univ = new Univ;
         $univ->email = strtolower($request->univ_email);
         $univ->nama = ucwords(strtolower($request->univ_nama));
-        $univ->no_skpt = $request->univ_noskpt;
+        $univ->npsn = $request->univ_npsn;
         $simpanuniv = $univ->save();
 
         if($simpanuser && $simpanuniv)

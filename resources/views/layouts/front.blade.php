@@ -16,19 +16,38 @@
     <!-- Custom fonts for this template-->
     <link href="{{ url('fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
 
+    <style>
+        body {
+            background: linear-gradient(to bottom, rgba(255,144,139,1), rgba(255,144,139,0));
+            background-repeat: no-repeat;
+        }
+        .banner-front {
+            background-image: url("{{ url('img/bg-header.png') }}");
+            background-position: center top;
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            margin-top: 80px;
+            color: #fff;
+        }
+    </style>
+
     <title>{{ $title ?? config('app.name') }}</title>
     
     @yield('head')
 </head>
 <body>
     @include('layouts.navbar')
+    
+    <div class="banner-front container w-100 shadow-sm">
+        @yield('banner-front')
+    </div>
 
-    <div class="container mt-5 px-0">
+    <div class="container mt-0 px-0 mt-3">
         <div class="row mx-0">
             <div class="col-lg-9 col-md-8 px-0">
                 @yield('content')
             </div>
-            <div class="col-lg-3 col-md-4">
+            <div class="col-lg-3 col-md-4 pr-0">
                 @include('layouts.sidebar')
             </div>
         </div>
