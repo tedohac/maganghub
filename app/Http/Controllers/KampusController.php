@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Univ;
 use App\City;
+use App\Prodi;
 use Validator;
 use Session;
 use Storage;
@@ -20,8 +21,8 @@ class KampusController extends Controller
 
     public function list()
     {
-        $univs = Univ::join('users', 'univs.email', '=', 'users.email')
-                    ->whereNotNull('email_verified_at')
+        $univs = Univ::join('users', 'univs.univ_user_email', '=', 'users.user_email')
+                    ->whereNotNull('user_email_verified_at')
                     ->get();
 
         return view('kampus.list', [
@@ -31,24 +32,25 @@ class KampusController extends Controller
 
     public function detail($id)
     {
-        $univ = Univ::leftJoin('cities', 'univs.city_id', '=', 'cities.id')
-                    ->where('univs.id', $id)
+        $univ = Univ::leftJoin('cities', 'univs.univ_city_id', '=', 'cities.city_id')
+                    ->where('univs.univ_id', $id)
                     ->first();
+
+        $prodis = Prodi::where('prodi_univ_id', $id)->get();
 
     	return view('kampus.detail', [
             'univ' => $univ,
+            'prodis' => $prodis,
         ]);
     }
 
     public function edit()
     {
-        $this->middleware('auth');
-
-        if(Auth::user()->role != 'admin kampus') abort(404);
-        $univ = Univ::where('email', Auth::user()->email )->first();
+        $univ = Univ::where('univ_user_email', Auth::user()->user_email )->first();
+        if(empty($univ)) abort(404);
 
         $city_name="";
-        if($univ->city_id!="") $city_name = City::where('id', $univ->city_id)->first()->city_nama;
+        if($univ->univ_city_id!="") $city_name = City::where('city_id', $univ->univ_city_id)->first()->city_nama;
 
     	return view('kampus.edit', [
             'univ' => $univ,
@@ -58,10 +60,11 @@ class KampusController extends Controller
 
     public function update(Request $request)
     {
-        $univ = Univ::where('email', Auth::user()->email )->first();
+        $univ = Univ::where('univ_user_email', Auth::user()->user_email )->first();
+        if(empty($univ)) abort(404);
 
         $rules = [
-            'univ_npsn'       => 'required|unique:univs,npsn,'.$univ->id,
+            'univ_npsn'       => 'required|unique:univs,univ_npsn,'.$univ->univ_id.',univ_id',
         ];
  
         $messages = [
@@ -77,28 +80,28 @@ class KampusController extends Controller
         try
         {
             $filename = "";
-            if($request->univ_profilepict!="") 
+            if($request->univ_profile_pict!="") 
             {
-                $filename = $univ->id.'.'.$request->file('univ_profilepict')->getClientOriginalExtension();
+                $filename = $univ->univ_id.'.'.$request->file('univ_profile_pict')->getClientOriginalExtension();
                 
                 // delete if exists
-                if (Storage::disk('public')->exists( 'univ/'.$univ->profile_pict )) Storage::delete('public/univ/'.$univ->profile_pict);
-                $request->file('univ_profilepict')->storeAs('public/univ', $filename);
+                if (Storage::disk('public')->exists( 'univ/'.$univ->univ_profile_pict )) Storage::delete('public/univ/'.$univ->univ_profile_pict);
+                $request->file('univ_profile_pict')->storeAs('public/univ', $filename);
 
                 Artisan::call('cache:clear');
             }
 
-            Univ::where('id',$univ->id)
+            Univ::where('univ_id',$univ->univ_id)
                 ->update([
-                    'nama' => $request->univ_nama,
-                    'npsn' => $request->univ_npsn,
-                    'akreditasi' => isset($request->univ_akreditasi) ? $request->univ_akreditasi : null,
-                    'tgl_berdiri' => $request->univ_tglberdiri!="" ? $request->univ_tglberdiri : null,
-                    'alamat' => $request->univ_alamat!="" ? $request->univ_alamat : null,
-                    'no_tlp' => $request->univ_notlp!="" ? $request->univ_notlp : null,
-                    'website' => $request->univ_website!="" ? $request->univ_website : null,
-                    'profile_pict' => $request->univ_profilepict!="" ? $filename : $univ->profile_pict,
-                    'city_id' => $request->univ_city!="" ? $request->univ_city : null,
+                    'univ_nama'          => $request->univ_nama,
+                    'univ_npsn'          => $request->univ_npsn,
+                    'univ_akreditasi'    => isset($request->univ_akreditasi) ? $request->univ_akreditasi : null,
+                    'univ_tgl_berdiri'   => $request->univ_tgl_berdiri!="" ? $request->univ_tgl_berdiri : null,
+                    'univ_alamat'        => $request->univ_alamat!="" ? $request->univ_alamat : null,
+                    'univ_no_tlp'        => $request->univ_no_tlp!="" ? $request->univ_no_tlp : null,
+                    'univ_website'       => $request->univ_website!="" ? $request->univ_website : null,
+                    'univ_profile_pict'  => $request->univ_profile_pict!="" ? $filename : $univ->univ_profile_pict,
+                    'univ_city_id'       => $request->univ_city_id!="" ? $request->univ_city_id : null,
                 ]);
         } catch (\Illuminate\Database\QueryException $e) {
             Session::flash('error', 'Proses gagal, mohon coba kembali beberapa saat lagi ');
@@ -106,6 +109,6 @@ class KampusController extends Controller
         }
 
         Session::flash('success', 'Ubah data kampus berhasil, menunggu verifikasi MagangHub');
-        return redirect('kampus/detail/'.$univ->id);
+        return redirect('kampus/detail/'.$univ->univ_id);
     }
 }

@@ -14,12 +14,14 @@ class CreateProdisTable extends Migration
     public function up()
     {
         Schema::create('prodis', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('univ_id')->unsigned()->index();
-            $table->string('nama', 100);
-            $table->string('fakultas', 100)->nullable();
+            $table->bigIncrements('prodi_id');
+            $table->BigInteger('prodi_univ_id')->unsigned()->index();
+            $table->string('prodi_nama', 100);
+            $table->string('prodi_fakultas', 100)->nullable();
+            $table->string('prodi_jenjang', 5);
+            $table->char('prodi_akreditasi', 1);
             $table->timestamps();
-            $table->foreign('univ_id')->references('id')->on('univs');
+            $table->foreign('prodi_univ_id')->references('univ_id')->on('univs');
         });
     }
 

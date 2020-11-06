@@ -23,13 +23,13 @@ class ForgetpassController extends Controller
     {
 
         $rules = [
-            'email'   => 'required|email|exists:users,email',
+            'user_email'   => 'required|email|exists:users,email',
         ];
  
         $messages = [
-            'email.required'  => 'Masukan e-mail',
-            'email.email'     => 'E-mail tidak valid',
-            'email.exists'    => 'E-mail tidak terdaftar',
+            'user_email.required'  => 'Masukan e-mail',
+            'user_email.email'     => 'E-mail tidak valid',
+            'user_email.exists'    => 'E-mail tidak terdaftar',
         ];
  
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -38,12 +38,12 @@ class ForgetpassController extends Controller
             return redirect()->back()->withErrors($validator)->withInput($request->all);
         }
         
-        $user = User::where('email',$request->email)->first();
+        $user = User::where('user_email',$request->user_email)->first();
         $token = Str::random(32);
                     
         try
         {
-            User::where('email',$request->email)
+            User::where('user_email',$request->user_email)
                 ->update([
                     'forgetpass_token' => $token,
                 ]);
@@ -52,7 +52,7 @@ class ForgetpassController extends Controller
             return redirect()->back();
         }
 
-        Mail::to($request->email)->send(new ForgetpassEmail($request->email, $token));
+        Mail::to($request->user_email)->send(new ForgetpassEmail($request->user_email, $token));
 
         Session::flash('success', 'Tautan reset password telah kami kirim, silahkan periksa e-mail anda');
         return redirect()->back();
@@ -66,7 +66,7 @@ class ForgetpassController extends Controller
             return redirect()->route('login');
         }
 
-        $user = User::where('email',$email)
+        $user = User::where('user_email',$email)
                     ->where('forgetpass_token',$token)
                     ->first();
 
@@ -86,12 +86,12 @@ class ForgetpassController extends Controller
     public function resetpassprocess(Request $request)
     {
         $rules = [
-            'pass'     => 'required|confirmed'
+            'user_password'     => 'required|confirmed'
         ];
  
         $messages = [
-            'pass.required'    => 'Masukan password',
-            'pass.confirmed'   => 'Password tidak sama dengan konfirmasi password'
+            'user_password.required'    => 'Masukan password',
+            'user_password.confirmed'   => 'Password tidak sama dengan konfirmasi password'
         ];
  
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -102,11 +102,11 @@ class ForgetpassController extends Controller
         
         try
         {
-            User::where('email',$request->email)
-                ->where('forgetpass_token',$request->token)
+            User::where('user_email',$request->user_email)
+                ->where('forgetpass_token',$request->forgetpass_token)
                 ->update([
                     'forgetpass_token' => null,
-                    'password' => Hash::make($request->pass),
+                    'user_password' => Hash::make($request->user_password),
                 ]);
         } catch (\Illuminate\Database\QueryException $e) {
             Session::flash('error', 'Proses gagal, mohon coba kembali beberapa saat lagi');

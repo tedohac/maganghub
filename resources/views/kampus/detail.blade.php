@@ -1,4 +1,4 @@
-@extends('layouts.front', ['title' => $univ->nama.' - MagangHub'])
+@extends('layouts.front', ['title' => $univ->univ_nama.' - MagangHub'])
 
 @section('head')
     
@@ -20,15 +20,15 @@
 
 @section('banner-front')
 <div class="row m-0 mt-5 panel">
-    <div class="profile-thumb col-lg-3 col-md-4 pr-md-0 text-center">
-        @if($univ->profile_pict == "")
+    <div class="profile-thumb col-lg-3 col-md-4 pr-md-0 text-center text-dark">
+        @if(empty($univ->univ_profile_pict))
         <i class="fas fa-university bg-white border p-2 shadow-sm" style="font-size: 130px"></i>
         @else
-        <img src="{{ url('storage/univ/'.$univ->profile_pict) }}" class="bg-white border p-2 shadow-sm">
+        <img src="{{ url('storage/univ/'.$univ->univ_profile_pict) }}" class="bg-white border p-2 shadow-sm">
         @endif
     </div>
     <div class="profile-text col-lg-9 col-md-8 p-md-0 mb-2">
-        <h3 class="m-0">{{ $univ->nama }}</h3>
+        <h3 class="m-0">{{ $univ->univ_nama }}</h3>
         <small>Menunggu kelengkapan profil untuk verifikasi</small>
     </div>
 </div>
@@ -69,8 +69,8 @@
     <h5 class="mb-2 p-0">
         Profil Kampus
         
-        @if(Auth::check() && Auth::user()->email == $univ->email)
-        <a class="btn btn-outline-info p-1 float-right" href="{{ url('kampus/edit/') }}">
+        @if(Auth::check() && Auth::user()->user_email == $univ->univ_user_email)
+        <a class="btn btn-outline-info p-1 float-right" href="{{ route('kampus.edit') }}">
             <small><i class="fas fa-edit"></i> Edit Detail Kampus</small>
         </a>
         @endif
@@ -80,48 +80,48 @@
             <tr>
                 <td class="greybox" width="100"><b>Akreditasi</b></td>
                 <td>
-                    <span class="font-20 fa fa-star {{ $univ->akreditasi!='' && ord($univ->akreditasi)-96<6 ? 'text-warning' : '' }}"></span>
-                    <span class="font-20 fa fa-star {{ $univ->akreditasi!='' && ord($univ->akreditasi)-96<5 ? 'text-warning' : '' }}"></span>
-                    <span class="font-20 fa fa-star {{ $univ->akreditasi!='' && ord($univ->akreditasi)-96<4 ? 'text-warning' : '' }}"></span>
-                    <span class="font-20 fa fa-star {{ $univ->akreditasi!='' && ord($univ->akreditasi)-96<3 ? 'text-warning' : '' }}"></span>
-                    <span class="font-20 fa fa-star {{ $univ->akreditasi!='' && ord($univ->akreditasi)-96<2 ? 'text-warning' : '' }}"></span>
-                    <span class="font-20">({{ strtoupper($univ->akreditasi) }})</span>
+                    <span class="font-20 fa fa-star {{ $univ->univ_akreditasi!='' && ord($univ->univ_akreditasi)-96<6 ? 'text-warning' : '' }}"></span>
+                    <span class="font-20 fa fa-star {{ $univ->univ_akreditasi!='' && ord($univ->univ_akreditasi)-96<5 ? 'text-warning' : '' }}"></span>
+                    <span class="font-20 fa fa-star {{ $univ->univ_akreditasi!='' && ord($univ->univ_akreditasi)-96<4 ? 'text-warning' : '' }}"></span>
+                    <span class="font-20 fa fa-star {{ $univ->univ_akreditasi!='' && ord($univ->univ_akreditasi)-96<3 ? 'text-warning' : '' }}"></span>
+                    <span class="font-20 fa fa-star {{ $univ->univ_akreditasi!='' && ord($univ->univ_akreditasi)-96<2 ? 'text-warning' : '' }}"></span>
+                    <span class="font-20">({{ strtoupper($univ->univ_akreditasi) }})</span>
                 </td>
             </tr>
             <tr>
                 <td class="greybox"><b>NPSN</b></td>
                 <td>
-                    {{ $univ->npsn }}
+                    {{ $univ->univ_npsn ? $univ->univ_npsn : '-' }}
                 </td>
             </tr>
             <tr>
                 <td class="greybox"><b>Tanggal Berdiri</b></td>
                 <td>
-                    {{ $univ->tgl_berdiri }}
+                    {{ $univ->univ_tgl_berdiri ? $univ->univ_tgl_berdiri : '-' }}
                 </td>
             </tr>
             <tr>
                 <td class="greybox"><b>Telepon</b></td>
                 <td>
-                    {{ $univ->no_tlp }}
+                    {{ $univ->univ_no_tlp ? $univ->univ_no_tlp : '-' }}
                 </td>
             </tr>
             <tr>
                 <td class="greybox"><b>Website</b></td>
                 <td>
-                    <a href="{{ $univ->website }}">{{ $univ->website }}</a>
+                    <a href="{{ $univ->univ_website ? $univ->univ_website : '#' }}">{{ $univ->univ_website ? $univ->univ_website : '-' }}</a>
                 </td>
             </tr>
             <tr>
                 <td class="greybox"><b>Alamat</b></td>
                 <td>
-                    {{ $univ->alamat }}
+                    {{ $univ->univ_alamat ? $univ->univ_alamat : '-' }}
                 </td>
             </tr>
             <tr>
                 <td class="greybox"><b>Kota</b></td>
                 <td>
-                    {{ $univ->city_nama }}
+                    {{ $univ->city_nama ? $univ->city_nama : '-' }}
                 </td>
             </tr>
         </table>
@@ -131,61 +131,39 @@
     <h5 class="mb-2 p-0">
         Program Studi
         
-        @if(Auth::check() && Auth::user()->email == $univ->email)
-        <a class="btn btn-outline-info p-1 float-right" href="#">
+        @if(Auth::check() && Auth::user()->user_email == $univ->univ_user_email)
+        <a class="btn btn-outline-info p-1 float-right" href="{{ route('prodi.manage') }}">
             <small><i class="fas fa-edit"></i> Kelola Program Studi</small>
         </a>
         @endif
     </h5>
     <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-5">
+        
         <table class="table table-sm table-striped table-hover" id="dataTable" width="100%" cellspacing="0">
             <thead class="greybox">
                 <tr>
                     <th>Program Studi</th>
+                    <th>Fakultas</th>
                     <th>Jenjang</th>
                     <th>Akreditasi</th>
-                    <th><small>Pencari<br>Magang</small></th>
+                    <th>DOSPEM</th>
+                    <th>Mahasiswa</th>
                 </tr>
             </thead>
             <tbody>
+            @foreach($prodis as $prodi)
                 <tr>
-                    <td>Manajemen Informatika</td>
-                    <td>D3</td>
-                    <td>A</td>
+                    <td>{{ $prodi->prodi_nama }}</td>
+                    <td>{{ $prodi->prodi_fakultas!='' ? $prodi->prodi_fakultas : '-' }}</td>
+                    <td>{{ $prodi->prodi_jenjang }}</td>
+                    <td>{{ strtoupper($prodi->prodi_akreditasi) }}</td>
+                    <td>13</td>
                     <td>13</td>
                 </tr>
-                <tr>
-                    <td>Mesin Otomotif</td>
-                    <td>D3</td>
-                    <td>A</td>
-                    <td>13</td>
-                </tr>
-                <tr>
-                    <td>Pembuatan Peralatan dan Perkakas Produksi</td>
-                    <td>D3</td>
-                    <td>A</td>
-                    <td>13</td>
-                </tr>
-                <tr>
-                    <td>Teknik Produksi dan Proses Manufaktur</td>
-                    <td>D3</td>
-                    <td>A</td>
-                    <td>13</td>
-                </tr>
-                <tr>
-                    <td>Mekatronika</td>
-                    <td>D3</td>
-                    <td>A</td>
-                    <td>13</td>
-                </tr>
-                <tr>
-                    <td>Teknik Konstruksi Bangunan Gedung</td>
-                    <td>D3</td>
-                    <td>A</td>
-                    <td>13</td>
-                </tr>
+            @endforeach
             </tbody>
         </table>
+
     </div>
 @endsection
 

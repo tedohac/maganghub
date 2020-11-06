@@ -24,14 +24,14 @@ class LoginController extends Controller
     public function process(Request $request)
     {
         $rules = [
-            'login_email'   => 'required|email',
-            'login_pass'    => 'required'
+            'user_email'   => 'required|email',
+            'user_password'    => 'required'
         ];
  
         $messages = [
-            'login_email.required'  => 'Masukan e-mail',
-            'login_email.email'     => 'E-mail tidak valid',
-            'login_pass.required'   => 'Masukan password'
+            'user_email.required'  => 'Masukan e-mail',
+            'user_email.email'     => 'E-mail tidak valid',
+            'user_password.required'   => 'Masukan password'
         ];
  
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -41,18 +41,22 @@ class LoginController extends Controller
         }
         
         $data = [
-            'email'     => $request->login_email,
-            'password'  => $request->login_pass
+            'user_email'=> $request->user_email,
+            'password'  => $request->user_password
         ];
         
+        // verification check
+        $isverified = User::where('user_email',$request->user_email)->first();
+        if($isverified->user_status == 1) return redirect()->route('verifyneeded');
+
         if(!Auth::attempt($data, isset($request->login_remember)))
         {
             //Login Fail
             Session::flash('error', 'Email atau password salah');
-            return redirect()->route('login');
+            return redirect()->route('login')->withInput($request->all);
         }
 
-        Session::flash('success', 'Selamat datang, '.Auth::user()->role.'!');
+        Session::flash('success', 'Selamat datang, '.Auth::user()->user_role.'!');
         if(Auth::check()) return $this->redirectRole();
     }
 

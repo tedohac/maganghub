@@ -28,22 +28,22 @@ class RegisterController extends Controller
     public function kampusprocess(Request $request)
     {
         $rules = [
-            'univ_nama'     => 'required|max:100',
-            'univ_npsn'     => 'required|unique:univs,npsn',
-            'univ_email'    => 'required|email|unique:users,email',
-            'univ_pass'     => 'required|confirmed'
+            'univ_nama'     => 'required|max:200',
+            'univ_npsn'     => 'required|unique:univs,univ_npsn',
+            'user_email'    => 'required|email|unique:users,user_email',
+            'user_password' => 'required|confirmed'
         ];
  
         $messages = [
-            'univ_nama.required'    => 'Masukan nama kampus',
-            'univ_nama.max'         => 'Nama kampus maksimal 100 karakter',
-            'univ_npsn.required'    => 'Masukan nomor NPSN',
-            'univ_npsn.unique'      => 'Nomor NPSN sudah terdaftar',
-            'univ_email.required'   => 'Masukan e-mail admin kampus',
-            'univ_email.email'      => 'E-mail tidak valid',
-            'univ_email.unique'     => 'E-mail sudah terdaftar',
-            'univ_pass.required'    => 'Masukan password',
-            'univ_pass.confirmed'   => 'Password tidak sama dengan konfirmasi password'
+            'univ_nama.required'        => 'Masukan nama kampus',
+            'univ_nama.max'             => 'Max nama kampus 200 karakter',
+            'univ_npsn.required'        => 'Masukan nomor NPSN',
+            'univ_npsn.unique'          => 'Nomor NPSN sudah terdaftar',
+            'user_email.required'       => 'Masukan e-mail admin kampus',
+            'user_email.email'          => 'E-mail tidak valid',
+            'user_email.unique'         => 'E-mail sudah terdaftar',
+            'user_password.required'    => 'Masukan password',
+            'user_password.confirmed'   => 'Password tidak sama dengan konfirmasi password'
         ];
  
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -53,22 +53,22 @@ class RegisterController extends Controller
         }
  
         $user = new User;
-        $user->email = strtolower($request->univ_email);
-        $user->role = 'admin kampus';
-        $user->status = '1';
-        $user->password = Hash::make($request->univ_pass);
-        $user->verify_token = Str::random(32);
+        $user->user_email        = strtolower($request->user_email);
+        $user->user_role         = 'admin kampus';
+        $user->user_status       = '1';
+        $user->user_password     = Hash::make($request->user_password);
+        $user->user_verify_token = Str::random(32);
         $simpanuser = $user->save();
 
         $univ = new Univ;
-        $univ->email = strtolower($request->univ_email);
-        $univ->nama = ucwords(strtolower($request->univ_nama));
-        $univ->npsn = $request->univ_npsn;
+        $univ->univ_user_email  = strtolower($request->user_email);
+        $univ->univ_nama        = ucwords(strtolower($request->univ_nama));
+        $univ->univ_npsn        = $request->univ_npsn;
         $simpanuniv = $univ->save();
 
         if($simpanuser && $simpanuniv)
         {
-            Mail::to($request->univ_email)->send(new VerificationEmail($request->univ_email, $user->verify_token, $user->role));
+            Mail::to($request->user_email)->send(new VerificationEmail($request->user_email, $user->user_verify_token, $user->user_role));
 
             Session::flash('success', 'Register berhasil! Periksa email anda untuk melakukan verifikasi');
             return redirect()->route('registkampus');

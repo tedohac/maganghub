@@ -14,11 +14,11 @@ class CreateCitiesTable extends Migration
     public function up()
     {
         Schema::create('cities', function (Blueprint $table) {
-            $table->string('id', 4);
-            $table->string('province_id', 2);
-            $table->string('nama', 30);
-            $table->primary('id');
-            $table->foreign('province_id')->references('id')->on('provinces');
+            $table->string('city_id', 4);
+            $table->string('city_province_id', 2);
+            $table->string('city_nama', 30);
+            $table->primary('city_id');
+            $table->foreign('city_province_id')->references('province_id')->on('provinces');
         });
     }
 

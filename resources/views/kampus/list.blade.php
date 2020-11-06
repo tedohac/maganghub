@@ -28,8 +28,8 @@
 @section('banner-front')
 <div class="py-3">
     <h3 class="">Kampus Terdaftar</h3>
-    <p>
-        Tenaga magang beragam skill dari banyak kampus terbaik menunggu di sini. Semua kampus di MagangHub memiliki data yang lengkap dan melalui proses verifikasi.<br />
+    <p class="text-justify">
+        Tenaga magang beragam skill dari banyak kampus terbaik menunggu di sini. Semua kampus di MagangHub memiliki data yang lengkap dan terverifikasi. 
         Kampus kamu belum terdaftar? Kirim undangan ke admin kampus kamu <a href="#" class="text-light">di sini</a>. Admin kampus yang akan mendaftarkan akun mahasiswa di MagangHub.
     </p>
 </div>
@@ -103,24 +103,24 @@
         <div class="col-6 col-lg-4 p-0 mb-3">
             <div class="card m-2 shadow-sm h-100">
                 <div class="card-profile-thumb p-3 text-center">
-                    @if($univ->profile_pict == "")
+                    @if(empty($univ->univ_profile_pict))
                     <i class="fas fa-university" style="font-size: 100px"></i>
                     @else
-                    <img src="{{ url('storage/univ/'.$univ->profile_pict) }}">
+                    <img src="{{ url('storage/univ/'.$univ->univ_profile_pict) }}">
                     @endif
                 </div>
                 <div class="card-body p-3">
-                    <h5 class="card-title text-center m-0"><a href="{{ url('kampus/detail/'.$univ->id) }}">{{ $univ->nama }}</a></h5>
+                    <h5 class="card-title text-center m-0"><a href="{{ url('kampus/detail/'.$univ->univ_id) }}">{{ $univ->univ_nama }}</a></h5>
                     <div class="mb-3 text-center"><small><i>Menunggu verifikasi MagangHub</i></small></div>
                     <ul class="card-ul border p-0">
                         <li class="text-center p-2 border-bottom">
 
                             <div class="text-center"><small>akreditasi</small></div>
-                            <span class="font-20 fa fa-star {{ $univ->akreditasi!='' && ord($univ->akreditasi)-96<6 ? 'text-warning' : '' }}"></span>
-                            <span class="font-20 fa fa-star {{ $univ->akreditasi!='' && ord($univ->akreditasi)-96<5 ? 'text-warning' : '' }}"></span>
-                            <span class="font-20 fa fa-star {{ $univ->akreditasi!='' && ord($univ->akreditasi)-96<4 ? 'text-warning' : '' }}"></span>
-                            <span class="font-20 fa fa-star {{ $univ->akreditasi!='' && ord($univ->akreditasi)-96<3 ? 'text-warning' : '' }}"></span>
-                            <span class="font-20 fa fa-star {{ $univ->akreditasi!='' && ord($univ->akreditasi)-96<2 ? 'text-warning' : '' }}"></span>
+                            <span class="font-20 fa fa-star {{ $univ->univ_akreditasi!='' && ord($univ->univ_akreditasi)-96<6 ? 'text-warning' : '' }}"></span>
+                            <span class="font-20 fa fa-star {{ $univ->univ_akreditasi!='' && ord($univ->univ_akreditasi)-96<5 ? 'text-warning' : '' }}"></span>
+                            <span class="font-20 fa fa-star {{ $univ->univ_akreditasi!='' && ord($univ->univ_akreditasi)-96<4 ? 'text-warning' : '' }}"></span>
+                            <span class="font-20 fa fa-star {{ $univ->univ_akreditasi!='' && ord($univ->univ_akreditasi)-96<3 ? 'text-warning' : '' }}"></span>
+                            <span class="font-20 fa fa-star {{ $univ->univ_akreditasi!='' && ord($univ->univ_akreditasi)-96<2 ? 'text-warning' : '' }}"></span>
                             <span class="font-20">({{ strtoupper($univ->akreditasi) }})</span>
 
                         </li>
@@ -131,7 +131,7 @@
                             Jumlah Pencari Magang : 57
                         </li>
                         <li class="text-center p-2 border-bottom">
-                            <a href="{{ ($univ->website!='') ? $univ->website : '#' }}">{{ ($univ->website!='') ? $univ->website : '-' }}</a>
+                            <a href="{{ ($univ->univ_website!='') ? $univ->univ_website : '#' }}">{{ ($univ->univ_website!='') ? $univ->univ_website : '-' }}</a>
                         </li>
                     </ul>
                 </div>
