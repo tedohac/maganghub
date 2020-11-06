@@ -16,11 +16,11 @@ trait RoleTrait {
 
     public function redirectRole()
     {
-        if(Auth::user()->status == 1) return redirect()->route('verifyneeded');
-        elseif(Auth::user()->role == 'admin kampus')
+        if(Auth::user()->user_status == 1) return redirect()->route('verifyneeded');
+        elseif(Auth::user()->user_role == 'admin kampus')
         {
-            $univ = Univ::where('email', Auth::user()->email )->first();
-            return redirect('kampus/detail/'.$univ->id);
+            $univ = Univ::where('univ_user_email', Auth::user()->user_email )->first();
+            return redirect('kampus/detail/'.$univ->univ_id);
         }
         echo Auth::user()->role."asd";
         // abort(404);

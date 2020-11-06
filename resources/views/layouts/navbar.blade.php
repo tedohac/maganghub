@@ -18,15 +18,15 @@
                     <a class="btn btn-light btn-block px-1 py-0 text-left" href="#">Cari Tempat Magang</a>
                 </li>
                 
-                @if(Auth::check() && Auth::user()->role='admin kampus')
+                @if(Auth::check() && Auth::user()->user_role='admin kampus')
 
                 <li class="nav-item ml-2 mb-1 dropdown">
-                    <a class="btn btn-success btn-block px-1 py-0 dropdown-toggle h-100" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="btn btn-success btn-block px-1 py-0 dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-user"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                        @php ($univnb = \App\Univ::where('email', Auth::user()->email )->first())
-                        <a class="dropdown-item disabled longtext" href="#" tabindex="-1" aria-disabled="true"><small>{{ Auth::user()->role }} :<br>{{ $univnb->nama }}</small></a>
+                        @php ($univnb = \App\Univ::where('univ_user_email', Auth::user()->user_email )->first())
+                        <a class="dropdown-item disabled longtext" href="#" tabindex="-1" aria-disabled="true"><small>{{ Auth::user()->user_role }} :<br>{{ $univnb->univ_nama }}</small></a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ url('kampus/detail/'.$univnb->id) }}">Lihat Kampus</a>
                         <div class="dropdown-divider"></div>

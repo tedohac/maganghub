@@ -52,13 +52,13 @@
             <form action="{{ route('verifyneeded') }}" method="post" id="registform">
             @csrf
             <div class="form-label-group mb-3">
-                <input id="emailKampus" class="form-control" placeholder="E-mail" name="email" required="required" autofocus="autofocus" type="email"
+                <input id="emailKampus" class="form-control" placeholder="E-mail" name="user_email" required="required" autofocus="autofocus" type="email"
                     data-parsley-type="email"
                     data-parsley-required
                     data-parsley-required-message="Masukan e-mail"
                     data-parsley-type-message="Format e-mail tidak valid">
                 <label for="emailKampus">E-mail</label>
-                @error('email')
+                @error('user_email')
                     <span class="form-text text-danger">
                         {{ $message }}
                     </span>    

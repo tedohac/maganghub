@@ -47,8 +47,24 @@ Route::group(['prefix' => 'kampus', 'middleware' => 'web'], function () {
 
     Route::get('detail/{id}','KampusController@detail')->name('kampus.detail');
 
-    Route::get('edit','KampusController@edit')->name('kampus.edit');
-    Route::post('update','KampusController@update')->name('kampus.update');
+    Route::get('edit','KampusController@edit')->name('kampus.edit')->middleware('cekrole:admin kampus');
+    Route::post('update','KampusController@update')->name('kampus.update')->middleware('cekrole:admin kampus');
+    
 });
 
 Route::get('cityautocom','CityController@autocom')->name('cityautocom');
+
+Route::group(['prefix' => 'prodi', 'middleware' => 'web'], function () {
+
+    Route::get('manage','ProdiController@manage')->name('prodi.manage')->middleware('cekrole:admin kampus');
+    Route::post('save','ProdiController@save')->name('prodi.save')->middleware('cekrole:admin kampus');
+    Route::post('update','ProdiController@update')->name('prodi.update')->middleware('cekrole:admin kampus');
+    Route::get('delete','ProdiController@delete')->name('prodi.delete')->middleware('cekrole:admin kampus');
+
+    Route::get('detailjson','ProdiController@detailjson')->name('prodi.detailjson');
+});
+
+Route::group(['prefix' => 'dospem', 'middleware' => 'web'], function () {
+
+    Route::get('manage','DospemController@manage')->name('dospem.manage')->middleware('cekrole:admin kampus');
+});

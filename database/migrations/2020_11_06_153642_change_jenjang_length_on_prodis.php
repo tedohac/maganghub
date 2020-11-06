@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class ChangeSkptToNpsnOnUnivs extends Migration
+class ChangeJenjangLengthOnProdis extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class ChangeSkptToNpsnOnUnivs extends Migration
      */
     public function up()
     {
-        Schema::table('univs', function (Blueprint $table) {
-            $table->renameColumn('no_skpt', 'npsn');
-            $table->dropColumn('tgl_skpt');
+        Schema::table('prodis', function (Blueprint $table) {
+            $table->string('prodi_jenjang', 10)->nullable()->change();
         });
     }
 
@@ -26,8 +25,8 @@ class ChangeSkptToNpsnOnUnivs extends Migration
      */
     public function down()
     {
-        Schema::table('univs', function (Blueprint $table) {
-            //
+        Schema::table('prodis', function (Blueprint $table) {
+            $table->string('prodi_jenjang', 5)->nullable()->change();
         });
     }
 }

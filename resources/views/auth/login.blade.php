@@ -54,13 +54,13 @@
                 <form action="{{ route('login') }}" method="post" id="registform">
                 @csrf
 				<div class="form-label-group mb-3">
-                    <input id="emailLogin" class="form-control" placeholder="E-mail" name="login_email" required="required" autofocus="autofocus" type="email"
+                    <input id="emailLogin" class="form-control" placeholder="E-mail" name="user_email" required="required" autofocus="autofocus" type="email" value="{{ old('user_email') }}"
                         data-parsley-type="email"
                         data-parsley-required
                         data-parsley-required-message="Masukan e-mail"
                         data-parsley-type-message="Format e-mail tidak valid">
                     <label for="emailLogin">E-mail</label>
-                    @error('login_email')
+                    @error('user_email')
                         <span class="form-text text-danger">
                             {{ $message }}
                         </span>    
@@ -68,11 +68,11 @@
                 </div>
                 
                 <div class="form-label-group mb-3">
-                    <input id="passLogin" class="form-control" placeholder="Password" name="login_pass" required="required" autofocus="autofocus"  type="password"
+                    <input id="passLogin" class="form-control" placeholder="Password" name="user_password" required="required" autofocus="autofocus"  type="password"
                         data-parsley-required
                         data-parsley-required-message="Masukkan password">
                     <label for="passLogin">Password</label>
-                    @error('login_pass')
+                    @error('user_password')
                         <span class="form-text text-danger">
                             {{ $message }}
                         </span>    

@@ -15,26 +15,6 @@ use Mail;
 
 class VerifyController extends Controller
 {
-    
-
-    public function demoverify()
-    {
-
-        $myEmail = 'tedohac@gmail.com';
-
-        $user = new User;
-        $user->email = 'tedohac@gmail.com';
-        $user->role = 'adminkampus';
-        $user->status = '1';
-        $user->password = Hash::make('polman');
-        $user->verify_token = Str::random(32);
-
-        Mail::to($user->email)->send(new VerificationEmail($user->email, $user->verify_token, $user->role));
-
-        dd("Mail Send Successfully");
-
-    }
-
     public function verifyemail($email = null, $token = null)
     {
         if($email == null || $token == null)
@@ -43,26 +23,26 @@ class VerifyController extends Controller
             return redirect()->route('login');
         }
 
-        $user = User::where('email',$email)
-                    ->where('verify_token',$token)
+        $user = User::where('user_email',$email)
+                    ->where('user_verify_token',$token)
                     ->first();
 
-        if($user == null )
+        if(empty($user))
         {
             Session::flash('error', 'Tautan salah atau anda sudah melalukan verifikasi sebelumnya');
             return redirect()->route('login');
         }
 
-        if($user->status == 1)
+        if($user->user_status == 1)
         {
             try
             {
-                User::where('email',$email)
-                    ->where('verify_token',$token)
+                User::where('user_email',$email)
+                    ->where('user_verify_token',$token)
                     ->update([
-                        'status' => '2',
-                        'email_verified_at' => Carbon::now(),
-                        'verify_token' => null,
+                        'user_status' => '2',
+                        'user_email_verified_at' => Carbon::now(),
+                        'user_verify_token' => null,
                     ]);
             } catch (\Illuminate\Database\QueryException $e) {
                 Session::flash('error', 'Proses gagal, mohon coba kembali beberapa saat lagi');
@@ -84,13 +64,13 @@ class VerifyController extends Controller
     {
         
         $rules = [
-            'email'   => 'required|email|exists:users,email',
+            'user_email'   => 'required|email|exists:users,user_email',
         ];
  
         $messages = [
-            'email.required'  => 'Masukan e-mail',
-            'email.email'     => 'E-mail tidak valid',
-            'email.exists'    => 'E-mail tidak terdaftar',
+            'user_email.required'  => 'Masukan e-mail',
+            'user_email.email'     => 'E-mail tidak valid',
+            'user_email.exists'    => 'E-mail tidak terdaftar',
         ];
  
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -99,11 +79,17 @@ class VerifyController extends Controller
             return redirect()->back()->withErrors($validator)->withInput($request->all);
         }
         
-        $user = User::where('email',$request->email)->first();
+        $user = User::where('user_email',$request->user_email)->whereNull('user_email_verified_at')->first();
                     
-        Mail::to($user->email)->send(new VerificationEmail($user->email, $user->verify_token, $user->role));
+        if(!empty($user))
+        {
+            Mail::to($user->user_email)->send(new VerificationEmail($user->user_email, $user->user_verify_token, $user->user_role));
 
-        Session::flash('success', 'Tautan verifikasi telah kami kirim kembali');
-        return redirect()->back();
+            Session::flash('success', 'Tautan verifikasi telah kami kirim kembali');
+            return redirect()->back();
+        } else {
+            Session::flash('error', 'E-mail tidak ditemukan atau sudah melakukan verifikasi');
+            return redirect()->back();
+        }
     }
 }

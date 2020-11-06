@@ -6,19 +6,19 @@
         </div>
     </div>
 
-    @php ($univsb = \App\Univ::where('email', Auth::user()->email )->first())
+    @php ($univsb = \App\Univ::where('univ_user_email', Auth::user()->user_email )->first())
 
     <div class="sidebar-profile-bot w-100 p-2">
         <div class="sidebar-profile-thumb text-center">
-            @if($univsb->profile_pict == "")
+            @if($univsb->univ_profile_pict == "")
             <i class="fas fa-university bg-white border p-2 shadow-sm" style="font-size: 70px"></i>
             @else
-            <img src="{{ url('storage/univ/'.$univsb->profile_pict) }}" class="bg-white border p-2 shadow-sm mx-auto">
+            <img src="{{ url('storage/univ/'.$univsb->univ_profile_pict) }}" class="bg-white border p-2 shadow-sm mx-auto">
             @endif
         </div>
         <div class="sidebar-name text-center mx-2">
             <small>admin kampus</small><br>
-            <b>{{ $univsb->nama }}</b>
+            <b>{{ $univsb->univ_nama }}</b>
         </div>
     </div>
     <div class="p-2">
@@ -29,7 +29,7 @@
                     <small class="text-primary">mohon lengkapi profil</small>
                 </td>
                 <td class="text-right">
-                    <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ url('kampus/detail/'.$univsb->id) }}">
+                    <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ url('kampus/detail/'.$univsb->univ_id) }}">
                         <small>PROFIL</small>
                     </a>
                 </td>
@@ -40,7 +40,7 @@
                     <div class="text-primary">4</div>
                 </td>
                 <td class="text-right">
-                    <a class="btn btn-outline-info btn-block p-1 mb-3" href="#">
+                    <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('prodi.manage') }}">
                         <small>PRODI</small>
                     </a>
                 </td>

@@ -18,15 +18,15 @@
 @section('banner-front')
 <div class="row m-0 mt-5 panel">
 
-<div class="profile-thumb col-lg-3 col-md-4 pr-md-0 text-center">
-    @if($univ->profile_pict == "")
+<div class="profile-thumb col-lg-3 col-md-4 pr-md-0 text-center text-dark">
+    @if($univ->univ_profile_pict == "")
     <i class="fas fa-university bg-white border p-2 shadow-sm" style="font-size: 130px"></i>
     @else
-    <img src="{{ url('storage/univ/'.$univ->profile_pict) }}" class="bg-white border p-2 shadow-sm">
+    <img src="{{ url('storage/univ/'.$univ->univ_profile_pict) }}" class="bg-white border p-2 shadow-sm">
     @endif
 </div>
 <div class="profile-text col-lg-9 col-md-8 p-md-0 mb-2">
-    <h3 class="m-0">{{ $univ->nama }}</h3>
+    <h3 class="m-0">{{ $univ->univ_nama }}</h3>
     <small>Menunggu kelengkapan profil untuk verifikasi</small>
 </div>
 </div>
@@ -36,7 +36,7 @@
     <ol class="breadcrumb p-1 ml-auto">
         <li class="breadcrumb-item ml-auto"><a href="{{ route('/') }}">MagangHub</a></li>
         <li class="breadcrumb-item"><a href="{{ route('kampus.list') }}">Cari Kampus</a></li>
-        <li class="breadcrumb-item"><a href="{{ url('kampus/detail/'.$univ->id) }}">Detail Kampus</a></li>
+        <li class="breadcrumb-item"><a href="{{ url('kampus/detail/'.$univ->univ_id) }}">Detail Kampus</a></li>
         <li class="breadcrumb-item active" aria-current="page">Edit Kampus</li>
     </ol>
 
@@ -81,7 +81,7 @@
                 <td valign="center" width="50" class="greybox"><b>Nama</b></td>
                 <td>
                     <input id="namaKampus" class="form-control" placeholder="Nama Kampus" name="univ_nama" required="required" autofocus="autofocus" type="text"
-                        value="{{ $univ->nama }}"
+                        value="{{ $univ->univ_nama }}"
                         data-parsley-required
                         data-parsley-required-message="Masukan nama kampus">
                     @error('univ_nama')
@@ -97,7 +97,7 @@
                     
                     <div class="input-group w-50">
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="profilepict" name="univ_profilepict" accept="image/*">
+                            <input type="file" class="custom-file-input" id="profilepict" name="univ_profile_pict" accept="image/*">
                             <label class="custom-file-label" for="profilepict">Choose file</label>
                         </div>
                     </div>
@@ -108,15 +108,15 @@
                 <td valign="center" width="50" class="greybox"><b>Akreditasi</b></td>
                 <td>
                     <div class="stars">
-                        <input class="star star-5" id="star-5" type="radio" name="univ_akreditasi" value="a" {{ ($univ->akreditasi=='a') ? "checked" : "" }}/>
+                        <input class="star star-5" id="star-5" type="radio" name="univ_akreditasi" value="a" {{ ($univ->univ_akreditasi=='a') ? "checked" : "" }}/>
                         <label class="star star-5" for="star-5">A</label>
-                        <input class="star star-4" id="star-4" type="radio" name="univ_akreditasi" value="b" {{ ($univ->akreditasi=='b') ? "checked" : "" }}/>
+                        <input class="star star-4" id="star-4" type="radio" name="univ_akreditasi" value="b" {{ ($univ->univ_akreditasi=='b') ? "checked" : "" }}/>
                         <label class="star star-4" for="star-4">B</label>
-                        <input class="star star-3" id="star-3" type="radio" name="univ_akreditasi" value="c" {{ ($univ->akreditasi=='c') ? "checked" : "" }}/>
+                        <input class="star star-3" id="star-3" type="radio" name="univ_akreditasi" value="c" {{ ($univ->univ_akreditasi=='c') ? "checked" : "" }}/>
                         <label class="star star-3" for="star-3">C</label>
-                        <input class="star star-2" id="star-2" type="radio" name="univ_akreditasi" value="d" {{ ($univ->akreditasi=='d') ? "checked" : "" }}/>
+                        <input class="star star-2" id="star-2" type="radio" name="univ_akreditasi" value="d" {{ ($univ->univ_akreditasi=='d') ? "checked" : "" }}/>
                         <label class="star star-2" for="star-2">D</label>
-                        <input class="star star-1" id="star-1" type="radio" name="univ_akreditasi" value="e" {{ ($univ->akreditasi=='e') ? "checked" : "" }}/>
+                        <input class="star star-1" id="star-1" type="radio" name="univ_akreditasi" value="e" {{ ($univ->univ_akreditasi=='e') ? "checked" : "" }}/>
                         <label class="star star-1" for="star-1">E</label>
                     </div>
 
@@ -126,7 +126,7 @@
                 <td valign="center" width="50" class="greybox"><b>NPSN</b></td>
                 <td>
                     <input id="npsnKampus" class="form-control" placeholder="NPSN" name="univ_npsn" required="required" type="text"
-                        value="{{ $univ->npsn }}"
+                        value="{{ $univ->univ_npsn }}"
                         data-parsley-required
                         data-parsley-required-message="Masukan nomor NPSN kampus">
                     @error('univ_npsn')
@@ -139,12 +139,12 @@
             </tr>
             <tr>
                 <td valign="center" width="50" class="greybox"><b>Tanggal Berdiri</b></td>
-                <td>
-                    <input id="tglberdiriKampus" class="form-control" placeholder="Tanggal Berdiri" name="univ_tglberdiri" type="text"
-                        value="{{ $univ->tgl_berdiri }}"
+                <td class="position-relative">
+                    <input id="tglberdiriKampus" class="form-control" placeholder="Tanggal Berdiri" name="univ_tgl_berdiri" type="text"
+                        value="{{ $univ->univ_tgl_berdiri }}"
                         data-parsley-type="date"
                         data-parsley-type-message="Format tanggal YYYY-MM-DD">
-                    @error('univ_tglberdiri')
+                    @error('univ_tgl_berdiri')
                         <span class="form-text text-danger">
                             {{ $message }}
                         </span>    
@@ -155,11 +155,11 @@
             <tr>
                 <td valign="center" width="50" class="greybox"><b>Telepon</b></td>
                 <td>
-                    <input id="tlpKampus" class="form-control" placeholder="Telepon Kampus" name="univ_notlp" type="text"
-                        value="{{ $univ->no_tlp }}"
+                    <input id="tlpKampus" class="form-control" placeholder="Telepon Kampus" name="univ_no_tlp" type="text"
+                        value="{{ $univ->univ_no_tlp }}"
                         data-parsley-type="number"
                         data-parsley-type-message="Telepon hanya berupa nomor">
-                    @error('univ_notlp')
+                    @error('univ_no_tlp')
                         <span class="form-text text-danger">
                             {{ $message }}
                         </span>    
@@ -185,7 +185,7 @@
             <tr>
                 <td valign="center" width="50" class="greybox"><b>Alamat</b></td>
                 <td>
-                    <textarea id="alamatKampus" class="form-control" placeholder="Alamat Kampus" name="univ_alamat">{{ $univ->alamat }}</textarea>
+                    <textarea id="alamatKampus" class="form-control" placeholder="Alamat Kampus" name="univ_alamat">{{ $univ->univ_alamat }}</textarea>
                     @error('univ_alamat')
                         <span class="form-text text-danger">
                             {{ $message }}
@@ -197,9 +197,9 @@
             <tr>
                 <td valign="center" width="50" class="greybox"><b>Kota</b></td>
                 <td>
-                    <select class="form-control univCity" name="univ_city">
-                        @if($univ->city_id!="")
-                            <option value="{{ $univ->city_id }}" selected>{{ $city_name }}</option>
+                    <select class="form-control univCity" name="univ_city_id">
+                        @if($univ->univ_city_id!="")
+                            <option value="{{ $univ->univ_city_id }}" selected>{{ $city_name }}</option>
                         @endif
                     </select>
                 </td>
@@ -220,16 +220,15 @@
     <script src="{{ url('js/bootstrap-datepicker.min.js') }}"></script>
     <script>
         $(document).ready(function(){
-            var options={
+
+            var uploaded=$('input[name="univ_tgl_berdiri"]');
+            uploaded.datepicker({
                 format: "yyyy-mm-dd",
-                container: $(document.activeElement).parent(),
+                container: $('#tglberdiriKampus').parent(),
                 todayHighlight: true,
                 autoclose: true,
                 orientation: "auto",
-            };
-
-            var uploaded=$('input[name="univ_tglberdiri"]');
-            uploaded.datepicker(options);
+            });
         })
     </script>
     

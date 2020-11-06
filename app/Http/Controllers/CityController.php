@@ -15,7 +15,7 @@ class CityController extends Controller
         if(!empty($request->query('q'))){
             // DB::enableQueryLog();
             $json = City::where('city_nama', 'LIKE', '%'.$request->query('q').'%')
-                        ->select('id as id', 'city_nama as text')
+                        ->select('city_id as id', 'city_nama as text')
                         ->get()->take(5);
             // dd(DB::getQueryLog());
         }

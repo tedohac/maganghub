@@ -54,11 +54,11 @@
             <div class="form-label-group mb-3">
                 <input type="hidden" name="email" value="{{ $email }}">
                 <input type="hidden" name="token" value="{{ $token }}">
-                <input id="passKampus" class="form-control" placeholder="Password" name="pass" required="required" autofocus="autofocus"  type="password"
+                <input id="passKampus" class="form-control" placeholder="Password" name="user_password" required="required" autofocus="autofocus"  type="password"
                     data-parsley-required
                     data-parsley-required-message="Masukkan password">
                 <label for="passKampus">Password</label>
-                @error('pass')
+                @error('user_password')
                     <span class="form-text text-danger">
                         {{ $message }}
                     </span>    
