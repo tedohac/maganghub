@@ -101,7 +101,7 @@
     
 @section('bottom')
     <!-- Bootstrap core JavaScript -->
-    <script src="{{ url('jquery/parsley.min.js') }}"></script>
+    <script src="{{ url('js/parsley.min.js') }}"></script>
 	<script>
         $("#registform").parsley({
             errorClass: 'is-invalid text-danger',

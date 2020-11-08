@@ -121,7 +121,7 @@
                             <span class="font-20 fa fa-star {{ $univ->univ_akreditasi!='' && ord($univ->univ_akreditasi)-96<4 ? 'text-warning' : '' }}"></span>
                             <span class="font-20 fa fa-star {{ $univ->univ_akreditasi!='' && ord($univ->univ_akreditasi)-96<3 ? 'text-warning' : '' }}"></span>
                             <span class="font-20 fa fa-star {{ $univ->univ_akreditasi!='' && ord($univ->univ_akreditasi)-96<2 ? 'text-warning' : '' }}"></span>
-                            <span class="font-20">({{ strtoupper($univ->akreditasi) }})</span>
+                            <span class="font-20">({{ strtoupper($univ->univ_akreditasi) }})</span>
 
                         </li>
                         <li class="text-center p-2 border-bottom">

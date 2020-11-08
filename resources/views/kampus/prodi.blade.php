@@ -188,7 +188,7 @@
             <tr>
                 <td valign="center" width="50" class="greybox"></td>
                 <td>
-                    <input class="btn btn-success btn-block" value="Tambah Program Studi" id="btnsubmit" data-toggle="modal" data-target="#confirmModal">
+                    <input type="button" class="btn btn-success btn-block" value="Tambah Program Studi" id="btnsubmit" data-toggle="modal" data-target="#confirmModal">
                 </td>
             </tr>
             </table>
@@ -277,7 +277,7 @@
     $(document).ready(function (){
         var table = $('#dataTable').DataTable();
 
-        $('.edit-form').on('click', function(){
+        $('#dataTable').on('click', '.edit-form', function(){
             var id =  $(this).data('id');
             console.log(id);
             $.ajax({
@@ -293,7 +293,7 @@
                     $('#btnsubmit').val('Edit Program Studi');
                     $('#formadd').attr('action', '{{ route("prodi.update") }}');
                     $('#formHeader').append('<div class="alert alert-warning">Edit PRODI: '+result.prodi_nama+'</div>')
-                    $(".collapse").collapse('show');
+                    $("#collapseSearchCon").collapse('show');
                     $([document.documentElement, document.body]).animate({
                         scrollTop: $("#addTogle").offset().top
                     }, 2000);
@@ -310,7 +310,7 @@
             });
         });
 
-        $('.hapus-form').on('click', function(){
+        $('#dataTable').on('click', '.hapus-form', function(){
             var id =  $(this).data('id');
             console.log(id);
             

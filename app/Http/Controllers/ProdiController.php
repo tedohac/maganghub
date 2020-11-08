@@ -8,6 +8,7 @@ use App\Prodi;
 use Validator;
 use Session;
 use Auth;
+use DB;
 
 class ProdiController extends Controller
 {
@@ -128,6 +129,21 @@ class ProdiController extends Controller
             // DB::enableQueryLog();
             $json = Prodi::where('prodi_id', $request->query('id'))
                         ->first();
+            // dd(DB::getQueryLog());
+        }
+        echo json_encode($json);
+    }
+
+    public function autocom(Request $request)
+    {
+        $json = [];
+
+        if(!empty($request->query('q')) && !empty($request->query('univid'))){
+            // DB::enableQueryLog();
+            $json = Prodi::where('prodi_univ_id', $request->query('univid'))
+                        ->where('prodi_nama', 'LIKE', '%'.$request->query('q').'%')
+                        ->select(DB::raw('CONCAT("[id: ", prodi_id, "] (", prodi_jenjang, ") ", prodi_nama) as text'), 'prodi_id as id')
+                        ->get()->take(5);
             // dd(DB::getQueryLog());
         }
         echo json_encode($json);

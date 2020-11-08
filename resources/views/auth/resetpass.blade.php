@@ -54,7 +54,7 @@
             <div class="form-label-group mb-3">
                 <input type="hidden" name="email" value="{{ $email }}">
                 <input type="hidden" name="token" value="{{ $token }}">
-                <input id="passKampus" class="form-control" placeholder="Password" name="user_password" required="required" autofocus="autofocus"  type="password"
+                <input id="passKampus" class="form-control" placeholder="" name="user_password" required="required" autofocus="autofocus"  type="password"
                     data-parsley-required
                     data-parsley-required-message="Masukkan password">
                 <label for="passKampus">Password</label>
@@ -66,7 +66,7 @@
             </div>
         
             <div class="form-label-group mb-3">
-                <input id="copassKampus" class="form-control" placeholder="Confirm Password" name="pass_confirmation" required="required" autofocus="autofocus"  type="password"
+                <input id="copassKampus" class="form-control" placeholder="" name="pass_confirmation" required="required" autofocus="autofocus"  type="password"
                     data-parsley-required
                     data-parsley-required-message="Masukkan password"
                     data-parsley-equalto="#passKampus"
@@ -88,7 +88,7 @@
     
 @section('bottom')
     <!-- Bootstrap core JavaScript -->
-    <script src="{{ url('jquery/parsley.min.js') }}"></script>
+    <script src="{{ url('js/parsley.min.js') }}"></script>
 	<script>
         $("#registform").parsley({
             errorClass: 'is-invalid text-danger',
