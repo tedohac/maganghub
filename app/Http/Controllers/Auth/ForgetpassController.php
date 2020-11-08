@@ -23,7 +23,7 @@ class ForgetpassController extends Controller
     {
 
         $rules = [
-            'user_email'   => 'required|email|exists:users,email',
+            'user_email'   => 'required|email|exists:users,user_email',
         ];
  
         $messages = [
@@ -86,12 +86,11 @@ class ForgetpassController extends Controller
     public function resetpassprocess(Request $request)
     {
         $rules = [
-            'user_password'     => 'required|confirmed'
+            'user_password'     => 'required'
         ];
  
         $messages = [
             'user_password.required'    => 'Masukan password',
-            'user_password.confirmed'   => 'Password tidak sama dengan konfirmasi password'
         ];
  
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -102,8 +101,8 @@ class ForgetpassController extends Controller
         
         try
         {
-            User::where('user_email',$request->user_email)
-                ->where('forgetpass_token',$request->forgetpass_token)
+            User::where('user_email',$request->email)
+                ->where('forgetpass_token',$request->token)
                 ->update([
                     'forgetpass_token' => null,
                     'user_password' => Hash::make($request->user_password),

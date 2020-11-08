@@ -1,4 +1,4 @@
-@if(Auth::check() && Auth::user()->role='admin kampus')
+@if(Auth::check() && Auth::user()->user_role=='admin kampus')
 <div class="sidebar-maganghub bg-white shadow-sm p-0">
     <div class="sidebar-profile-top w-100 p-2">
         <div class="text-center text-dark">
@@ -37,7 +37,7 @@
             <tr class="align-top">
                 <td>
                     <small>Program Studi</small><br />
-                    <div class="text-primary">4</div>
+                    <div class="text-primary">{{ \App\Prodi::getCount() }}</div>
                 </td>
                 <td class="text-right">
                     <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('prodi.manage') }}">
@@ -48,10 +48,10 @@
             <tr class="align-top">
                 <td>
                     <small>Dosen Pembimbing</small><br />
-                    <div class="text-primary">10</div>
+                    <div class="text-primary">{{ \App\Dospem::getCount() }}</div>
                 </td>
                 <td class="text-right">
-                    <a class="btn btn-outline-info btn-block p-1 mb-3" href="#">
+                    <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('dospem.manage') }}">
                         <small>DOSPEM</small>
                     </a>
                 </td>
@@ -59,7 +59,7 @@
             <tr class="align-top">
                 <td>
                     <small>Mahasiswa</small><br />
-                    <div class="text-primary">57</div>
+                    <div class="text-primary">99</div>
                 </td>
                 <td class="text-right">
                     <a class="btn btn-outline-info btn-block p-1 mb-3" href="#">
@@ -71,6 +71,32 @@
     </div>
 
 </div>
+
+@elseif(Auth::check() && Auth::user()->user_role=='dospem')
+
+<div class="sidebar-maganghub bg-white shadow-sm p-0">
+    <div class="sidebar-profile-top w-100 p-2">
+        <div class="text-center text-dark">
+            <small>selamat datang</small>
+        </div>
+    </div>
+
+    @php ($univsb = \App\Dospem::where('dospem_user_email', Auth::user()->user_email )->first())
+
+    <div class="sidebar-profile-bot w-100 p-2">
+        <div class="sidebar-profile-thumb text-center">
+            <i class="fas fa-user bg-white border p-2 shadow-sm" style="font-size: 70px"></i>
+        </div>
+        <div class="sidebar-name text-center mx-2">
+            <small>DOSPEM</small><br>
+            <b>{{ $univsb->dospem_nama }}</b>
+        </div>
+    </div>
+    <div class="p-2">
+    </div>
+
+</div>
+
 @else
 
 <div class="sidebar-maganghub p-0">

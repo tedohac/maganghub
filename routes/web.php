@@ -53,6 +53,7 @@ Route::group(['prefix' => 'kampus', 'middleware' => 'web'], function () {
 });
 
 Route::get('cityautocom','CityController@autocom')->name('cityautocom');
+Route::get('prodiautocom','ProdiController@autocom')->name('prodiautocom');
 
 Route::group(['prefix' => 'prodi', 'middleware' => 'web'], function () {
 
@@ -67,4 +68,5 @@ Route::group(['prefix' => 'prodi', 'middleware' => 'web'], function () {
 Route::group(['prefix' => 'dospem', 'middleware' => 'web'], function () {
 
     Route::get('manage','DospemController@manage')->name('dospem.manage')->middleware('cekrole:admin kampus');
+    Route::post('save','DospemController@save')->name('dospem.save')->middleware('cekrole:admin kampus');
 });
