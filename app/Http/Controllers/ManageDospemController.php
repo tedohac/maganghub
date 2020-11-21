@@ -248,11 +248,6 @@ class ManageDospemController extends Controller
             // validate column
             if($rownum==0)
             {
-                if(count($row)!=4) {
-                    Session::flash('error', 'Jumlah kolom tidak sesuai template');
-                    return redirect()->back();
-                }
-                
                 if($row[0]!='NIK' || $row[1]!='Nama Dosen' || $row[2]!='ID Prodi' || $row[3]!='E-Mail Dosen') {
                     Session::flash('error', 'Kolom tidak sesuai template');
                     return redirect()->back();
@@ -261,6 +256,12 @@ class ManageDospemController extends Controller
                 continue;
             }
 
+            // skipping row which has column not 4
+            if(count($row)!=4) {
+                array_push($errorrow,$rownum);
+                continue;
+            }
+            
             // all column not nullable
             if($row[0]=='' || $row[1]=='' || $row[2]=='' || $row[3]=='') {
                 array_push($errorrow,$rownum);
