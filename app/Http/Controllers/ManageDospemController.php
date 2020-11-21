@@ -275,21 +275,21 @@ class ManageDospemController extends Controller
 
             // unique NIK
             $datacheck = Dospem::where('dospem_nik', $row[0])->first();
-            if($datacheck->count()!=0){
+            if(!empty($datacheck)){
                 array_push($errorrow,$rownum);
                 continue;
             }
 
             // check ID Prodi
             $datacheck = Prodi::where('prodi_id', $row[2])->first();
-            if($datacheck->count()===0){
+            if(empty($datacheck)){
                 array_push($errorrow,$rownum);
                 continue;
             }
 
             // unique email
             $datacheck = User::where('user_email', $row[3])->first();
-            if($datacheck->count()!=0){
+            if(!empty($datacheck)){
                 array_push($errorrow,$rownum);
                 continue;
             }
