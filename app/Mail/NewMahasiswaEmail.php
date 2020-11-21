@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class NewDospemEmail extends Mailable
+class NewMahasiswaEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -35,7 +35,7 @@ class NewDospemEmail extends Mailable
     {
         $param = [
             'url' => route('verify', [
-                'email' => strtolower($this->request->dospem_user_email),
+                'email' => strtolower($this->request->mahasiswa_user_email),
                 'token' => $this->user_verify_token 
             ]),
             'request' => $this->request,
@@ -44,8 +44,8 @@ class NewDospemEmail extends Mailable
             'password' => $this->passwordTemp,
         ];
 
-        return $this->markdown('emails.newdospem')
-                    ->subject('Akun Dosen Pembimbing - MagangHub')
+        return $this->markdown('emails.newmahasiswa')
+                    ->subject('Akun Mahasiswa - MagangHub')
                     ->with('param', $param);
     }
 }

@@ -10,7 +10,7 @@ use Session;
 use Auth;
 use DB;
 
-class ProdiController extends Controller
+class ManageProdiController extends Controller
 {
     public function manage()
     {
@@ -20,9 +20,11 @@ class ProdiController extends Controller
         if(empty($univ)) return abort(404);
 
         $prodis = Prodi::join('univs', 'univs.univ_id', '=', 'prodis.prodi_univ_id')
-                       ->where('univ_user_email', Auth::user()->user_email)->get();
+                       ->where('univ_user_email', Auth::user()->user_email)
+                       ->select('*', DB::raw('(select count(dospem_id) from dospems where dospem_prodi_id=prodi_id) as total_dospem'))
+                       ->get();
 
-    	return view('kampus.prodi', [
+    	return view('kampus.manage_prodi', [
             'univ' => $univ,
             'prodis' => $prodis
         ]);
@@ -109,13 +111,13 @@ class ProdiController extends Controller
     {
         if(empty($request->id)) abort(404);
         
-        // try
-        // {
+        try
+        {
             Prodi::where('prodi_id',$request->id)->delete();
-        // } catch (\Illuminate\Database\QueryException $e) {
-        //     Session::flash('error', 'Proses gagal, mohon coba kembali beberapa saat lagi atau hubungi admin MagangHub');
-        //     return redirect()->back();
-        // }
+        } catch (\Illuminate\Database\QueryException $e) {
+            Session::flash('error', 'Proses gagal, mohon coba kembali beberapa saat lagi atau hubungi admin MagangHub');
+            return redirect()->back();
+        }
 
         Session::flash('success', 'Hapus program studi berhasil');
         return redirect()->back();

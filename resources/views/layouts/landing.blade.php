@@ -30,21 +30,21 @@
 
     <script>
         $(document).ready(function() {
-            var navbar = $('.navbar');
-            var lastScrollTop = 0;
 
             $(window).scroll(function () {
-                var st = $(this).scrollTop();
-
-                if (st > lastScrollTop && st > 30) {
-                    // navbar.fadeOut();
-                    navbar.removeClass('navbar-dark bg-transparent').addClass('navbar-light bg-light border-bottom border-secondary');
-                }
-                else if (st < lastScrollTop && st < 30) {
-                    navbar.removeClass('navbar-light bg-light border-bottom border-secondary').addClass('navbar-dark bg-transparent');
-                }
-                lastScrollTop = st;
+                checkScroll();
             });
+
+            function checkScroll()
+            {
+                var startY = $('.navbar').height() * 2; //The point where the navbar changes in px
+
+                if($(window).scrollTop() > startY){
+                    $('.navbar').removeClass('bg-transparent').addClass('bg-light border-bottom border-secondary shadow-sm');
+                }else{
+                    $('.navbar').removeClass('bg-light border-bottom border-secondary shadow-sm').addClass('bg-transparent');
+                }
+            }
         });
     </script>
 
