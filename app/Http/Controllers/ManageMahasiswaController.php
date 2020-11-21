@@ -250,16 +250,17 @@ class ManageMahasiswaController extends Controller
             // validate column
             if($rownum==0)
             {
-                if(count($row)!=4) {
-                    Session::flash('error', 'Jumlah kolom tidak sesuai template');
-                    return redirect()->back();
-                }
-                
                 if($row[0]!='NIM' || $row[1]!='Nama Mahasiswa' || $row[2]!='NIK DOSPEM' || $row[3]!='E-Mail Mahasiswa') {
                     Session::flash('error', 'Kolom tidak sesuai template');
                     return redirect()->back();
                 }
 
+                continue;
+            }
+
+            // skipping row which has column not 4
+            if(count($row)!=4) {
+                array_push($errorrow,$rownum);
                 continue;
             }
 
