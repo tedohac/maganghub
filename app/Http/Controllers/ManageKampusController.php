@@ -13,7 +13,7 @@ use Storage;
 use Artisan;
 use Auth;
 
-class KampusController extends Controller
+class ManageKampusController extends Controller
 {
     public function __construct()
     {

@@ -1,4 +1,4 @@
-@extends('layouts.front', ['Kelola Dosen Pembimbing - MagangHub'])
+@extends('layouts.front', ['Kelola Program Studi - MagangHub'])
 
 @section('head')
     
@@ -11,9 +11,6 @@
     <!-- Profile -->
     <link href="{{ asset('styles/profile.css?v=').time() }}" rel="stylesheet">
 
-    <!-- Auto complete -->
-    <link href="{{ url('styles/select2.min.css') }}" rel="stylesheet" />
-    
     <style>
         .font-20 {
             font-size: 20px;
@@ -27,7 +24,7 @@
         @if($univ->univ_profile_pict == "")
         <i class="fas fa-university bg-white border p-2 shadow-sm" style="font-size: 130px"></i>
         @else
-        <img src="{{ url('storage/univ/'.$univ->univ_profile_pict) }}" class="bg-white border p-2 shadow-sm">
+        <img src="{{ url('storage/univ/'.$univ->univ_profile_pict) }}" class="bg-white border p-2 shadow">
         @endif
     </div>
     <div class="profile-text col-lg-9 col-md-8 p-md-0 mb-2">
@@ -43,7 +40,7 @@
         <li class="breadcrumb-item ml-auto"><a href="{{ route('/') }}">MagangHub</a></li>
         <li class="breadcrumb-item"><a href="{{ route('kampus.list') }}">Cari Kampus</a></li>
         <li class="breadcrumb-item"><a href="{{ url('kampus/detail/'.$univ->univ_id) }}">Detail Kampus</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Kelola DOSPEM</li>
+        <li class="breadcrumb-item active" aria-current="page">Kelola Prodi</li>
     </ol>
 
     @if(session('errors'))
@@ -69,54 +66,54 @@
         </div>
     @endif
 
-    <!-- dospem list -->
+    <!-- prodi list -->
     <h5 class="mb-2 p-0">
-        Kelola Dosen Pembimbing
+        Kelola Program Studi
     </h5>
     <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-3">
         <table class="table table-sm table-striped table-hover" id="dataTable" width="100%" cellspacing="0">
             <thead class="greybox">
                 <tr>
-                    <th>NIK</th>
-                    <th>Nama</th>
+                    <th>#</th>
                     <th>Program Studi</th>
-                    <th>E-mail</th>
-                    <th>Status</th>
-                    <th>Mahasiswa</th>
+                    <th>ID Prodi</th>
+                    <th>Fakultas</th>
+                    <th>Jenjang</th>
+                    <th>Akreditasi</th>
+                    <th>DOSPEM</th>
                     <th>Opsi</th>
                 </tr>
             </thead>
             <tbody>
-            @foreach($dospems as $dospem)
+            @php ($num = 1)
+            @foreach($prodis as $prodi)
                 <tr>
-                    <td>{{ $dospem->dospem_nik }}</td>
-                    <td>{{ $dospem->dospem_nama }}</td>
-                    <td>{{ $dospem->prodi_nama }}</td>
-                    <td>{{ $dospem->dospem_user_email }}</td>
+                    <td>{{ $num }}</td>
+                    <td>{{ $prodi->prodi_nama }}</td>
+                    <td>{{ $prodi->prodi_id }}</td>
+                    <td>{{ $prodi->prodi_fakultas!='' ? $prodi->prodi_fakultas : '-' }}</td>
+                    <td>{{ $prodi->prodi_jenjang }}</td>
+                    <td>{{ strtoupper($prodi->prodi_akreditasi) }}</td>
+                    <td>{{ $prodi->total_dospem }}</td>
                     <td>
-                        @if($dospem->user_status==1)
-                            Butuh Verifikasi E-mail
-                        @elseif($dospem->user_status==2)
-                            Aktif
+                        <a class="btn btn-outline-info p-1 edit-form" href="#" data-id="{{ $prodi->prodi_id }}" title="Edit">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        @if($prodi->total_dospem==0)
+                        <a class="btn btn-outline-danger p-1 hapus-form" href="#" data-id="{{ $prodi->prodi_id }}" title="Hapus">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
                         @endif
                     </td>
-                    <td>13</td>
-                    <td>
-                        <a class="btn btn-outline-info px-1 py-0 edit-form" href="#" data-id="{{ $dospem->dospem_id }}">
-                            <small>Edit</small>
-                        </a>
-                        <a class="btn btn-outline-danger px-1 py-0 hapus-form" href="#" data-id="{{ $dospem->dospem_id }}">
-                            <small>Hapus</small>
-                        </a>
-                    </td>
                 </tr>
+                @php ($num++)
             @endforeach
             </tbody>
         </table>
     </div>
-    <!-- end dospem list -->
+    <!-- end prodi list -->
     
-<form method="post" id="formadd" action="{{ route('dospem.save') }}">
+<form method="post" id="formadd" action="{{ route('prodi.save') }}">
 @csrf
     <!-- add form -->
     <div class="card mb-3 p-1">
@@ -124,24 +121,19 @@
             
             <a class="btn btn-outline-primary p-1" data-toggle="collapse" href="#collapseSearchCon" role="button" aria-expanded="false" aria-controls="collapseSearchCon" id="addTogle">    
                 <i class="fas fa-plus"></i>
-                Tambah Dosen Pembimbing
-            </a>
-
-            <a class="btn btn-outline-success p-1 float-right" href="#">    
-                <i class="fas fa-cloud-upload-alt"></i>
-                Upload Data
+                Tambah Program Studi
             </a>
         </div>
         <div class="card-body collapse p-1" id="collapseSearchCon">
             <input type="hidden" name="edit_id" id="idEdit">
             <table class="table table-sm" cellspacing="0">
                 <tr>
-                    <td valign="center" width="50" class="greybox"><b>NIK Dosen</b></td>
+                    <td valign="center" width="50" class="greybox"><b>Nama Program Studi</b></td>
                     <td>
-                        <input id="nikDospem" class="form-control" placeholder="" name="dospem_nik" required="required" autofocus="autofocus" type="text" value="{{ old('dospem_nik') }}"
+                        <input id="namaProdi" class="form-control" placeholder="Nama Program Studi" name="prodi_nama" required="required" autofocus="autofocus" type="text"
                             data-parsley-required
-                            data-parsley-required-message="Masukan NIK Dosen Pembimbing">
-                        @error('dospem_nik')
+                            data-parsley-required-message="Masukan nama Program Studi">
+                        @error('prodi_nama')
                             <span class="form-text text-danger">
                                 {{ $message }}
                             </span>    
@@ -149,12 +141,10 @@
                     </td>
                 </tr>
                 <tr>
-                    <td valign="center" width="50" class="greybox"><b>Nama Dosen</b></td>
+                    <td valign="center" width="50" class="greybox"><b>Fakultas</b></td>
                     <td>
-                        <input id="namaDospem" class="form-control" placeholder="" name="dospem_nama" required="required" autofocus="autofocus" type="text" value="{{ old('dospem_nama') }}"
-                            data-parsley-required
-                            data-parsley-required-message="Masukan nama Dosen Pembimbing">
-                        @error('dospem_nama')
+                        <input id="fakultasProdi" class="form-control" placeholder="Fakultas" name="prodi_fakultas" autofocus="autofocus" type="text">
+                        @error('prodi_fakultas')
                             <span class="form-text text-danger">
                                 {{ $message }}
                             </span>    
@@ -162,40 +152,51 @@
                     </td>
                 </tr>
                 <tr>
-                    <td valign="center" width="50" class="greybox"><b>Prodi</b></td>
+                    <td valign="center" width="50" class="greybox"><b>Jenjang</b></td>
                     <td>
-                        <select class="form-control prodiDospem" required="required" name="dospem_prodi_id"
+                        <select id="jenjangProdi" class="form-control" name="prodi_jenjang" required="required" autofocus="autofocus" type="text"
                             data-parsley-required
-                            data-parsley-required-message="Pilih PRODI Dosen Pembimbing">
+                            data-parsley-required-message="Pilih jenjang">
+                            <option value="" disabled selected>-- Pilih Jenjang --</option>
+                            <option value="D1">D1</option>
+                            <option value="D2">D2</option>
+                            <option value="D3">D3</option>
+                            <option value="S1">S1</option>
+                            <option value="S2">S2</option>
+                            <option value="S3">S3</option>
+                            <option value="Sp-1">Sp-1</option>
+                            <option value="Profesi">Profesi</option>
                         </select>
-                        @error('dospem_prodi_id')
+                        @error('prodi_jenjang')
                             <span class="form-text text-danger">
                                 {{ $message }}
                             </span>    
                         @enderror
                     </td>
                 </tr>
-                <tr>
-                    <td valign="center" width="50" class="greybox"><b>E-Mail Dosen</b></td>
-                    <td>
-                        <input id="namaDospem" class="form-control" placeholder="" name="dospem_user_email" required="required" autofocus="autofocus" type="text" value="{{ old('dospem_user_email') }}"
-                            data-parsley-required
-                            data-parsley-type="email"
-                            data-parsley-required-message="Masukan e-mail Dosen Pembimbing"
-                            data-parsley-type-message="Format e-mail tidak valid">
-                        @error('dospem_user_email')
-                            <span class="form-text text-danger">
-                                {{ $message }}
-                            </span>    
-                        @enderror
-                    </td>
-                </tr>
-                <tr>
-                    <td valign="center" width="50" class="greybox"></td>
-                    <td>
-                        <input type="button" class="btn btn-success btn-block" value="Tambah Program Studi" id="btnsubmit" data-toggle="modal" data-target="#confirmModal">
-                    </td>
-                </tr>
+            <tr>
+                <td valign="center" width="50" class="greybox"><b>Akreditasi</b></td>
+                <td>
+                    <div class="stars">
+                        <input class="star star-5" id="star-5" type="radio" name="prodi_akreditasi" value="a"/>
+                        <label class="star star-5" for="star-5">A</label>
+                        <input class="star star-4" id="star-4" type="radio" name="prodi_akreditasi" value="b"/>
+                        <label class="star star-4" for="star-4">B</label>
+                        <input class="star star-3" id="star-3" type="radio" name="prodi_akreditasi" value="c"/>
+                        <label class="star star-3" for="star-3">C</label>
+                        <input class="star star-2" id="star-2" type="radio" name="prodi_akreditasi" value="d"/>
+                        <label class="star star-2" for="star-2">D</label>
+                        <input class="star star-1" id="star-1" type="radio" name="prodi_akreditasi" value="e" checked/>
+                        <label class="star star-1" for="star-1">E</label>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td valign="center" width="50" class="greybox"></td>
+                <td>
+                    <input type="button" class="btn btn-success btn-block" value="Tambah Program Studi" id="btnsubmit" data-toggle="modal" data-target="#confirmModal">
+                </td>
+            </tr>
             </table>
         </div>
     </div>
@@ -297,7 +298,8 @@
                     $('.modal-body').html('Apakah anda yakin untuk mengubah informasi Program Studi <br> ['+ result.prodi_id +'] '+result.prodi_nama+' ?');
                     $('#btnsubmit').val('Edit Program Studi');
                     $('#formadd').attr('action', '{{ route("prodi.update") }}');
-                    $('#formHeader').append('<div class="alert alert-warning">Edit PRODI: '+result.prodi_nama+'</div>')
+                    $(".alert").remove();
+                    $('#formHeader').append('<div class="alert alert-warning">Edit PRODI: ['+ result.prodi_id +'] '+result.prodi_nama+'</div>')
                     $("#collapseSearchCon").collapse('show');
                     $([document.documentElement, document.body]).animate({
                         scrollTop: $("#addTogle").offset().top
@@ -344,26 +346,6 @@
                 $('#confirmModal').modal('hide');
             }
         });
-    });
-</script>
-
-<!-- Auto Complete-->
-<script src="{{ url('js/select2.min.js') }}"></script>
-<script type="text/javascript">
-    $('.prodiDospem').select2({
-        width: '100%',
-        placeholder: '-- Pilih Prodi --',
-        ajax: {
-            url: '{{ url('prodiautocom').'?univid='.$univ->univ_id }}',
-            dataType: 'json',
-            delay: 250,
-            processResults: function (data) {
-                return {
-                    results: data
-                };
-            },
-            cache: true
-        }
     });
 </script>
 @endsection

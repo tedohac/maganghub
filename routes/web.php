@@ -43,30 +43,56 @@ Route::group(['namespace' => 'Auth', 'middleware' => 'web'], function () {
 
 Route::group(['prefix' => 'kampus', 'middleware' => 'web'], function () {
 
-    Route::get('list','KampusController@list')->name('kampus.list');
+    Route::get('list','ManageKampusController@list')->name('kampus.list');
 
-    Route::get('detail/{id}','KampusController@detail')->name('kampus.detail');
+    Route::get('detail/{id}','ManageKampusController@detail')->name('kampus.detail');
 
-    Route::get('edit','KampusController@edit')->name('kampus.edit')->middleware('cekrole:admin kampus');
-    Route::post('update','KampusController@update')->name('kampus.update')->middleware('cekrole:admin kampus');
+    Route::get('edit','ManageKampusController@edit')->name('kampus.edit')->middleware('cekrole:admin kampus');
+    Route::post('update','ManageKampusController@update')->name('kampus.update')->middleware('cekrole:admin kampus');
     
 });
 
 Route::get('cityautocom','CityController@autocom')->name('cityautocom');
-Route::get('prodiautocom','ProdiController@autocom')->name('prodiautocom');
+Route::get('prodiautocom','ManageProdiController@autocom')->name('prodiautocom');
+Route::get('dospemautocom','ManageDospemController@autocom')->name('dospemautocom');
 
 Route::group(['prefix' => 'prodi', 'middleware' => 'web'], function () {
 
-    Route::get('manage','ProdiController@manage')->name('prodi.manage')->middleware('cekrole:admin kampus');
-    Route::post('save','ProdiController@save')->name('prodi.save')->middleware('cekrole:admin kampus');
-    Route::post('update','ProdiController@update')->name('prodi.update')->middleware('cekrole:admin kampus');
-    Route::get('delete','ProdiController@delete')->name('prodi.delete')->middleware('cekrole:admin kampus');
+    Route::get('manage','ManageProdiController@manage')->name('prodi.manage')->middleware('cekrole:admin kampus');
+    Route::post('save','ManageProdiController@save')->name('prodi.save')->middleware('cekrole:admin kampus');
+    Route::post('update','ManageProdiController@update')->name('prodi.update')->middleware('cekrole:admin kampus');
+    Route::get('delete','ManageProdiController@delete')->name('prodi.delete')->middleware('cekrole:admin kampus');
 
-    Route::get('detailjson','ProdiController@detailjson')->name('prodi.detailjson');
+    Route::get('detailjson','ManageProdiController@detailjson')->name('prodi.detailjson');
 });
 
 Route::group(['prefix' => 'dospem', 'middleware' => 'web'], function () {
 
-    Route::get('manage','DospemController@manage')->name('dospem.manage')->middleware('cekrole:admin kampus');
-    Route::post('save','DospemController@save')->name('dospem.save')->middleware('cekrole:admin kampus');
+    Route::get('manage','ManageDospemController@manage')->name('dospem.manage')->middleware('cekrole:admin kampus');
+    Route::post('save','ManageDospemController@save')->name('dospem.save')->middleware('cekrole:admin kampus');
+    Route::post('update','ManageDospemController@update')->name('dospem.update')->middleware('cekrole:admin kampus');
+    Route::get('delete','ManageDospemController@delete')->name('dospem.delete')->middleware('cekrole:admin kampus');
+    
+    Route::get('reverify','ManageDospemController@reverify')->name('dospem.reverify')->middleware('cekrole:admin kampus');
+    
+    Route::get('import','ManageDospemController@importform')->name('dospem.import')->middleware('cekrole:admin kampus');
+    Route::post('import','ManageDospemController@importprocess')->name('dospem.import')->middleware('cekrole:admin kampus');
+    
+    Route::get('detailjson','ManageDospemController@detailjson')->name('dospem.detailjson');
+});
+
+
+Route::group(['prefix' => 'mahasiswa', 'middleware' => 'web'], function () {
+
+    Route::get('manage','ManageMahasiswaController@manage')->name('mahasiswa.manage')->middleware('cekrole:admin kampus');
+    Route::post('save','ManageMahasiswaController@save')->name('mahasiswa.save')->middleware('cekrole:admin kampus');
+    Route::post('update','ManageMahasiswaController@update')->name('mahasiswa.update')->middleware('cekrole:admin kampus');
+    Route::get('delete','ManageMahasiswaController@delete')->name('mahasiswa.delete')->middleware('cekrole:admin kampus');
+    
+    Route::get('reverify','ManageMahasiswaController@reverify')->name('mahasiswa.reverify')->middleware('cekrole:admin kampus');
+
+    Route::get('import','ManageMahasiswaController@importform')->name('mahasiswa.import')->middleware('cekrole:admin kampus');
+    Route::post('import','ManageMahasiswaController@importprocess')->name('mahasiswa.import')->middleware('cekrole:admin kampus');
+    
+    Route::get('detailjson','ManageMahasiswaController@detailjson')->name('mahasiswa.detailjson');
 });

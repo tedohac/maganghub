@@ -59,10 +59,10 @@
             <tr class="align-top">
                 <td>
                     <small>Mahasiswa</small><br />
-                    <div class="text-primary">99</div>
+                    <div class="text-primary">{{ \App\Mahasiswa::getCount() }}</div>
                 </td>
                 <td class="text-right">
-                    <a class="btn btn-outline-info btn-block p-1 mb-3" href="#">
+                    <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('mahasiswa.manage') }}">
                         <small>Mahasiswa</small>
                     </a>
                 </td>

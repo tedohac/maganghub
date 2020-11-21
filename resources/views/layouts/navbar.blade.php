@@ -1,10 +1,10 @@
 
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-transparent fixed-top">
+    <nav class="navbar navbar-light navbar-expand-lg navbar-dark bg-transparent fixed-top">
         <div class="container">
         <a class="navbar-brand p-0 m-0 text-align-center" href="{{ route('/') }}">
             <img src="{{ url('img/maganghub.png') }}">
-            <b>MagangHub</b>
+            <b class="text-dark">MagangHub</b>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>

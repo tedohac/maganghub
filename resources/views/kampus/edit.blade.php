@@ -22,7 +22,7 @@
     @if($univ->univ_profile_pict == "")
     <i class="fas fa-university bg-white border p-2 shadow-sm" style="font-size: 130px"></i>
     @else
-    <img src="{{ url('storage/univ/'.$univ->univ_profile_pict) }}" class="bg-white border p-2 shadow-sm">
+    <img src="{{ url('storage/univ/'.$univ->univ_profile_pict) }}" class="bg-white border p-2 shadow">
     @endif
 </div>
 <div class="profile-text col-lg-9 col-md-8 p-md-0 mb-2">
@@ -98,7 +98,7 @@
                     <div class="input-group w-50">
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" id="profilepict" name="univ_profile_pict" accept="image/*">
-                            <label class="custom-file-label" for="profilepict">Choose file</label>
+                            <label class="custom-file-label" for="profilepict">Pilih file</label>
                         </div>
                     </div>
                     <span id="errorprofilepict" class="form-text text-danger"></span>
