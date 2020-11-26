@@ -2,6 +2,7 @@
 namespace App\Traits;
 
 use Illuminate\Http\Request;
+use App\Mahasiswa;
 use App\Univ;
 use Auth;
 
@@ -25,6 +26,11 @@ trait RoleTrait {
         elseif(Auth::user()->user_role == 'dospem')
         {
             return redirect()->route('kampus.list');
+        }
+        elseif(Auth::user()->user_role == 'mahasiswa')
+        {
+            $mahasiswa = Mahasiswa::where('mahasiswa_user_email', Auth::user()->user_email )->first();
+            return redirect('mahasiswa/detail/'.$mahasiswa->mahasiswa_id);
         }
         echo Auth::user()->role."asd";
         // abort(404);

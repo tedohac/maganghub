@@ -89,7 +89,38 @@
         </div>
         <div class="sidebar-name text-center mx-2">
             <small>DOSPEM</small><br>
-            <b>{{ $univsb->dospem_nama }}</b>
+            <b>{{ $univsb->dospem_nik }}</b><br>
+            {{ $univsb->mahasiswa_nama }}
+        </div>
+    </div>
+    <div class="p-2">
+    </div>
+
+</div>
+
+@elseif(Auth::check() && Auth::user()->user_role=='mahasiswa')
+
+<div class="sidebar-maganghub bg-white shadow-sm p-0">
+    <div class="sidebar-profile-top w-100 p-2">
+        <div class="text-center text-dark">
+            <small>selamat datang</small>
+        </div>
+    </div>
+
+    @php ($univsb = \App\Mahasiswa::where('mahasiswa_user_email', Auth::user()->user_email )->first())
+
+    <div class="sidebar-profile-bot w-100 p-2">
+        <div class="sidebar-profile-thumb text-center">
+            @if($univsb->mahasiswa_profile_pict == "")
+            <i class="fas fa-user-graduate bg-white border p-2 shadow-sm" style="font-size: 70px"></i>
+            @else
+            <img src="{{ url('storage/mahasiswa_profile/'.$univsb->mahasiswa_profile_pict) }}" class="bg-white border p-2 shadow-sm mx-auto">
+            @endif
+        </div>
+        <div class="sidebar-name text-center mx-2">
+            <small>Mahasiswa</small><br>
+            <b>{{ $univsb->mahasiswa_nim }}</b><br>
+            {{ $univsb->mahasiswa_nama }}
         </div>
     </div>
     <div class="p-2">

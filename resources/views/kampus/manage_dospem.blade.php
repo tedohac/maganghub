@@ -1,4 +1,4 @@
-@extends('layouts.front', ['Kelola Dosen Pembimbing - MagangHub'])
+@extends('layouts.front', ['title' => 'Kelola Dosen Pembimbing - MagangHub'])
 
 @section('head')
     
@@ -84,7 +84,7 @@
                     <th>E-mail</th>
                     <th>Status</th>
                     <th>Mahasiswa</th>
-                    <th>Opsi</th>
+                    <th width="70">Opsi</th>
                 </tr>
             </thead>
             <tbody>
@@ -97,9 +97,9 @@
                     <td>({{ $dospem->prodi_jenjang }}) {{ $dospem->prodi_nama }}</td>
                     <td>{{ $dospem->dospem_user_email }}</td>
                     <td>
-                        @if($dospem->user_status==1)
+                        @if($dospem->user_email_verified_at=="")
                             Belum Verifikasi
-                        @elseif($dospem->user_status==2)
+                        @else
                             Aktif
                         @endif
                     </td>

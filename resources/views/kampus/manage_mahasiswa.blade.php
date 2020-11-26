@@ -1,4 +1,4 @@
-@extends('layouts.front', ['Kelola Mahasiswa - MagangHub'])
+@extends('layouts.front', ['title' => 'Kelola Mahasiswa - MagangHub'])
 
 @section('head')
     
@@ -84,7 +84,7 @@
                     <th>Nama</th>
                     <th>E-Mail</th>
                     <th>Status</th>
-                    <th>Opsi</th>
+                    <th width="70">Opsi</th>
                 </tr>
             </thead>
             <tbody>
@@ -98,9 +98,9 @@
                     <td>{{ $mahasiswa->mahasiswa_nama }}</td>
                     <td>{{ $mahasiswa->mahasiswa_user_email }}</td>
                     <td>
-                        @if($mahasiswa->user_status==1)
+                        @if($mahasiswa->user_email_verified_at=="")
                             Belum Verifikasi
-                        @elseif($mahasiswa->user_status==2)
+                        @else
                             Aktif
                         @endif
                     </td>

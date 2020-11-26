@@ -11,17 +11,17 @@ use App\Rules\DospemExistsMahasiswaRule;
 use App\Rules\NimMahasiswaRule;
 use App\Rules\NimMahasiswaUpdateRule;
 use App\Dospem;
+use App\Mahasiswa;
 use App\Prodi;
 use App\Univ;
 use App\User;
-use App\Mahasiswa;
-use Validator;
-use Session;
-use Storage;
 use Artisan;
+use Auth;
 use Hash;
 use Mail;
-use Auth;
+use Session;
+use Storage;
+use Validator;
 
 class ManageMahasiswaController extends Controller
 {
@@ -260,19 +260,19 @@ class ManageMahasiswaController extends Controller
 
             // skipping row which has column not 4
             if(count($row)!=4) {
-                array_push($errorrow,$rownum);
+                array_push($errorrow, $rownum.': kolom tidak sesuai');
                 continue;
             }
 
             // all column not nullable
             if($row[0]=='' || $row[1]=='' || $row[2]=='' || $row[3]=='') {
-                array_push($errorrow,$rownum);
+                array_push($errorrow, $rownum.': ada kolom kosong');
                 continue;
             }
 
             // validate email format
             if (!filter_var($row[3], FILTER_VALIDATE_EMAIL)) {
-                array_push($errorrow,$rownum);
+                array_push($errorrow, $rownum.': format e-mail salah');
                 continue;
             }
             
@@ -282,7 +282,7 @@ class ManageMahasiswaController extends Controller
                                     ->where('prodis.prodi_univ_id', $univ->univ_id)
                                     ->where('mahasiswa_nim', $row[0])->first();
             if(!empty($datacheck)){
-                array_push($errorrow,$rownum);
+                array_push($errorrow, $rownum.': NIM sudah terdaftar');
                 continue;
             }
 
@@ -291,14 +291,14 @@ class ManageMahasiswaController extends Controller
                                 ->where('prodis.prodi_univ_id', $univ->univ_id)
                                 ->where('dospems.dospem_nik', $row[2])->first();
             if(empty($datacheckDospem)){
-                array_push($errorrow,$rownum);
+                array_push($errorrow, $rownum.': DOSPEM tidak terdaftar');
                 continue;
             }
 
             // unique email
             $datacheck = User::where('user_email', $row[3])->first();
             if(!empty($datacheck)){
-                array_push($errorrow,$rownum);
+                array_push($errorrow, $rownum.': e-mail sudah terdaftar');
                 continue;
             }
             
@@ -306,7 +306,7 @@ class ManageMahasiswaController extends Controller
 
             $user = new User;
             $user->user_email        = strtolower($row[3]);
-            $user->user_role         = 'dospem';
+            $user->user_role         = 'mahasiswa';
             $user->user_status       = '1';
             $user->user_password     = Hash::make($passwordTemp);
             $user->user_verify_token = Str::random(32);
@@ -337,8 +337,8 @@ class ManageMahasiswaController extends Controller
 
         if(count($errorrow)>0)
         {
-            $successmessage = 'Import berhasil sebanyak '.$success.' mahasiswa, baris yang dilewati: ';
-            for($i=0; $i<count($errorrow); $i++) $successmessage = $successmessage.$errorrow[$i].", ";
+            $successmessage = 'Import berhasil sebanyak '.$success.' mahasiswa, baris yang dilewati:<br>';
+            for($i=0; $i<count($errorrow); $i++) $successmessage = $successmessage.$errorrow[$i].",<br>";
         }
         else
         {

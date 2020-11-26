@@ -3,15 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\User;
-use App\Univ;
 use App\City;
 use App\Prodi;
-use Validator;
-use Session;
-use Storage;
+use App\Univ;
+use App\User;
 use Artisan;
 use Auth;
+use Session;
+use Storage;
+use Validator;
 
 class ManageKampusController extends Controller
 {

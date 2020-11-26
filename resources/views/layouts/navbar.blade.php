@@ -18,34 +18,32 @@
                     <a class="btn btn-light btn-block px-1 py-0 text-left" href="#">Cari Tempat Magang</a>
                 </li>
                 
-                @if(Auth::check() && Auth::user()->user_role=='admin kampus')
+                @if(Auth::check())
 
                 <li class="nav-item ml-2 mb-1 dropdown">
                     <a class="btn btn-success btn-block px-1 py-0 dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-user"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                        @php ($univnb = \App\Univ::where('univ_user_email', Auth::user()->user_email )->first())
-                        <a class="dropdown-item disabled longtext" href="#" tabindex="-1" aria-disabled="true"><small>{{ Auth::user()->user_role }} :<br>{{ $univnb->univ_nama }}</small></a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{ url('kampus/detail/'.$univnb->univ_id) }}">Lihat Kampus</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
-                    </div>
-                </li>
-                
-                @elseif(Auth::check() && Auth::user()->user_role=='dospem')
+                        @if(Auth::user()->user_role=='admin kampus')
 
-                <li class="nav-item ml-2 mb-1 dropdown">
-                    <a class="btn btn-success btn-block px-1 py-0 dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-user"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                        @php ($univnb = \App\Dospem::where('dospem_user_email', Auth::user()->user_email )->first())
-                        <a class="dropdown-item disabled longtext" href="#" tabindex="-1" aria-disabled="true"><small>{{ Auth::user()->user_role }} :<br>{{ $univnb->dospem_nama }}</small></a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{ url('kampus/detail/'.$univnb->univ_id) }}">Lihat Profil</a>
-                        <div class="dropdown-divider"></div>
+                            @php ($univnb = \App\Univ::where('univ_user_email', Auth::user()->user_email )->first())
+                            <a class="dropdown-item disabled longtext" href="#" tabindex="-1" aria-disabled="true"><small>{{ Auth::user()->user_role }} :<br>{{ $univnb->univ_nama }}</small></a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{{ url('kampus/detail/'.$univnb->univ_id) }}">Lihat Kampus</a>
+                            <div class="dropdown-divider"></div>
+
+                        @elseif(Auth::user()->user_role=='mahasiswa')
+                        
+                            @php ($mahasiswa = \App\Mahasiswa::where('mahasiswa_user_email', Auth::user()->user_email )->first())
+                            <a class="dropdown-item disabled longtext" href="#" tabindex="-1" aria-disabled="true"><small>{{ Auth::user()->user_role }} :<br>{{ $mahasiswa->mahasiswa_nim }}</small></a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{{ url('mahasiswa/detail/'.$mahasiswa->mahasiswa_id) }}">Lihat Profile</a>
+                            <div class="dropdown-divider"></div>
+
+                        @endif
+                        
+                        <a class="dropdown-item" href="{{ route('logout') }}">Ubah Password</a>
                         <a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
                     </div>
                 </li>

@@ -95,4 +95,17 @@ Route::group(['prefix' => 'mahasiswa', 'middleware' => 'web'], function () {
     Route::post('import','ManageMahasiswaController@importprocess')->name('mahasiswa.import')->middleware('cekrole:admin kampus');
     
     Route::get('detailjson','ManageMahasiswaController@detailjson')->name('mahasiswa.detailjson');
+    
+    Route::get('detail/{id}','ProfilMahasiswaController@detail')->name('mahasiswa.detail');
+    
+    Route::get('edit','ProfilMahasiswaController@edit')->name('mahasiswa.edit')->middleware('cekrole:mahasiswa');
+    Route::post('updateprofile','ProfilMahasiswaController@update')->name('mahasiswa.updateprofile')->middleware('cekrole:mahasiswa');
+});
+
+Route::group(['prefix' => 'skill', 'middleware' => 'web'], function () {
+
+    Route::get('manage','ManageSkillController@manage')->name('skill.manage')->middleware('cekrole:mahasiswa');
+    Route::post('save','ManageSkillController@save')->name('skill.save')->middleware('cekrole:mahasiswa');
+    Route::get('delete','ManageSkillController@delete')->name('skill.delete')->middleware('cekrole:mahasiswa');
+
 });

@@ -1,4 +1,4 @@
-@extends('layouts.front', ['title' => 'Edit Kampus - MagangHub'])
+@extends('layouts.front', ['title' => 'Edit Profil Mahasiswa - MagangHub'])
 
 @section('head')
     
@@ -19,15 +19,15 @@
 <div class="row m-0 mt-5 panel">
 
 <div class="profile-thumb col-lg-3 col-md-4 pr-md-0 text-center text-dark">
-    @if($univ->univ_profile_pict == "")
-    <i class="fas fa-university bg-white border p-2 shadow-sm" style="font-size: 130px"></i>
+    @if($mahasiswa->mahasiswa_profile_pict == "")
+        <i class="fas fa-user-graduate bg-white border p-2 shadow-sm" style="font-size: 130px"></i>
     @else
-    <img src="{{ url('storage/univ/'.$univ->univ_profile_pict) }}" class="bg-white border p-2 shadow">
+    <img src="{{ url('storage/mahasiswa_profile/'.$mahasiswa->mahasiswa_profile_pict) }}" class="bg-white border p-2 shadow">
     @endif
 </div>
 <div class="profile-text col-lg-9 col-md-8 p-md-0 mb-2">
-    <h3 class="m-0">{{ $univ->univ_nama }}</h3>
-    <small>Menunggu kelengkapan profil untuk verifikasi</small>
+    <h3 class="m-0">{{ $mahasiswa->mahasiswa_nama }}</h3>
+    {{ $mahasiswa->mahasiswa_nim }} - <a href="{{ url('kampus/detail/'.$mahasiswa->univ_id) }}" class="text-white">{{ $mahasiswa->univ_nama }}</a>
 </div>
 </div>
 @endsection
@@ -35,9 +35,8 @@
 @section('content')
     <ol class="breadcrumb p-1 ml-auto">
         <li class="breadcrumb-item ml-auto"><a href="{{ route('/') }}">MagangHub</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('kampus.list') }}">Cari Kampus</a></li>
-        <li class="breadcrumb-item"><a href="{{ url('kampus/detail/'.$univ->univ_id) }}">Detail Kampus</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Edit Kampus</li>
+        <li class="breadcrumb-item"><a href="{{ url('mahasiswa/detail/'.$mahasiswa->mahasiswa_id) }}">Profil Mahasiswa</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Edit Profil Mahasiswa</li>
     </ol>
 
     @if(session('errors'))
@@ -63,41 +62,22 @@
         </div>
     @endif
     
-<form action="{{ route('kampus.update') }}" method="post" id="registform" enctype="multipart/form-data">
+<form action="{{ route('mahasiswa.updateprofile') }}" method="post" id="registform" enctype="multipart/form-data">
 @csrf
-
-    <div class="alert alert-warning">
-        - Lengkapi data untuk mendapatkan verifikasi kampus dari MagangHub.<br>
-        - Perubahan data kampus akan menunggu verifikasi ulang dari MagangHub.
-    </div>
 
     <!-- detail info -->
     <h5 class="mb-2 p-0">
-        Edit Kampus
+        Edit Profil Mahasiswa
     </h5>
     <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-5">
         <table class="table table-sm" cellspacing="0">
             <tr>
-                <td valign="center" width="50" class="greybox"><b>Nama</b></td>
-                <td>
-                    <input id="namaKampus" class="form-control" placeholder="Nama Kampus" name="univ_nama" required="required" autofocus="autofocus" type="text"
-                        value="{{ $univ->univ_nama }}"
-                        data-parsley-required
-                        data-parsley-required-message="Masukan nama kampus">
-                    @error('univ_nama')
-                        <span class="form-text text-danger">
-                            {{ $message }}
-                        </span>    
-                    @enderror
-                </td>
-            </tr>
-            <tr>
-                <td valign="center" width="50" class="greybox"><b>Logo</b></td>
+                <td valign="center" width="50" class="greybox"><b>Foto Profil</b></td>
                 <td>
                     <small>kosongkan jika tidak ingin merubah</small>
                     <div class="input-group w-50">
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="profilepict" name="univ_profile_pict" accept="image/*">
+                            <input type="file" class="custom-file-input" id="profilepict" name="mahasiswa_profile_pict" accept="image/*">
                             <label class="custom-file-label" for="profilepict">Pilih file</label>
                         </div>
                     </div>
@@ -105,46 +85,45 @@
                 </td>
             </tr>
             <tr>
-                <td valign="center" width="50" class="greybox"><b>Akreditasi</b></td>
+                <td valign="center" width="50" class="greybox"><b>NIM</b></td>
                 <td>
-                    <div class="stars">
-                        <input class="star star-5" id="star-5" type="radio" name="univ_akreditasi" value="a" {{ ($univ->univ_akreditasi=='a') ? "checked" : "" }}/>
-                        <label class="star star-5" for="star-5">A</label>
-                        <input class="star star-4" id="star-4" type="radio" name="univ_akreditasi" value="b" {{ ($univ->univ_akreditasi=='b') ? "checked" : "" }}/>
-                        <label class="star star-4" for="star-4">B</label>
-                        <input class="star star-3" id="star-3" type="radio" name="univ_akreditasi" value="c" {{ ($univ->univ_akreditasi=='c') ? "checked" : "" }}/>
-                        <label class="star star-3" for="star-3">C</label>
-                        <input class="star star-2" id="star-2" type="radio" name="univ_akreditasi" value="d" {{ ($univ->univ_akreditasi=='d') ? "checked" : "" }}/>
-                        <label class="star star-2" for="star-2">D</label>
-                        <input class="star star-1" id="star-1" type="radio" name="univ_akreditasi" value="e" {{ ($univ->univ_akreditasi=='e') ? "checked" : "" }}/>
-                        <label class="star star-1" for="star-1">E</label>
-                    </div>
-
+                    {{ $mahasiswa->mahasiswa_nim }}
                 </td>
             </tr>
             <tr>
-                <td valign="center" width="50" class="greybox"><b>NPSN</b></td>
+                <td valign="center" width="50" class="greybox"><b>Nama</b></td>
                 <td>
-                    <input id="npsnKampus" class="form-control" placeholder="NPSN" name="univ_npsn" required="required" type="text"
-                        value="{{ $univ->univ_npsn }}"
+                    <input id="namaMahasiswa" class="form-control" placeholder="Nama Mahasiswa" name="mahasiswa_nama" required="required" autofocus="autofocus" type="text"
+                        value="{{ $mahasiswa->mahasiswa_nama }}"
                         data-parsley-required
-                        data-parsley-required-message="Masukan nomor NPSN kampus">
-                    @error('univ_npsn')
+                        data-parsley-required-message="Masukan Nama Mahasiswa">
+                    @error('mahasiswa_nama')
                         <span class="form-text text-danger">
                             {{ $message }}
                         </span>    
                     @enderror
-
                 </td>
             </tr>
             <tr>
-                <td valign="center" width="50" class="greybox"><b>Tanggal Berdiri</b></td>
+                <td valign="center" width="50" class="greybox"><b>Tempat Lahir</b></td>
+                <td>
+                    <input id="tempatlahirMahasiswa" class="form-control" placeholder="Tempat Lahir" name="mahasiswa_tempat_lahir" autofocus="autofocus" type="text"
+                        value="{{ $mahasiswa->mahasiswa_tempat_lahir }}">
+                    @error('mahasiswa_tempat_lahir')
+                        <span class="form-text text-danger">
+                            {{ $message }}
+                        </span>    
+                    @enderror
+                </td>
+            </tr>
+            <tr>
+                <td valign="center" width="50" class="greybox"><b>Tanggal Lahir</b></td>
                 <td class="position-relative">
-                    <input id="tglberdiriKampus" class="form-control" placeholder="Tanggal Berdiri" name="univ_tgl_berdiri" type="text"
-                        value="{{ $univ->univ_tgl_berdiri }}"
+                    <input id="tgllahirMahasiswa" class="form-control" placeholder="Tanggal Lahir" name="mahasiswa_tgl_lahir" type="text"
+                        value="{{ $mahasiswa->mahasiswa_tgl_lahir }}"
                         data-parsley-type="date"
                         data-parsley-type-message="Format tanggal YYYY-MM-DD">
-                    @error('univ_tgl_berdiri')
+                    @error('mahasiswa_tgl_lahir')
                         <span class="form-text text-danger">
                             {{ $message }}
                         </span>    
@@ -155,11 +134,11 @@
             <tr>
                 <td valign="center" width="50" class="greybox"><b>Telepon</b></td>
                 <td>
-                    <input id="tlpKampus" class="form-control" placeholder="Telepon Kampus" name="univ_no_tlp" type="text"
-                        value="{{ $univ->univ_no_tlp }}"
+                    <input id="tlpMahasiswa" class="form-control" placeholder="No Telepon" name="mahasiswa_no_tlp" type="text"
+                        value="{{ $mahasiswa->mahasiswa_no_tlp }}"
                         data-parsley-type="number"
                         data-parsley-type-message="Telepon hanya berupa nomor">
-                    @error('univ_no_tlp')
+                    @error('mahasiswa_no_tlp')
                         <span class="form-text text-danger">
                             {{ $message }}
                         </span>    
@@ -168,25 +147,20 @@
                 </td>
             </tr>
             <tr>
-                <td valign="center" width="50" class="greybox"><b>Website</b></td>
+                <td valign="center" width="50" class="greybox"><b>Domisili</b></td>
                 <td>
-                    <input id="websiteKampus" class="form-control" placeholder="Website Kampus" name="univ_website" type="text"
-                        value="{{ $univ->website }}"
-                        data-parsley-type="url"
-                        data-parsley-type-message="Format website tidak benar">
-                    @error('univ_website')
-                        <span class="form-text text-danger">
-                            {{ $message }}
-                        </span>    
-                    @enderror
-
+                    <select class="form-control mahasiswaCity" name="mahasiswa_city_id">
+                        @if($mahasiswa->mahasiswa_city_id!="")
+                            <option value="{{ $mahasiswa->mahasiswa_city_id }}" selected>{{ $mahasiswa->city_nama }}</option>
+                        @endif
+                    </select>
                 </td>
             </tr>
             <tr>
                 <td valign="center" width="50" class="greybox"><b>Alamat</b></td>
                 <td>
-                    <textarea id="alamatKampus" class="form-control" placeholder="Alamat Kampus" name="univ_alamat">{{ $univ->univ_alamat }}</textarea>
-                    @error('univ_alamat')
+                    <textarea id="alamatMahasiswa" class="form-control" placeholder="Alamat" name="mahasiswa_alamat">{{ $mahasiswa->mahasiswa_alamat }}</textarea>
+                    @error('mahasiswa_alamat')
                         <span class="form-text text-danger">
                             {{ $message }}
                         </span>    
@@ -195,13 +169,29 @@
                 </td>
             </tr>
             <tr>
-                <td valign="center" width="50" class="greybox"><b>Kota</b></td>
+                <td valign="center" width="50" class="greybox"><b>CV</b></td>
                 <td>
-                    <select class="form-control univCity" name="univ_city_id">
-                        @if($univ->univ_city_id!="")
-                            <option value="{{ $univ->univ_city_id }}" selected>{{ $city_name }}</option>
-                        @endif
-                    </select>
+                    <small>kosongkan jika tidak ingin merubah</small>
+                    <div class="input-group w-50">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="profilepict" name="mahasiswa_cv" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps">
+                            <label class="custom-file-label" for="profilepict">Pilih file</label>
+                        </div>
+                    </div>
+                    <span id="errorprofilepict" class="form-text text-danger"></span>
+                </td>
+            </tr>
+            <tr>
+                <td valign="center" width="50" class="greybox"><b>KHS</b></td>
+                <td>
+                    <small>kosongkan jika tidak ingin merubah</small>
+                    <div class="input-group w-50">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="profilepict" name="mahasiswa_khs" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps">
+                            <label class="custom-file-label" for="profilepict">Pilih file</label>
+                        </div>
+                    </div>
+                    <span id="errorprofilepict" class="form-text text-danger"></span>
                 </td>
             </tr>
             <tr>
@@ -250,10 +240,10 @@
     <script>
         $(document).ready(function(){
 
-            var uploaded=$('input[name="univ_tgl_berdiri"]');
+            var uploaded=$('input[name="mahasiswa_tgl_lahir"]');
             uploaded.datepicker({
                 format: "yyyy-mm-dd",
-                container: $('#tglberdiriKampus').parent(),
+                container: $('#tgllahirMahasiswa').parent(),
                 todayHighlight: true,
                 autoclose: true,
                 orientation: "auto",
@@ -313,8 +303,8 @@
     <!-- Auto Complete-->
     <script src="{{ url('js/select2.min.js') }}"></script>
     <script type="text/javascript">
-        $('.univCity').select2({
-            placeholder: '-- Pilih Kota --',
+        $('.mahasiswaCity').select2({
+            placeholder: '-- Pilih Kota Domisili --',
             ajax: {
             url: '{{ url('cityautocom') }}',
             dataType: 'json',
