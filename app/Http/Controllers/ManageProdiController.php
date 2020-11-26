@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Univ;
 use App\Prodi;
-use Validator;
-use Session;
 use Auth;
+use Session;
+use Validator;
 use DB;
 
 class ManageProdiController extends Controller

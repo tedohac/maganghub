@@ -1,4 +1,4 @@
-@extends('layouts.front', ['Kelola Program Studi - MagangHub'])
+@extends('layouts.front', ['title' => 'Kelola Program Studi - MagangHub'])
 
 @section('head')
     
