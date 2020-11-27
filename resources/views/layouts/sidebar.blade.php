@@ -128,6 +128,36 @@
 
 </div>
 
+@elseif(Auth::check() && Auth::user()->user_role=='perusahaan')
+
+<div class="sidebar-maganghub bg-white shadow-sm p-0">
+    <div class="sidebar-profile-top w-100 p-2">
+        <div class="text-center text-dark">
+            <small>selamat datang</small>
+        </div>
+    </div>
+
+    @php ($univsb = \App\Perusahaan::where('perusahaan_user_email', Auth::user()->user_email )->first())
+
+    <div class="sidebar-profile-bot w-100 p-2">
+        <div class="sidebar-profile-thumb text-center">
+            @if($univsb->perusahaan_profile_pict == "")
+            <i class="fas fa-user-graduate bg-white border p-2 shadow-sm" style="font-size: 70px"></i>
+            @else
+            <img src="{{ url('storage/perusahaan_profile/'.$univsb->perusahaan_profile_pict) }}" class="bg-white border p-2 shadow-sm mx-auto">
+            @endif
+        </div>
+        <div class="sidebar-name text-center mx-2">
+            <small>Perusahaan</small><br>
+            <b>{{ $univsb->perusahaan_nib }}</b><br>
+            {{ $univsb->perusahaan_nama }}
+        </div>
+    </div>
+    <div class="p-2">
+    </div>
+
+</div>
+
 @else
 
 <div class="sidebar-maganghub p-0">

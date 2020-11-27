@@ -15,17 +15,17 @@ use Hash;
 use Mail;
 use Auth;
 
-class RegisterController extends Controller
+class RegisterKampusController extends Controller
 {
     use RoleTrait;
 
-    public function kampusform()
+    public function form()
     {
         if(Auth::check()) return $this->redirectRole();
-        return view('auth.registkampus');
+        return view('auth.regist_kampus');
     }
  
-    public function kampusprocess(Request $request)
+    public function process(Request $request)
     {
         $rules = [
             'univ_nama'     => 'required|max:200',
@@ -37,8 +37,8 @@ class RegisterController extends Controller
         $messages = [
             'univ_nama.required'        => 'Masukan nama kampus',
             'univ_nama.max'             => 'Max nama kampus 200 karakter',
-            'univ_npsn.required'        => 'Masukan nomor NPSN',
-            'univ_npsn.unique'          => 'Nomor NPSN sudah terdaftar',
+            'univ_npsn.required'        => 'Masukan NPSN',
+            'univ_npsn.unique'          => 'NPSN sudah terdaftar',
             'user_email.required'       => 'Masukan e-mail admin kampus',
             'user_email.email'          => 'E-mail tidak valid',
             'user_email.unique'         => 'E-mail sudah terdaftar',

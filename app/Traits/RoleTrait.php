@@ -3,6 +3,7 @@ namespace App\Traits;
 
 use Illuminate\Http\Request;
 use App\Mahasiswa;
+use App\Perusahaan;
 use App\Univ;
 use Auth;
 
@@ -31,6 +32,11 @@ trait RoleTrait {
         {
             $mahasiswa = Mahasiswa::where('mahasiswa_user_email', Auth::user()->user_email )->first();
             return redirect('mahasiswa/detail/'.$mahasiswa->mahasiswa_id);
+        }
+        elseif(Auth::user()->user_role == 'perusahaan')
+        {
+            $perusahaan = Perusahaan::where('perusahaan_user_email', Auth::user()->user_email )->first();
+            return redirect('perusahaan/detail/'.$perusahaan->perusahaan_id);
         }
         echo Auth::user()->role."asd";
         // abort(404);

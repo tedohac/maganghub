@@ -1,4 +1,4 @@
-@extends('layouts.landing', ['title' => 'Daftar Kampus Baru - MagangHub'])
+@extends('layouts.landing', ['title' => 'Daftar Perusahaan Baru - MagangHub'])
 
 @section('head')
     <!-- SB Admin Template -->
@@ -49,12 +49,12 @@
     <div class="container mt-5">
         <div class="row row-eq-height shadow">
             <div class="col-md-6 px-4 py-5 text-white" id="content-left">
-				<h3 class="mb-5">Daftarkan Kampus Anda Sekarang!</h3>
-                <p class="text-justify">Anda seorang admin Kampus? daftar sekarang untuk dapat menyalurkan mahasiswa anda ke banyak lowongan terbaik di sini. Prosesnya mudah, aman, dan gratis!</p>
+				<h3 class="mb-5">Daftarkan Perusahaan Anda Sekarang!</h3>
+                <p class="text-justify">Daftar sekarang untuk dapat membuka lowongan anda dan dapat diisi oleh mahasiswa terbaik di sini. Prosesnya mudah, aman, dan gratis!</p>
                 <a class="btn btn-light px-1 py-1 mt-2" href="{{ route('login') }}">Sudah punya akun?</a>
             </div>
             <div class="col-md-6 px-4 py-5" id="content-right">
-                <h3 class="mb-5">DAFTAR KAMPUS BARU</h3>
+                <h3 class="mb-5">DAFTAR PERUSAHAAN BARU</h3>
 
                 @if(session('errors'))
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -79,16 +79,16 @@
                     </div>
                 @endif
 
-			    <form action="{{ route('registkampus') }}" method="post" id="registform">
+			    <form action="{{ route('registperusahaan') }}" method="post" id="registform">
                 @csrf
 				<div class="form-label-group mb-3">
-                    <input id="namaKampus" class="form-control" placeholder="" name="univ_nama" required="required" autofocus="autofocus" type="text" value="{{ old('univ_nama') }}"
+                    <input id="namaPerusahaan" class="form-control" placeholder="" name="perusahaan_nama" required="required" autofocus="autofocus" type="text" value="{{ old('perusahaan_nama') }}"
                         data-parsley-required
                         data-parsley-maxlength="200"
-                        data-parsley-required-message="Masukan nama kampus"
-                        data-parsley-maxlength-message="Max nama kampus 200 karakter">
-                    <label for="namaKampus">Nama Kampus</label>
-                    @error('univ_nama')
+                        data-parsley-required-message="Masukan nama perusahaan"
+                        data-parsley-maxlength-message="Max nama perusahaan 200 karakter">
+                    <label for="namaPerusahaan">Nama Perusahaan</label>
+                    @error('perusahaan_nama')
                         <span class="form-text text-danger">
                             {{ $message }}
                         </span>    
@@ -97,11 +97,11 @@
                 </div>
 
 				<div class="form-label-group mb-3">
-                    <input id="npsnKampus" class="form-control" placeholder="" name="univ_npsn" required="required" autofocus="autofocus" type="text" value="{{ old('univ_npsn') }}"
+                    <input id="nibPerusahaan" class="form-control" placeholder="" name="perusahaan_nib" required="required" type="text" value="{{ old('perusahaan_nib') }}"
                         data-parsley-required
-                        data-parsley-required-message="Masukan nomor NPSN kampus">
-                    <label for="npsnKampus">NPSN</label>
-                    @error('univ_npsn')
+                        data-parsley-required-message="Masukan NIB Perusahaan">
+                    <label for="nibPerusahaan">NIB</label>
+                    @error('perusahaan_nib')
                         <span class="form-text text-danger">
                             {{ $message }}
                         </span>    
@@ -109,12 +109,12 @@
                 </div>
 
 				<div class="form-label-group mb-3">
-                    <input id="emailKampus" class="form-control" placeholder="" name="user_email" required="required" autofocus="autofocus" type="email" value="{{ old('user_email') }}"
+                    <input id="emailPerusahaan" class="form-control" placeholder="" name="user_email" required="required" type="email" value="{{ old('user_email') }}"
                         data-parsley-type="email"
                         data-parsley-required
-                        data-parsley-required-message="Masukan e-mail admin kampus"
+                        data-parsley-required-message="Masukan e-mail admin perusahaan"
                         data-parsley-type-message="Format e-mail tidak valid">
-                    <label for="emailKampus">E-mail Admin Kampus</label>
+                    <label for="emailPerusahaan">E-mail Admin Perusahaan</label>
                     @error('user_email')
                         <span class="form-text text-danger">
                             {{ $message }}
@@ -126,10 +126,10 @@
                     
                     <div class="col-md-6">
                         <div class="form-label-group mb-3">
-                            <input id="passKampus" class="form-control" placeholder="" name="user_password" required="required" autofocus="autofocus"  type="password"
+                            <input id="passPerusahaan" class="form-control" placeholder="" name="user_password" required="required"  type="password"
                                 data-parsley-required
                                 data-parsley-required-message="Masukkan password">
-                            <label for="passKampus">Password</label>
+                            <label for="passPerusahaan">Password</label>
                             @error('user_password')
                                 <span class="form-text text-danger">
                                     {{ $message }}
@@ -140,12 +140,12 @@
                     
                     <div class="col-md-6">
                         <div class="form-label-group mb-3">
-                            <input id="copassKampus" class="form-control" placeholder="" name="user_password_confirmation" required="required" autofocus="autofocus"  type="password"
+                            <input id="copassPerusahaan" class="form-control" placeholder="" name="user_password_confirmation" required="required"  type="password"
                                 data-parsley-required
                                 data-parsley-required-message="Masukkan password"
-                                data-parsley-equalto="#passKampus"
+                                data-parsley-equalto="#passPerusahaan"
                                 data-parsley-equalto-message="Password harus sama">
-                            <label for="copassKampus">Konfirmasi Password</label>
+                            <label for="copassPerusahaan">Konfirmasi Password</label>
                             @error('user_password_confirmation')
                                 <span class="form-text text-danger">
                                     {{ $message }}

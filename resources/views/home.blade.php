@@ -80,7 +80,7 @@
             <div class="col-md-2 col-sm-3 mb-2"><center><img src="{{ url('img/logo-polman.png') }}"></center></div>
           </div>
           <div class="text-center">
-            <a class="btn btn-info px-1 py-1 mt-2" href="#">Daftarkan lowongan anda sekarang</a>
+            <a class="btn btn-info px-1 py-1 mt-2" href="{{ route('registperusahaan') }}">Daftarkan lowongan anda sekarang</a>
           </div>
       </div>
   </section>
@@ -99,7 +99,7 @@
             <div class="col-md-3 col-sm-6 mb-2"><center><img src="{{ url('img/logo-icbp.png') }}"></center></div>
           </div>
           <div class="text-center">
-            <a class="btn btn-info px-1 py-1 mt-2" href="{{ url('registkampus') }}">Anda admin kampus? Daftarkan kampus anda sekarang</a>
+            <a class="btn btn-info px-1 py-1 mt-2" href="{{ route('registkampus') }}">Anda admin kampus? Daftarkan kampus anda sekarang</a>
           </div>
       </div>
   </section>
