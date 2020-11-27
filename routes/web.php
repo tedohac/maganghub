@@ -26,8 +26,11 @@ Route::group(['namespace' => 'Auth', 'middleware' => 'web'], function () {
     Route::get('/login', 'LoginController@form')->name('login');
     Route::post('/login', 'LoginController@process');
 
-    Route::get('/registkampus','RegisterController@kampusform')->name('registkampus');
-    Route::post('/registkampus','RegisterController@kampusprocess');
+    Route::get('/registkampus','RegisterKampusController@form')->name('registkampus');
+    Route::post('/registkampus','RegisterKampusController@process');
+    
+    Route::get('/registperusahaan','RegisterPerusahaanController@form')->name('registperusahaan');
+    Route::post('/registperusahaan','RegisterPerusahaanController@process');
 
     Route::get('/resetpass/{email}/{token}', 'ForgetpassController@resetpassform')->name('resetpass');
 
@@ -108,4 +111,9 @@ Route::group(['prefix' => 'skill', 'middleware' => 'web'], function () {
     Route::post('save','ManageSkillController@save')->name('skill.save')->middleware('cekrole:mahasiswa');
     Route::get('delete','ManageSkillController@delete')->name('skill.delete')->middleware('cekrole:mahasiswa');
 
+});
+
+Route::group(['prefix' => 'perusahaan', 'middleware' => 'web'], function () {
+    
+    Route::get('detail/{id}','ProfilPerusahaanController@detail')->name('perusahaan.detail');
 });

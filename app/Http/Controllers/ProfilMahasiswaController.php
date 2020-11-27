@@ -22,6 +22,7 @@ class ProfilMahasiswaController extends Controller
                                 ->join('univs', 'univs.univ_id', '=', 'prodis.prodi_univ_id')
                                 ->leftJoin('cities', 'cities.city_id', '=', 'mahasiswas.mahasiswa_city_id')
                                 ->where('mahasiswa_id', $id )->first();
+        if(empty($mahasiswa)) abort(404);
 
         $skills = Skill::join('mahasiswas', 'mahasiswas.mahasiswa_id', '=', 'skills.skill_mahasiswa_id')
                         ->where('mahasiswa_user_email', Auth::user()->user_email)

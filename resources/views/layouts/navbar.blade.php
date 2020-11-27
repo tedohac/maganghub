@@ -41,6 +41,14 @@
                             <a class="dropdown-item" href="{{ url('mahasiswa/detail/'.$mahasiswa->mahasiswa_id) }}">Lihat Profile</a>
                             <div class="dropdown-divider"></div>
 
+                        @elseif(Auth::user()->user_role=='perusahaan')
+                        
+                            @php ($mahasiswa = \App\Perusahaan::where('perusahaan_user_email', Auth::user()->user_email )->first())
+                            <a class="dropdown-item disabled longtext" href="#" tabindex="-1" aria-disabled="true"><small>{{ Auth::user()->user_role }} :<br>{{ $perusahaan->perusahaan_nib }}</small></a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{{ url('perusahaan/detail/'.$perusahaan->perusahaan_id) }}">Lihat Profile</a>
+                            <div class="dropdown-divider"></div>
+
                         @endif
                         
                         <a class="dropdown-item" href="{{ route('logout') }}">Ubah Password</a>
