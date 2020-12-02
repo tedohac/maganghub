@@ -15,7 +15,7 @@
                     <a class="btn btn-light btn-block px-1 py-0 text-left" href="{{ route('kampus.list') }}">Cari Kampus</a>
                 </li>
                 <li class="nav-item ml-2 mb-1">
-                    <a class="btn btn-light btn-block px-1 py-0 text-left" href="#">Cari Tempat Magang</a>
+                    <a class="btn btn-light btn-block px-1 py-0 text-left" href="{{ route('lowongan.list') }}">Cari Tempat Magang</a>
                 </li>
                 
                 @if(Auth::check())
@@ -43,7 +43,7 @@
 
                         @elseif(Auth::user()->user_role=='perusahaan')
                         
-                            @php ($mahasiswa = \App\Perusahaan::where('perusahaan_user_email', Auth::user()->user_email )->first())
+                            @php ($perusahaan = \App\Perusahaan::where('perusahaan_user_email', Auth::user()->user_email )->first())
                             <a class="dropdown-item disabled longtext" href="#" tabindex="-1" aria-disabled="true"><small>{{ Auth::user()->user_role }} :<br>{{ $perusahaan->perusahaan_nib }}</small></a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{{ url('perusahaan/detail/'.$perusahaan->perusahaan_id) }}">Lihat Profile</a>

@@ -115,6 +115,7 @@ class ProfilMahasiswaController extends Controller
                     'mahasiswa_alamat'          => isset($request->mahasiswa_alamat) ? $request->mahasiswa_alamat : null,
                     'mahasiswa_profile_pict'    => $request->mahasiswa_profile_pict!="" ? $filename_mahasiswa_profile_pict : $mahasiswa->mahasiswa_profile_pict,
                     'mahasiswa_cv'              => $request->mahasiswa_cv!="" ? $filename_mahasiswa_cv : $mahasiswa->mahasiswa_cv,
+                    'mahasiswa_khs'             => $request->mahasiswa_khs!="" ? $filename_mahasiswa_khs : $mahasiswa->mahasiswa_khs,
                 ]);
         } catch (\Illuminate\Database\QueryException $e) {
             Session::flash('error', 'Proses gagal, mohon coba kembali beberapa saat lagi ');

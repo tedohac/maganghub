@@ -204,9 +204,9 @@
             var id =  $(this).data('id');
             console.log(id);
             
-                $('#submitDelete').attr('href', '{{ route("skill.delete") }}?id='+id);
-                $('.modal-body').html('Apakah anda yakin untuk menghapus skill terpilih ?');
-                $('#deleteModal').modal('show');
+            $('#submitDelete').attr('href', '{{ route("skill.delete") }}?id='+id);
+            $('.modal-body').html('Apakah anda yakin untuk menghapus skill terpilih ?');
+            $('#deleteModal').modal('show');
         });
 
         $('#formadd').parsley().on('form:validate', function (formInstance) {
