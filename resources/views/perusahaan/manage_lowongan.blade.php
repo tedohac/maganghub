@@ -1,4 +1,4 @@
-@extends('layouts.front', ['title' => $perusahaan->perusahaan_nama.' - MagangHub'])
+@extends('layouts.front', ['title' => 'Kelola Lowongan - MagangHub'])
 
 @section('head')
     
@@ -22,7 +22,7 @@
 <div class="row m-0 mt-5 panel">
     <div class="profile-thumb col-lg-3 col-md-4 pr-md-0 text-center text-dark">
         @if(empty($perusahaan->perusahaan_profile_pict))
-        <i class="fas fa-user-briefcase bg-white border p-2 shadow-sm" style="font-size: 130px"></i>
+        <i class="fas fa-user-graduate bg-white border p-2 shadow-sm" style="font-size: 130px"></i>
         @else
         <img src="{{ url('storage/perusahaan_profile/'.$perusahaan->perusahaan_profile_pict) }}" class="bg-white border p-2 shadow">
         @endif
@@ -34,11 +34,11 @@
 </div>
 @endsection
 
-
 @section('content')
     <ol class="breadcrumb p-1 ml-auto">
         <li class="breadcrumb-item ml-auto"><a href="{{ route('/') }}">MagangHub</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Detail Perusahaan</li>
+        <li class="breadcrumb-item"><a href="{{ url('perusahaan/detail/'.$perusahaan->perusahaan_id) }}">Profil Perusahaan</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Kelola Lowongan</li>
     </ol>
 
     @if(session('errors'))
@@ -64,74 +64,15 @@
         </div>
     @endif
 
-    <!-- detail info -->
+    <!-- prodi list -->
     <h5 class="mb-2 p-0">
-        Profil Perusahaan
+        Kelola Lowongan
         
-        @if(Auth::check() && Auth::user()->user_email == $perusahaan->perusahaan_user_email)
-        <a class="btn btn-outline-info p-1 float-right" href="{{ route('perusahaan.edit') }}">
-            <small><i class="fas fa-edit"></i> Edit Profil</small>
+        <a class="btn btn-outline-info p-1 float-right" href="{{ route('lowongan.add') }}">
+            <small><i class="fas fa-plus"></i> Tambah Lowongan</small>
         </a>
-        @endif
     </h5>
-    <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-5">
-        <table class="table" cellspacing="0">
-            <tr>
-                <td class="greybox"><b>NIB</b></td>
-                <td>
-                    {{ $perusahaan->perusahaan_nib ? $perusahaan->perusahaan_nib : '-' }}
-                </td>
-            </tr>
-            <tr>
-                <td class="greybox"><b>Nama</b></td>
-                <td>
-                    {{ $perusahaan->perusahaan_nama ? $perusahaan->perusahaan_nama : '-' }}
-                </td>
-            </tr>
-            <tr>
-                <td class="greybox"><b>Telepon</b></td>
-                <td>
-                    {{ $perusahaan->perusahaan_no_tlp ? $perusahaan->perusahaan_no_tlp : '-' }}
-                </td>
-            </tr>
-            <tr>
-                <td class="greybox"><b>Kota</b></td>
-                <td>
-                    {{ $perusahaan->city_nama ? $perusahaan->city_nama : '-' }}
-                </td>
-            </tr>
-            <tr>
-                <td class="greybox"><b>Alamat</b></td>
-                <td>
-                    {{ $perusahaan->perusahaan_alamat ? $perusahaan->perusahaan_alamat : '-' }}
-                </td>
-            </tr>
-            <tr>
-                <td class="greybox"><b>Berkas NIB</b></td>
-                <td>
-                    @if($perusahaan->perusahaan_nib_path!="")
-                        <span class="badge badge-info p-1">Sudah Dilengkapi</span>
-                    @else
-                        <span class="badge badge-danger p-1">Belum Dilengkapi</span>
-                    @endif
-                </td>
-            </tr>
-        </table>
-    </div>
-    <!-- end detail info -->
-
-    <!-- loker list -->
-    <h5 class="mb-2 p-0">
-        Lowongan Magang Tersedia
-        
-        @if(Auth::check() && Auth::user()->user_email == $perusahaan->perusahaan_user_email)
-        <a class="btn btn-outline-info p-1 float-right" href="{{ route('lowongan.manage') }}">
-            <small><i class="fas fa-edit"></i> Kelola Lowongan</small>
-        </a>
-        @endif
-    </h5>
-    <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-5">
-        
+    <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-3">
         <table class="table table-sm table-striped table-hover" id="dataTable" width="100%" cellspacing="0">
             <thead class="greybox">
                 <tr>
@@ -140,6 +81,8 @@
                     <th>Tgl Mulai</th>
                     <th>Durasi</th>
                     <th>Jlh Dibutuhkan</th>
+                    <th>Status</th>
+                    <th>Opsi</th>
                 </tr>
             </thead>
             <tbody>
@@ -151,14 +94,52 @@
                     <td>{{ $lowongan->lowongan_tgl_mulai }}</td>
                     <td>{{ $lowongan->lowongan_durasi }}</td>
                     <td>{{ $lowongan->lowongan_jlh_dibutuhkan }}</td>
+                    <td>{{ $lowongan->lowongan_status }}</td>
+                    <td>
+                            <a class="btn btn-outline-info p-1 edit-form" href="{{ url('lowongan/edit/'.$lowongan->lowongan_id) }}" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                        @if($lowongan->lowongan_status=='draft')
+                            <a class="btn btn-outline-danger p-1 hapus-form" href="#" data-id="{{ $lowongan->lowongan_id }}" title="Hapus">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                        @endif
+                    </td>
                 </tr>
                 @php ($num++)
             @endforeach
             </tbody>
         </table>
-
     </div>
-    <!-- end loker list -->
+    <!-- end prodi list -->
+    
+    <!-- Delete Modal -->
+    <div class="modal fade" id="deleteModal">
+        <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+            <h4 class="modal-title">Konfirmasi</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Tidak</button>
+
+            <a class="btn btn-primary" id="submitDelete" href="#">Ya</a>
+            </div>
+
+        </div>
+        </div>
+    </div>
+    <!-- End Delete Modal -->
+
 @endsection
 
 @section('bottom')
@@ -169,9 +150,37 @@
 <!-- SB-Admin-->
 <script src="{{ url('js/sb-admin.min.js') }}"></script>
 
+<!-- Parsley Form Validation -->
+<script src="{{ url('js/parsley.min.js') }}"></script>
+<script>
+    $("#formadd").parsley({
+        errorClass: 'is-invalid text-danger',
+        errorsWrapper: '<span class="form-text text-danger"></span>',
+        errorTemplate: '<span></span>',
+        trigger: 'change'
+    })
+</script>
+
 <script>
     $(document).ready(function (){
         var table = $('#dataTable').DataTable();
+
+        $('#dataTable').on('click', '.hapus-form', function(){
+            var id =  $(this).data('id');
+            console.log(id);
+            
+            $('#submitDelete').attr('href', '{{ route("lowongan.delete") }}?id='+id);
+            $('.modal-body').html('Apakah anda yakin untuk menghapus lowongan terpilih ?');
+            $('#deleteModal').modal('show');
+        });
+
+        $('#formadd').parsley().on('form:validate', function (formInstance) {
+            var success = formInstance.isValid();
+            
+            if (!success) {
+                $('#confirmModal').modal('hide');
+            }
+        });
     });
 </script>
 @endsection

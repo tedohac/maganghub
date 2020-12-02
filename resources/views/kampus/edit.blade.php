@@ -128,7 +128,7 @@
                     <input id="npsnKampus" class="form-control" placeholder="NPSN" name="univ_npsn" required="required" type="text"
                         value="{{ $univ->univ_npsn }}"
                         data-parsley-required
-                        data-parsley-required-message="Masukan nomor NPSN kampus">
+                        data-parsley-required-message="Masukan NPSN kampus">
                     @error('univ_npsn')
                         <span class="form-text text-danger">
                             {{ $message }}
@@ -171,7 +171,7 @@
                 <td valign="center" width="50" class="greybox"><b>Website</b></td>
                 <td>
                     <input id="websiteKampus" class="form-control" placeholder="Website Kampus" name="univ_website" type="text"
-                        value="{{ $univ->website }}"
+                        value="{{ $univ->univ_website }}"
                         data-parsley-type="url"
                         data-parsley-type-message="Format website tidak benar">
                     @error('univ_website')
@@ -199,7 +199,7 @@
                 <td>
                     <select class="form-control univCity" name="univ_city_id">
                         @if($univ->univ_city_id!="")
-                            <option value="{{ $univ->univ_city_id }}" selected>{{ $city_name }}</option>
+                            <option value="{{ $univ->univ_city_id }}" selected>{{ $univ->city_nama }}</option>
                         @endif
                     </select>
                 </td>

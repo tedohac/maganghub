@@ -6,21 +6,10 @@
     <link href="{{ asset('styles/sb-admin.css?v=').time() }}" rel="stylesheet">
 
     <style>
-        .card-profile-thumb {
-            height: 140px;
-            border-bottom: 1px solid rgba(0,0,0,.125);
-        }
-        .card-profile-thumb img {
-            max-height: 100%;
+        .company-thumb img {
+            max-width: 100%;
             display: block;
             margin: 0 auto;
-        }
-        .card-ul{
-            list-style: none;
-            font-size: 14px;
-            color: #777;
-        }
-        .card-title {
         }
     </style>
 @endsection
@@ -97,50 +86,37 @@
     <!-- end filter -->
 
     <!-- container -->
-    {{ $univs->links() }}
-    <div class="row w-100 m-0">
-    @foreach($univs as $univ)
-        <div class="col-6 col-lg-4 p-0 mb-3">
-            <div class="card m-2 shadow-sm h-100">
-                <div class="card-profile-thumb p-3 text-center">
-                    @if(empty($univ->univ_profile_pict))
-                    <i class="fas fa-university" style="font-size: 100px"></i>
-                    @else
-                    <img src="{{ url('storage/univ/'.$univ->univ_profile_pict) }}">
-                    @endif
-                </div>
-                <div class="card-body p-3">
-                    <h5 class="card-title text-center m-0"><a href="{{ url('kampus/detail/'.$univ->univ_id) }}">{{ $univ->univ_nama }}</a></h5>
-                    <div class="mb-3 text-center"><small><i>Menunggu verifikasi MagangHub</i></small></div>
-                    <ul class="card-ul border p-0">
-                        <li class="text-center p-2 border-bottom">
-
-                            <div class="text-center"><small>akreditasi</small></div>
-                            <span class="font-20 fa fa-star {{ $univ->univ_akreditasi!='' && ord($univ->univ_akreditasi)-96<6 ? 'text-warning' : '' }}"></span>
-                            <span class="font-20 fa fa-star {{ $univ->univ_akreditasi!='' && ord($univ->univ_akreditasi)-96<5 ? 'text-warning' : '' }}"></span>
-                            <span class="font-20 fa fa-star {{ $univ->univ_akreditasi!='' && ord($univ->univ_akreditasi)-96<4 ? 'text-warning' : '' }}"></span>
-                            <span class="font-20 fa fa-star {{ $univ->univ_akreditasi!='' && ord($univ->univ_akreditasi)-96<3 ? 'text-warning' : '' }}"></span>
-                            <span class="font-20 fa fa-star {{ $univ->univ_akreditasi!='' && ord($univ->univ_akreditasi)-96<2 ? 'text-warning' : '' }}"></span>
-                            <span class="font-20">({{ strtoupper($univ->univ_akreditasi) }})</span>
-
-                        </li>
-                        <li class="text-center p-2 border-bottom">
-                            Jumlah PRODI : 6
-                        </li>
-                        <li class="text-center p-2 border-bottom">
-                            Jumlah Pencari Magang : 57
-                        </li>
-                        <li class="text-center p-2 border-bottom">
-                            <a href="{{ ($univ->univ_website!='') ? $univ->univ_website : '#' }}">{{ ($univ->univ_website!='') ? $univ->univ_website : '-' }}</a>
-                        </li>
-                    </ul>
-                </div>
+    @foreach($lowongans as $lowongan)
+        <div class="bg-white border py-2 m-0 mb-3 shadow-sm row">
+            <div class="company-thumb text-center col-lg-2 col-4">
+                @if(empty($lowongan->perusahaan_profile_pict))
+                <i class="fas fa-briefcase" style="font-size: 100px"></i>
+                @else
+                <img src="{{ url('storage/perusahaan_profile/'.$lowongan->perusahaan_profile_pict) }}">
+                @endif
+            </div>
+            <div class="col-md-6 col-4">
+                <h5 class="m-0 text-primary">{{ $lowongan->lowongan_judul }}</h5>
+                {{ $lowongan->perusahaan_nama }} - <small><i>Menunggu verifikasi MagangHub</i></small><br />
+                <small>{{ $lowongan->city_nama }}</small>
+            </div>
+            <div class="col-4 text-right">
+                <small>Mulai magang :</small> {{ $lowongan->lowongan_tgl_mulai }}<br />
+                <small>Durasi magang:</small> {{ $lowongan->lowongan_durasi }}<br />
+                <small>Jumlah dibutuhkan:</small> {{ $lowongan->lowongan_jlh_dibutuhkan }}<br />
+                <small>23 orang telah melamar</small>
+            </div>
+            <div class="col-12 text-right">
+                @if(Auth::check() && (Auth::user()->user_role=='mahasiswa' || Auth::user()->user_role=='dospem' || Auth::user()->user_role=='admin kampus'))
+                    <a class="btn btn-outline-info p-1 float-right" href="{{ route('perusahaan.edit') }}">
+                        <small>Lihat Detail</small>
+                    </a>
+                @else
+                    <small><i>Silahkan login untuk melihat detail dan melamar</i></small>
+                @endif
             </div>
         </div>
     @endforeach
-    </div>
-    {{ $univs->links() }}
-    <!-- end container -->
 
 @endsection
 

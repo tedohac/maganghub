@@ -116,4 +116,20 @@ Route::group(['prefix' => 'skill', 'middleware' => 'web'], function () {
 Route::group(['prefix' => 'perusahaan', 'middleware' => 'web'], function () {
     
     Route::get('detail/{id}','ProfilPerusahaanController@detail')->name('perusahaan.detail');
+    Route::get('edit','ProfilPerusahaanController@edit')->name('perusahaan.edit')->middleware('cekrole:perusahaan');
+    Route::post('update','ProfilPerusahaanController@update')->name('perusahaan.update')->middleware('cekrole:perusahaan');
+    
+});
+
+Route::group(['prefix' => 'lowongan', 'middleware' => 'web'], function () {
+    
+    Route::get('list','ManageLowonganController@list')->name('lowongan.list');
+
+    Route::get('manage','ManageLowonganController@manage')->name('lowongan.manage')->middleware('cekrole:perusahaan');
+    Route::get('add','ManageLowonganController@add')->name('lowongan.add')->middleware('cekrole:perusahaan');
+    Route::post('add','ManageLowonganController@save')->middleware('cekrole:perusahaan');
+    Route::get('edit/{id}','ManageLowonganController@edit')->name('lowongan.edit')->middleware('cekrole:perusahaan');
+    Route::post('update','ManageLowonganController@update')->name('lowongan.update')->middleware('cekrole:perusahaan');
+    Route::get('delete','ManageLowonganController@delete')->name('lowongan.delete')->middleware('cekrole:perusahaan');
+    
 });

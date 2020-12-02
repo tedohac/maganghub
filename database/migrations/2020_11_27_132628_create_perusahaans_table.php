@@ -23,7 +23,6 @@ class CreatePerusahaansTable extends Migration
             $table->string('perusahaan_alamat', 300)->nullable();
             $table->string('perusahaan_profile_pict', 20)->nullable();
             $table->string('perusahaan_nib_path', 20)->nullable();
-            $table->integer('perusahaan_jlh_karyawan', false)->nullable();
             $table->string('perusahaan_no_tlp', 15)->nullable();
             $table->string('perusahaan_website', 100)->nullable();
             $table->timestamps();

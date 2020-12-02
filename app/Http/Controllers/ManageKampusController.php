@@ -23,7 +23,7 @@ class ManageKampusController extends Controller
     {
         $univs = Univ::join('users', 'univs.univ_user_email', '=', 'users.user_email')
                     ->whereNotNull('user_email_verified_at')
-                    ->get();
+                    ->paginate(5);
 
         return view('kampus.list', [
             'univs' => $univs,
@@ -46,11 +46,9 @@ class ManageKampusController extends Controller
 
     public function edit()
     {
-        $univ = Univ::where('univ_user_email', Auth::user()->user_email )->first();
+        $univ = Univ::leftJoin('cities', 'cities.city_id', '=', 'univs.univ_city_id')
+                    ->where('univ_user_email', Auth::user()->user_email )->first();
         if(empty($univ)) abort(404);
-
-        $city_name="";
-        if($univ->univ_city_id!="") $city_name = City::where('city_id', $univ->univ_city_id)->first()->city_nama;
 
     	return view('kampus.edit', [
             'univ' => $univ,
@@ -68,7 +66,7 @@ class ManageKampusController extends Controller
         ];
  
         $messages = [
-            'univ_npsn.unique'    => 'Nomor NPSN sudah terdaftar pada kampus lain',
+            'univ_npsn.unique'    => 'NPSN sudah terdaftar pada kampus lain',
         ];
  
         $validator = Validator::make($request->all(), $rules, $messages);

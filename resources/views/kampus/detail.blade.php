@@ -142,6 +142,7 @@
         <table class="table table-sm table-striped table-hover" id="dataTable" width="100%" cellspacing="0">
             <thead class="greybox">
                 <tr>
+                    <th>#</th>
                     <th>Program Studi</th>
                     <th>Fakultas</th>
                     <th>Jenjang</th>
@@ -151,8 +152,10 @@
                 </tr>
             </thead>
             <tbody>
+            @php ($num = 1)
             @foreach($prodis as $prodi)
                 <tr>
+                    <td>{{ $num }}</td>
                     <td>{{ $prodi->prodi_nama }}</td>
                     <td>{{ $prodi->prodi_fakultas!='' ? $prodi->prodi_fakultas : '-' }}</td>
                     <td>{{ $prodi->prodi_jenjang }}</td>
@@ -160,11 +163,13 @@
                     <td>13</td>
                     <td>13</td>
                 </tr>
+                @php ($num++)
             @endforeach
             </tbody>
         </table>
 
     </div>
+    <!-- end prodi list -->
 @endsection
 
 @section('bottom')
