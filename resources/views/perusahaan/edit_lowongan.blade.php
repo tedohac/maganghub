@@ -31,7 +31,7 @@
 <div class="row m-0 mt-5 panel">
     <div class="profile-thumb col-lg-3 col-md-4 pr-md-0 text-center text-dark">
         @if(empty($lowongan->perusahaan_profile_pict))
-        <i class="fas fa-user-graduate bg-white border p-2 shadow-sm" style="font-size: 130px"></i>
+        <i class="fas fa-briefcase bg-white border p-2 shadow-sm" style="font-size: 130px"></i>
         @else
         <img src="{{ url('storage/perusahaan_profile/'.$lowongan->perusahaan_profile_pict) }}" class="bg-white border p-2 shadow">
         @endif
@@ -97,6 +97,29 @@
                                 {{ $message }}
                             </span>
                         @enderror
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="center" width="50" class="greybox"><b>Fungsi Pekerjaan</b></td>
+                    <td class="position-relative">
+                        <div class="row">
+                            <div class="col-6">
+                                <select class="form-control" name="lowongan_fungsi_id" required="required"
+                                    data-parsley-required
+                                    data-parsley-required-message="Pilih fungsi pekerjaan">
+                                @foreach($fungsis as $fungsi)
+                                @php ($selected = $lowongan->lowongan_fungsi_id==$fungsi->fungsi_id ? "selected" : "")
+                                    <option value="{{ $fungsi->fungsi_id }}" {{ $selected }}>{{ $fungsi->fungsi_nama }}</option>
+                                @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        @error('lowongan_jlh_dibutuhkan')
+                            <span class="form-text text-danger">
+                                {{ $message }}
+                            </span>    
+                        @enderror
+
                     </td>
                 </tr>
                 <tr>

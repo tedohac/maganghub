@@ -22,7 +22,7 @@
 <div class="row m-0 mt-5 panel">
     <div class="profile-thumb col-lg-3 col-md-4 pr-md-0 text-center text-dark">
         @if(empty($perusahaan->perusahaan_profile_pict))
-        <i class="fas fa-user-graduate bg-white border p-2 shadow-sm" style="font-size: 130px"></i>
+        <i class="fas fa-briefcase bg-white border p-2 shadow-sm" style="font-size: 130px"></i>
         @else
         <img src="{{ url('storage/perusahaan_profile/'.$perusahaan->perusahaan_profile_pict) }}" class="bg-white border p-2 shadow">
         @endif
@@ -78,6 +78,8 @@
                 <tr>
                     <th>#</th>
                     <th>Lowongan</th>
+                    <th>Fungsi</th>
+                    <th>Penempatan</th>
                     <th>Tgl Mulai</th>
                     <th>Durasi</th>
                     <th>Jlh Dibutuhkan</th>
@@ -91,6 +93,8 @@
                 <tr>
                     <td>{{ $num }}</td>
                     <td>{{ $lowongan->lowongan_judul }}</td>
+                    <td>{{ $lowongan->fungsi_nama }}</td>
+                    <td>{{ $lowongan->city_nama }}</td>
                     <td>{{ $lowongan->lowongan_tgl_mulai }}</td>
                     <td>{{ $lowongan->lowongan_durasi }}</td>
                     <td>{{ $lowongan->lowongan_jlh_dibutuhkan }}</td>

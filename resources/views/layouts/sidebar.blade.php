@@ -188,7 +188,7 @@
     <a class="btn btn-info btn-block py-1 px-3 mb-3 shadow-sm" href="{{ url('registkampus') }}">
         <small>Registrasi Admin Kampus</small>
     </a>
-    <a class="btn btn-info btn-block py-1 px-3 mb-3 shadow-sm" href="#">
+    <a class="btn btn-info btn-block py-1 px-3 mb-3 shadow-sm" href="{{ route('registperusahaan') }}">
         <small>Registrasi Admin Perusahaan</small>
     </a>
     <a class="btn btn-success btn-block py-1 px-3 mb-3 shadow-sm" href="{{ route('login') }}">

@@ -16,7 +16,6 @@ class CreatePerusahaansTable extends Migration
         Schema::create('perusahaans', function (Blueprint $table) {
             $table->bigIncrements('perusahaan_id');
             $table->string('perusahaan_user_email', 50);
-            $table->bigInteger('perusahaan_industri_id')->nullable()->unsigned()->index();
             $table->string('perusahaan_city_id', 4)->nullable();
             $table->string('perusahaan_nib', 50)->unique();
             $table->string('perusahaan_nama', 200);
@@ -27,7 +26,6 @@ class CreatePerusahaansTable extends Migration
             $table->string('perusahaan_website', 100)->nullable();
             $table->timestamps();
             $table->foreign('perusahaan_user_email')->references('user_email')->on('users');
-            $table->foreign('perusahaan_industri_id')->references('industri_id')->on('industris');
             $table->foreign('perusahaan_city_id')->references('city_id')->on('cities');
         });
     }
