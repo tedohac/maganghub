@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateIndustrisTable extends Migration
+class CreateFungsisTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateIndustrisTable extends Migration
      */
     public function up()
     {
-        Schema::create('industris', function (Blueprint $table) {
-            $table->bigIncrements('industri_id');
-            $table->string('industri_nama', 50);
-            $table->timestamps();
+        Schema::create('fungsis', function (Blueprint $table) {
+            $table->string('fungsi_id', 4);
+            $table->string('fungsi_nama', 200);
+            $table->primary('fungsi_id');
         });
     }
 
@@ -27,6 +27,6 @@ class CreateIndustrisTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('industris');
+        Schema::dropIfExists('fungsis');
     }
 }

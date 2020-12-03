@@ -81,7 +81,7 @@ class ProfilPerusahaanController extends Controller
                 
                 // delete if exists
                 if (Storage::disk('public')->exists( 'perusahaan_nib/'.$perusahaan->perusahaan_nib_path )) Storage::delete('public/perusahaan_nib/'.$perusahaan->perusahaan_nib_path);
-                $request->file('perusahaan_nib_path')->storeAs('public/perusahaan_nib', $perusahaan_nib_path);
+                $request->file('perusahaan_nib_path')->storeAs('public/perusahaan_nib', $filename_perusahaan_nib_path);
 
                 Artisan::call('cache:clear');
             }

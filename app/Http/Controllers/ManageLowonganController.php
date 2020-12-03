@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Perusahaan;
 use App\Lowongan;
+use App\Fungsi;
+use App\Perusahaan;
 use Auth;
 use DB;
 use Session;
@@ -20,7 +21,9 @@ class ManageLowonganController extends Controller
         if(empty($perusahaan)) return abort(404);
 
         $lowongans = Lowongan::join('perusahaans', 'perusahaans.perusahaan_id', '=', 'lowongans.lowongan_perusahaan_id')
-                       ->where('perusahaan_user_email', Auth::user()->user_email)->get();
+                            ->join('fungsis', 'fungsis.fungsi_id', '=', 'lowongans.lowongan_fungsi_id')
+                            ->join('cities', 'cities.city_id', '=', 'lowongans.lowongan_city_id')
+                            ->where('perusahaan_user_email', Auth::user()->user_email)->get();
 
     	return view('perusahaan.manage_lowongan', [
             'perusahaan' => $perusahaan,
@@ -47,8 +50,11 @@ class ManageLowonganController extends Controller
         $perusahaan = Perusahaan::where('perusahaan_user_email', Auth::user()->user_email )->first();
         if(empty($perusahaan)) return abort(404);
 
+        $fungsis = Fungsi::get();
+
     	return view('perusahaan.add_lowongan', [
-            'perusahaan' => $perusahaan
+            'perusahaan' => $perusahaan,
+            'fungsis' => $fungsis
         ]);
     }
     
@@ -79,6 +85,7 @@ class ManageLowonganController extends Controller
         $lowongan->lowongan_perusahaan_id= $perusahaan->perusahaan_id;
         $lowongan->lowongan_status       = $request->lowongan_status;
         $lowongan->lowongan_judul        = $request->lowongan_judul;
+        $lowongan->lowongan_fungsi_id    = $request->lowongan_fungsi_id;
         $lowongan->lowongan_city_id      = $request->lowongan_city_id;
         $lowongan->lowongan_tgl_mulai    = $request->lowongan_tgl_mulai;
         $lowongan->lowongan_durasi       = $request->lowongan_durasi_a.'-'.$request->lowongan_durasi_b;
@@ -128,14 +135,15 @@ class ManageLowonganController extends Controller
             Lowongan::where('lowongan_id',$request->lowongan_id)
                     ->where('lowongan_perusahaan_id',$perusahaan->perusahaan_id)
                 ->update([
-                    'lowongan_status'        => $request->lowongan_status,
+                    'lowongan_status'       => $request->lowongan_status,
                     'lowongan_judul'        => $request->lowongan_judul,
-                    'lowongan_city_id'        => $request->lowongan_city_id,
-                    'lowongan_tgl_mulai'        => $request->lowongan_tgl_mulai,
-                    'lowongan_durasi'        => $request->lowongan_durasi_a.'-'.$request->lowongan_durasi_b,
-                    'lowongan_requirement'        => htmlspecialchars($request->lowongan_requirement),
-                    'lowongan_jobdesk'        => htmlspecialchars($request->lowongan_jobdesk),
-                    'lowongan_jlh_dibutuhkan'        => $request->lowongan_jlh_dibutuhkan,
+                    'lowongan_fungsi_id'    => $request->lowongan_fungsi_id,
+                    'lowongan_city_id'      => $request->lowongan_city_id,
+                    'lowongan_tgl_mulai'    => $request->lowongan_tgl_mulai,
+                    'lowongan_durasi'       => $request->lowongan_durasi_a.'-'.$request->lowongan_durasi_b,
+                    'lowongan_requirement'  => htmlspecialchars($request->lowongan_requirement),
+                    'lowongan_jobdesk'      => htmlspecialchars($request->lowongan_jobdesk),
+                    'lowongan_jlh_dibutuhkan'=> $request->lowongan_jlh_dibutuhkan,
                 ]);
         } catch (\Illuminate\Database\QueryException $e) {
             Session::flash('error', 'Proses gagal, mohon coba kembali beberapa saat lagi atau hubungi admin MagangHub');
@@ -160,8 +168,11 @@ class ManageLowonganController extends Controller
         // dd(DB::getQueryLog());
         if(empty($lowongan)) return abort(404);
 
+        $fungsis = Fungsi::get();
+
     	return view('perusahaan.edit_lowongan', [
-            'lowongan' => $lowongan
+            'lowongan' => $lowongan,
+            'fungsis' => $fungsis
         ]);
     }
     

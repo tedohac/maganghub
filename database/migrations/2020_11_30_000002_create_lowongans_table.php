@@ -16,8 +16,9 @@ class CreateLowongansTable extends Migration
         Schema::create('lowongans', function (Blueprint $table) {
             $table->bigIncrements('lowongan_id');
             $table->bigInteger('lowongan_perusahaan_id')->unsigned()->index();
-            $table->string('lowongan_status', 10);
+            $table->string('lowongan_fungsi_id', 4);
             $table->string('lowongan_city_id', 4);
+            $table->string('lowongan_status', 10);
             $table->string('lowongan_judul', 200);
             $table->date('lowongan_tgl_mulai');
             $table->string('lowongan_durasi', 50);
@@ -26,6 +27,7 @@ class CreateLowongansTable extends Migration
             $table->integer('lowongan_jlh_dibutuhkan', false);
             $table->timestamps();
             $table->foreign('lowongan_perusahaan_id')->references('perusahaan_id')->on('perusahaans');
+            $table->foreign('lowongan_fungsi_id')->references('fungsi_id')->on('fungsis');
             $table->foreign('lowongan_city_id')->references('city_id')->on('cities');
         });
     }
