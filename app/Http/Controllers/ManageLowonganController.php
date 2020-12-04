@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\City;
 use App\Lowongan;
 use App\Fungsi;
 use App\Perusahaan;
@@ -23,23 +24,79 @@ class ManageLowonganController extends Controller
         $lowongans = Lowongan::join('perusahaans', 'perusahaans.perusahaan_id', '=', 'lowongans.lowongan_perusahaan_id')
                             ->join('fungsis', 'fungsis.fungsi_id', '=', 'lowongans.lowongan_fungsi_id')
                             ->join('cities', 'cities.city_id', '=', 'lowongans.lowongan_city_id')
+                            ->select('*', DB::raw('(select count(rekrut_id) from rekruts where rekrut_lowongan_id=lowongan_id) as total_pelamar'))
                             ->where('perusahaan_user_email', Auth::user()->user_email)->get();
 
-    	return view('perusahaan.manage_lowongan', [
+    	return view('lowongan.manage', [
             'perusahaan' => $perusahaan,
             'lowongans' => $lowongans
         ]);
     }
     
-    public function list()
+    public function list(Request $request)
     {
-        $lowongans = Lowongan::join('perusahaans', 'perusahaans.perusahaan_id', '=', 'lowongans.lowongan_perusahaan_id')
-                             ->join('cities', 'cities.city_id', '=', 'lowongans.lowongan_city_id')
-                             ->where('lowongan_status', 'post')
-                             ->get();
+        $filter = new \stdClass();
 
-        return view('perusahaan.list_lowongan', [
+        if(!empty($request->filter_perusahaan)) $filter->perusahaan = $request->filter_perusahaan;
+        else $filter->perusahaan = "";
+        
+        if(!empty($request->filter_fungsi)) $filter->fungsi = $request->filter_fungsi;
+        else $filter->fungsi = [];
+        
+        if(!empty($request->filter_city)) $filter->city = $request->filter_city;
+        else $filter->city = "";
+
+        $lowongans = Lowongan::query();
+        $lowongans = $lowongans->join('perusahaans', 'perusahaans.perusahaan_id', '=', 'lowongans.lowongan_perusahaan_id')
+                            ->join('cities', 'cities.city_id', '=', 'lowongans.lowongan_city_id')
+                            ->join('fungsis', 'fungsis.fungsi_id', '=', 'lowongans.lowongan_fungsi_id')
+                            ->where('lowongan_status', 'post');
+
+        if(!empty($request->filter_perusahaan)) $lowongans = $lowongans->where('perusahaan_nama', 'like', '%'.$request->filter_perusahaan.'%');
+
+        if(!empty($request->filter_fungsi)) {
+            $fungsis = $filter->fungsi;
+            $lowongans = $lowongans->where(function ($query) use ($fungsis) {
+                foreach($fungsis as $fungsi)
+                    $query->orWhere('fungsi_id', $fungsi);
+            });
+        }
+
+        if(!empty($request->filter_city)) {
+            $lowongans = $lowongans->where('city_id', $request->filter_city);
+            $city = City::where('city_id', $request->filter_city)->first();
+            $filter->city_nama = $city->city_nama;
+        }
+        $lowongans = $lowongans->paginate(10);
+
+        $fungsis = Fungsi::get();
+
+        return view('lowongan.list', [
             'lowongans' => $lowongans,
+            'filter' => $filter,
+            'fungsis' => $fungsis,
+        ]);
+    }
+
+    public function detail($id)
+    {
+        $user_role = Auth::user()->user_role;
+        if($user_role != 'mahasiswa' && $user_role != 'dospem' && $user_role != 'perusahaan') return abort(404);
+        // DB::enableQueryLog();
+        $lowongan = Lowongan::join('perusahaans', 'perusahaans.perusahaan_id', '=', 'lowongans.lowongan_perusahaan_id')
+                            ->join('cities', 'cities.city_id', '=', 'lowongans.lowongan_city_id')
+                            ->join('fungsis', 'fungsis.fungsi_id', '=', 'lowongans.lowongan_fungsi_id')
+                            ->where('lowongan_id', $id)
+                            ->first();
+                            
+        // dd(DB::getQueryLog());
+        if(empty($lowongan)) return abort(404);
+        
+        $lowongan->lowongan_requirement = htmlspecialchars_decode($lowongan->lowongan_requirement);
+        $lowongan->lowongan_jobdesk     = htmlspecialchars_decode($lowongan->lowongan_jobdesk);
+
+    	return view('lowongan.detail', [
+            'lowongan' => $lowongan,
         ]);
     }
 
@@ -52,7 +109,7 @@ class ManageLowonganController extends Controller
 
         $fungsis = Fungsi::get();
 
-    	return view('perusahaan.add_lowongan', [
+    	return view('lowongan.add', [
             'perusahaan' => $perusahaan,
             'fungsis' => $fungsis
         ]);
@@ -170,7 +227,7 @@ class ManageLowonganController extends Controller
 
         $fungsis = Fungsi::get();
 
-    	return view('perusahaan.edit_lowongan', [
+    	return view('lowongan.edit', [
             'lowongan' => $lowongan,
             'fungsis' => $fungsis
         ]);

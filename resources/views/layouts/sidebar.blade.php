@@ -124,6 +124,19 @@
         </div>
     </div>
     <div class="p-2">
+        <table class="w-100">
+            <tr class="align-top">
+                <td>
+                    <small>Kelengkapan Profil</small><br />
+                    <small class="text-primary">Profil belum lengkap</small>
+                </td>
+                <td class="text-right">
+                    <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ url('mahasiswa/detail/'.$univsb->mahasiswa_id) }}">
+                        <small>PROFIL</small>
+                    </a>
+                </td>
+            </tr>
+        </table>
     </div>
 
 </div>
@@ -142,7 +155,7 @@
     <div class="sidebar-profile-bot w-100 p-2">
         <div class="sidebar-profile-thumb text-center">
             @if($univsb->perusahaan_profile_pict == "")
-            <i class="fas fa-user-briefcase bg-white border p-2 shadow-sm" style="font-size: 70px"></i>
+            <i class="fas fa-briefcase bg-white border p-2 shadow-sm" style="font-size: 70px"></i>
             @else
             <img src="{{ url('storage/perusahaan_profile/'.$univsb->perusahaan_profile_pict) }}" class="bg-white border p-2 shadow-sm mx-auto">
             @endif

@@ -82,7 +82,7 @@
                     <th>Nama</th>
                     <th>Program Studi</th>
                     <th>E-mail</th>
-                    <th>Status</th>
+                    <th>Verifikasi</th>
                     <th>Mahasiswa</th>
                     <th width="70">Opsi</th>
                 </tr>
@@ -98,7 +98,7 @@
                     <td>{{ $dospem->dospem_user_email }}</td>
                     <td>
                         @if($dospem->user_email_verified_at=="")
-                            Belum Verifikasi
+                            Belum
                         @else
                             Aktif
                         @endif

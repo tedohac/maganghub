@@ -16,9 +16,13 @@ class CekRole
      */
     public function handle($request, Closure $next, $role_names)
     {
-        if (User::hasRoles($role_names))
+        $roles = explode("|",$role_names);
+        foreach($roles as $role)
         {
-            return $next($request);
+            if (User::hasRoles($role))
+            {
+                return $next($request);
+            }
         }
 
         return redirect()->route('login')->with('error', 'Silahkan login untuk melanjutkan');

@@ -124,12 +124,18 @@ Route::group(['prefix' => 'perusahaan', 'middleware' => 'web'], function () {
 Route::group(['prefix' => 'lowongan', 'middleware' => 'web'], function () {
     
     Route::get('list','ManageLowonganController@list')->name('lowongan.list');
-
+    Route::get('detail/{id}','ManageLowonganController@detail')->name('lowongan.detail')->middleware('cekrole:mahasiswa|dospem|perusahaan');
     Route::get('manage','ManageLowonganController@manage')->name('lowongan.manage')->middleware('cekrole:perusahaan');
+
     Route::get('add','ManageLowonganController@add')->name('lowongan.add')->middleware('cekrole:perusahaan');
     Route::post('add','ManageLowonganController@save')->middleware('cekrole:perusahaan');
     Route::get('edit/{id}','ManageLowonganController@edit')->name('lowongan.edit')->middleware('cekrole:perusahaan');
     Route::post('update','ManageLowonganController@update')->name('lowongan.update')->middleware('cekrole:perusahaan');
     Route::get('delete','ManageLowonganController@delete')->name('lowongan.delete')->middleware('cekrole:perusahaan');
     
+});
+
+Route::group(['prefix' => 'perekrutan', 'middleware' => 'web'], function () {
+    Route::get('apply/{id}','PerekrutanController@apply')->name('perekrutan.apply')->middleware('cekrole:mahasiswa');
+    Route::get('manage','PerekrutanController@manage')->name('perekrutan.manage')->middleware('cekrole:perusahaan');
 });
