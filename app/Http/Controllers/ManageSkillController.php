@@ -15,7 +15,11 @@ class ManageSkillController extends Controller
     {
         if(Auth::user()->user_role != 'mahasiswa') return abort(404);
 
-        $mahasiswa = Mahasiswa::where('mahasiswa_user_email', Auth::user()->user_email )->first();
+        $mahasiswa = Mahasiswa::join('dospems', 'dospems.dospem_id', '=', 'mahasiswas.mahasiswa_dospem_id')
+                            ->join('prodis', 'prodis.prodi_id', '=', 'dospems.dospem_prodi_id')
+                            ->join('univs', 'univs.univ_id', '=', 'prodis.prodi_univ_id')
+                            ->where('mahasiswa_user_email', Auth::user()->user_email )->first();
+                            
         if(empty($mahasiswa)) return abort(404);
 
         $skills = Skill::join('mahasiswas', 'mahasiswas.mahasiswa_id', '=', 'skills.skill_mahasiswa_id')

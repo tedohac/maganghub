@@ -18,6 +18,7 @@ class CreateRekrutsTable extends Migration
             $table->bigInteger('rekrut_lowongan_id')->unsigned()->index();
             $table->bigInteger('rekrut_mahasiswa_id')->unsigned()->index();
             $table->string('rekrut_status', 10);
+            $table->date('rekrut_tgl_melamar');
             $table->integer('rekrut_rating', false)->nullable();
             $table->timestamps();
             $table->foreign('rekrut_lowongan_id')->references('lowongan_id')->on('lowongans');
