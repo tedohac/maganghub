@@ -83,7 +83,8 @@
                     <th>DOSPEM</th>
                     <th>Nama</th>
                     <th>E-Mail</th>
-                    <th>Status</th>
+                    <th>Verifikasi</th>
+                    <th><small>Status<br />Magang</small></th>
                     <th width="70">Opsi</th>
                 </tr>
             </thead>
@@ -99,11 +100,12 @@
                     <td>{{ $mahasiswa->mahasiswa_user_email }}</td>
                     <td>
                         @if($mahasiswa->user_email_verified_at=="")
-                            Belum Verifikasi
+                            Belum
                         @else
                             Aktif
                         @endif
                     </td>
+                    <td>{{ $mahasiswa->mahasiswa_status }}</td>
                     <td>
                         <a class="btn btn-outline-info p-1 verify-form mb-1" href="#" data-id="{{ $mahasiswa->mahasiswa_id }}" title="Verifikasi Ulang">
                             <i class="fas fa-envelope"></i>

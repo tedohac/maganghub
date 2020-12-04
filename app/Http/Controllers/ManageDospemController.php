@@ -376,9 +376,10 @@ class ManageDospemController extends Controller
             $verify_token = Str::random(32);
             User::where('user_email', $dospem->dospem_user_email)
                 ->update([
-                    'user_password'     => Hash::make($passwordTemp),
-                    'user_verify_token' => $verify_token,
-                    'user_status'       => '1',
+                    'user_password'         => Hash::make($passwordTemp),
+                    'user_verify_token'     => $verify_token,
+                    'user_email_verified_at'=> null,
+                    'user_status'           => '1',
                 ]);
 
             // send email verification

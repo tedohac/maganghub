@@ -81,9 +81,9 @@
                     <th>Fungsi</th>
                     <th>Penempatan</th>
                     <th>Tgl Mulai</th>
-                    <th>Durasi</th>
-                    <th>Jlh Dibutuhkan</th>
+                    <th><small>Jlh<br />Dibutuhkan</small></th>
                     <th>Status</th>
+                    <th>Pelamar</th>
                     <th>Opsi</th>
                 </tr>
             </thead>
@@ -96,13 +96,13 @@
                     <td>{{ $lowongan->fungsi_nama }}</td>
                     <td>{{ $lowongan->city_nama }}</td>
                     <td>{{ $lowongan->lowongan_tgl_mulai }}</td>
-                    <td>{{ $lowongan->lowongan_durasi }}</td>
                     <td>{{ $lowongan->lowongan_jlh_dibutuhkan }}</td>
                     <td>{{ $lowongan->lowongan_status }}</td>
+                    <td><a class="btn btn-outline-info py-0 px-1" href="{{ url('perekrutan/manage/'.$lowongan->lowongan_id) }}">{{ $lowongan->total_pelamar }}</a></td>
                     <td>
-                            <a class="btn btn-outline-info p-1 edit-form" href="{{ url('lowongan/edit/'.$lowongan->lowongan_id) }}" title="Edit">
-                                <i class="fas fa-edit"></i>
-                            </a>
+                        <a class="btn btn-outline-info p-1 edit-form" href="{{ url('lowongan/edit/'.$lowongan->lowongan_id) }}" title="Edit">
+                            <i class="fas fa-edit"></i>
+                        </a>
                         @if($lowongan->lowongan_status=='draft')
                             <a class="btn btn-outline-danger p-1 hapus-form" href="#" data-id="{{ $lowongan->lowongan_id }}" title="Hapus">
                                 <i class="fas fa-trash-alt"></i>

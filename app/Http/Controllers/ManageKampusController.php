@@ -51,8 +51,7 @@ class ManageKampusController extends Controller
         if(empty($univ)) abort(404);
 
     	return view('kampus.edit', [
-            'univ' => $univ,
-            'city_name' => $city_name
+            'univ' => $univ
         ]);
     }
 

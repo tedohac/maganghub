@@ -47,7 +47,7 @@ class LoginController extends Controller
         
         // verification check
         $isverified = User::where('user_email',$request->user_email)->first();
-        if(!empty($isverified) && $isverified->user_status == 1) return redirect()->route('verifyneeded');
+        if(!empty($isverified) && $isverified->user_email_verified_at == "") return redirect()->route('verifyneeded');
 
         if(!Auth::attempt($data, isset($request->login_remember)))
         {

@@ -94,6 +94,7 @@ class ManageMahasiswaController extends Controller
         $mahasiswa->mahasiswa_dospem_id     = $request->mahasiswa_dospem_id;
         $mahasiswa->mahasiswa_nim           = $request->mahasiswa_nim;
         $mahasiswa->mahasiswa_nama          = $request->mahasiswa_nama;
+        $mahasiswa->mahasiswa_status        = 'mencari';
         $simpanmahasiswa = $mahasiswa->save();
 
         if($simpanuser && $simpanmahasiswa)
@@ -317,6 +318,7 @@ class ManageMahasiswaController extends Controller
             $mahasiswa->mahasiswa_dospem_id = $datacheckDospem->dospem_id;
             $mahasiswa->mahasiswa_nim       = $row[0];
             $mahasiswa->mahasiswa_nama      = $row[1];
+            $mahasiswa->mahasiswa_status    = 'mencari';
             $simpanmahasiswa = $mahasiswa->save();
 
             if(!$simpanuser || !$simpanmahasiswa){
@@ -382,9 +384,10 @@ class ManageMahasiswaController extends Controller
             $verify_token = Str::random(32);
             User::where('user_email', $mahasiswa->mahasiswa_user_email)
                 ->update([
-                    'user_password'     => Hash::make($passwordTemp),
-                    'user_verify_token' => $verify_token,
-                    'user_status'       => '1',
+                    'user_password'         => Hash::make($passwordTemp),
+                    'user_verify_token'     => $verify_token,
+                    'user_email_verified_at'=> null,
+                    'user_status'           => '1',
                 ]);
                 
             // send email verification
