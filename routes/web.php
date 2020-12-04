@@ -137,5 +137,6 @@ Route::group(['prefix' => 'lowongan', 'middleware' => 'web'], function () {
 
 Route::group(['prefix' => 'perekrutan', 'middleware' => 'web'], function () {
     Route::get('apply/{id}','PerekrutanController@apply')->name('perekrutan.apply')->middleware('cekrole:mahasiswa');
-    Route::get('manage','PerekrutanController@manage')->name('perekrutan.manage')->middleware('cekrole:perusahaan');
+    Route::get('pelamar/{id}','PerekrutanController@pelamar')->name('perekrutan.pelamar')->middleware('cekrole:perusahaan');
+    Route::get('detailpelamar/{id}','PerekrutanController@detailpelamar')->name('perekrutan.detailpelamar')->middleware('cekrole:perusahaan');
 });

@@ -1,4 +1,4 @@
-@extends('layouts.front', ['title' => 'Kelola Lowongan - MagangHub'])
+@extends('layouts.front', ['title' => 'Kelola Pelamar - MagangHub'])
 
 @section('head')
     
@@ -38,7 +38,7 @@
     <ol class="breadcrumb p-1 ml-auto">
         <li class="breadcrumb-item ml-auto"><a href="{{ route('/') }}">MagangHub</a></li>
         <li class="breadcrumb-item"><a href="{{ url('perusahaan/detail/'.$lowongan->lowongan_perusahaan_id) }}">Profil Perusahaan</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('lowongan.manage) }}">Kelola Lowongan</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('lowongan.manage') }}">Kelola Lowongan</a></li>
         <li class="breadcrumb-item active" aria-current="page">Kelola Lowongan</li>
     </ol>
 
@@ -67,16 +67,15 @@
 
     <!-- detail lowongan -->
     <h5 class="mb-2 p-0">
-        {{ $lowongan->lowongan_judul }}
+        Pelamar Lowongan
     </h5>
     <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-3">
+        <div class="py-1">Informasi Lowongan</div>
         <table class="table table-sm" cellspacing="0">
             <tr>
-                <td class="greybox"><b>Perusahaan</b></td>
+                <td class="greybox"><b>Judul Lowongan</b></td>
                 <td>
-                    <a href="{{ url('perusahaan/detail/'.$lowongan->perusahaan_id) }}">
-                        {{ $lowongan->perusahaan_nama }}
-                    </a>
+                    {{ $lowongan->lowongan_judul }}
                 </td>
             </tr>
             <tr>
@@ -110,6 +109,39 @@
                 </td>
             </tr>
         </table>
+
+        <div class="mt-3 p-1 border-bottom">Daftar Mahasiswa Pelamar</div>
+        
+        <table class="table table-sm table-striped table-hover" id="dataTable" width="100%" cellspacing="0">
+            <thead class="greybox">
+                <tr>
+                    <th>#</th>
+                    <th>Tgl Melamar</th>
+                    <th>Kampus</th>
+                    <th>Prodi</th>
+                    <th>Mahasiswa</th>
+                    <th>Opsi</th>
+                </tr>
+            </thead>
+            <tbody>
+            @php ($num = 1)
+            @foreach($rekruts as $rekrut)
+                <tr>
+                    <td>{{ $num }}</td>
+                    <td>{{ $rekrut->rekrut_tgl_melamar }}</td>
+                    <td>{{ $rekrut->univ_nama }}</td>
+                    <td>{{ $rekrut->prodi_nama }}</td>
+                    <td>{{ $rekrut->mahasiswa_nama }}</td>
+                    <td>
+                        <a class="btn btn-outline-info px-1 py-0 edit-form" href="{{ url('perekrutan/detailpelamar/'.$rekrut->rekrut_id) }}" title="Detail">
+                            <small><i class="fas fa-user"></i> Detail</small>
+                        </a>
+                    </td>
+                </tr>
+                @php ($num++)
+            @endforeach
+            </tbody>
+        </table>
     </div>
     <!-- end detail lowongan -->
 @endsection
@@ -121,17 +153,6 @@
 
 <!-- SB-Admin-->
 <script src="{{ url('js/sb-admin.min.js') }}"></script>
-
-<!-- Parsley Form Validation -->
-<script src="{{ url('js/parsley.min.js') }}"></script>
-<script>
-    $("#formadd").parsley({
-        errorClass: 'is-invalid text-danger',
-        errorsWrapper: '<span class="form-text text-danger"></span>',
-        errorTemplate: '<span></span>',
-        trigger: 'change'
-    })
-</script>
 
 <script>
     $(document).ready(function (){

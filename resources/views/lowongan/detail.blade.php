@@ -115,7 +115,7 @@
         
         @if(Auth::check() && Auth::user()->user_role == 'mahasiswa')
         <a class="btn btn-block btn-outline-info p-1" href="#" data-toggle="modal" data-target="#confirmModal">
-            <small><i class="fas fa-share-square"></i> Melamar Lowongan</small>
+            <i class="fas fa-share-square"></i> Melamar Lowongan
         </a>
         @endif
     </div>

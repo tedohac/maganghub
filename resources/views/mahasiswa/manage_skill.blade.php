@@ -88,7 +88,7 @@
                     <td>{{ $num }}</td>
                     <td>{{ $skill->skill_nama }}</td>
                     <td>
-                        <a class="btn btn-outline-danger p-1 hapus-form" href="#" data-id="{{ $skill->skill_id }}" title="Hapus">
+                        <a class="btn btn-outline-danger px-1 py-0 hapus-form" href="#" data-id="{{ $skill->skill_id }}" title="Hapus">
                             <i class="fas fa-trash-alt"></i>
                         </a>
                     </td>
