@@ -100,11 +100,11 @@
                     <td>{{ $lowongan->lowongan_status }}</td>
                     <td><a class="btn btn-outline-info py-0 px-1" href="{{ url('perekrutan/pelamar/'.$lowongan->lowongan_id) }}">{{ $lowongan->total_pelamar }}</a></td>
                     <td>
-                        <a class="btn btn-outline-info px-1 py-0 edit-form" href="{{ url('lowongan/edit/'.$lowongan->lowongan_id) }}" title="Edit">
+                        <a class="btn btn-outline-info p-1 edit-form" href="{{ url('lowongan/edit/'.$lowongan->lowongan_id) }}" title="Edit">
                             <i class="fas fa-edit"></i>
                         </a>
                         @if($lowongan->lowongan_status=='draft')
-                            <a class="btn btn-outline-danger px-1 py-0 hapus-form" href="#" data-id="{{ $lowongan->lowongan_id }}" title="Hapus">
+                            <a class="btn btn-outline-danger p-1 hapus-form" href="#" data-id="{{ $lowongan->lowongan_id }}" title="Hapus">
                                 <i class="fas fa-trash-alt"></i>
                             </a>
                         @endif

@@ -96,11 +96,11 @@
                     <td>{{ strtoupper($prodi->prodi_akreditasi) }}</td>
                     <td>{{ $prodi->total_dospem }}</td>
                     <td>
-                        <a class="btn btn-outline-info px-1 py-0 edit-form" href="#" data-id="{{ $prodi->prodi_id }}" title="Edit">
+                        <a class="btn btn-outline-info p-1 edit-form" href="#" data-id="{{ $prodi->prodi_id }}" title="Edit">
                             <i class="fas fa-edit"></i>
                         </a>
                         @if($prodi->total_dospem==0)
-                        <a class="btn btn-outline-danger px-1 py-0 hapus-form" href="#" data-id="{{ $prodi->prodi_id }}" title="Hapus">
+                        <a class="btn btn-outline-danger p-1 hapus-form" href="#" data-id="{{ $prodi->prodi_id }}" title="Hapus">
                             <i class="fas fa-trash-alt"></i>
                         </a>
                         @endif

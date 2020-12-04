@@ -39,7 +39,7 @@
         <li class="breadcrumb-item ml-auto"><a href="{{ route('/') }}">MagangHub</a></li>
         <li class="breadcrumb-item"><a href="{{ url('perusahaan/detail/'.$lowongan->lowongan_perusahaan_id) }}">Profil Perusahaan</a></li>
         <li class="breadcrumb-item"><a href="{{ route('lowongan.manage') }}">Kelola Lowongan</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Kelola Lowongan</li>
+        <li class="breadcrumb-item active" aria-current="page">Pelamar</li>
     </ol>
 
     @if(session('errors'))
@@ -120,6 +120,7 @@
                     <th>Kampus</th>
                     <th>Prodi</th>
                     <th>Mahasiswa</th>
+                    <th>Status</th>
                     <th>Opsi</th>
                 </tr>
             </thead>
@@ -132,8 +133,9 @@
                     <td>{{ $rekrut->univ_nama }}</td>
                     <td>{{ $rekrut->prodi_nama }}</td>
                     <td>{{ $rekrut->mahasiswa_nama }}</td>
+                    <td>{{ $rekrut->rekrut_status }}</td>
                     <td>
-                        <a class="btn btn-outline-info px-1 py-0 edit-form" href="{{ url('perekrutan/detailpelamar/'.$rekrut->rekrut_id) }}" title="Detail">
+                        <a class="btn btn-outline-info p-1 edit-form" href="{{ url('perekrutan/detailpelamar/'.$rekrut->rekrut_id) }}" title="Detail">
                             <small><i class="fas fa-user"></i> Detail</small>
                         </a>
                     </td>

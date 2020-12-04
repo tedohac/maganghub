@@ -263,7 +263,6 @@
 
             <!-- Modal body -->
             <div class="modal-body">
-                Apakah anda yakin untuk menyimpan lowongan sebagai draft?
             </div>
 
             <!-- Modal footer -->
@@ -282,10 +281,6 @@
 @endsection
 
 @section('bottom')
-<!-- DataTable-->
-<script src="{{ url('datatables/jquery.dataTables.js') }}"></script>
-<script src="{{ url('datatables/dataTables.bootstrap4.js') }}"></script>
-
 <!-- SB-Admin-->
 <script src="{{ url('js/sb-admin.min.js') }}"></script>
 
@@ -314,28 +309,6 @@
             $('#addMode').val('post');
             $('.modal-body').html('Apakah anda yakin untuk menyimpan dan mempublikasikan lowongan?');
             $('#confirmModal').modal('show');
-        });
-
-        $('#dataTable').on('click', '.hapus-form', function(){
-            var id =  $(this).data('id');
-            console.log(id);
-            
-            $.ajax({
-                type: 'GET',
-                url: '{{ url("prodi/detailjson") }}?id='+id,
-                success: function(data)
-                {
-                    var result = JSON.parse(data);
-                    // console.log(result);
-
-                    $('#submitDelete').attr('href', '{{ route("prodi.delete") }}?id='+id);
-                    $('.modal-body').html('Apakah anda yakin untuk menghapus Program Studi<br> ['+ result.prodi_id +'] '+result.prodi_nama+' ?');
-                    $('#deleteModal').modal('show');
-                },
-                error:function() {
-                    alert("Error!");
-                }
-            });
         });
 
         $('#formadd').parsley().on('form:validate', function (formInstance) {

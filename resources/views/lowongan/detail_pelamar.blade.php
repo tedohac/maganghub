@@ -11,6 +11,9 @@
     <!-- Profile -->
     <link href="{{ asset('styles/profile.css?v=').time() }}" rel="stylesheet">
 
+    <!-- Jodit -->
+    <link href="{{ url('styles/jodit.min.css') }}" rel="stylesheet">
+
     <style>
         .font-20 {
             font-size: 20px;
@@ -38,7 +41,10 @@
 @section('content')
     <ol class="breadcrumb p-1 ml-auto">
         <li class="breadcrumb-item ml-auto"><a href="{{ route('/') }}">MagangHub</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Detail Mahasiswa</li>
+        <li class="breadcrumb-item"><a href="{{ url('perusahaan/detail/'.$rekrut->lowongan_perusahaan_id) }}">Profil Perusahaan</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('lowongan.manage') }}">Kelola Lowongan</a></li>
+        <li class="breadcrumb-item"><a href="{{ url('perekrutan/pelamar/'.$rekrut->lowongan_id) }}">Pelamar</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Detail Pelamar</li>
     </ol>
 
     @if(session('errors'))
@@ -168,16 +174,184 @@
                 </td>
             </tr>
         </table>
+        @if($rekrut->rekrut_status=="melamar")
+        <div class="row">
+                <div class="col-6">
+                    <input type="button" class="btn btn-danger btn-block" value="Tolak Lamaran" id="btnTolak">
+                </div>
+                <div class="col-6 pl-0">
+                    <input type="button" class="btn btn-primary btn-block" value="Undang Test" id="btnUndang">
+                </div>
+            </div>
+        </td>
+        @elseif($rekrut->rekrut_status=="ditolak")
+        <div class="alert alert-warning">
+            Anda sudah menolak lamaran ini. <input type="button" class="btn btn-primary" value="Batal Penolakan" id="btnBatalTolak">
+        </div>
+        @endif
     </div>
     <!-- end detail info -->
 
+<form method="post" id="formadd" action="#">
+@csrf
+    <!-- Confirm Tolak Modal -->
+    <div class="modal fade" id="confirmTolakModal">
+        <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+            <h4 class="modal-title">Konfirmasi Tolak Lamaran</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <input type="hidden" name="rekrut_id" value="{{ $rekrut->rekrut_id }}">
+                Apakah anda yakin untuk <b>MENOLAK</b> lamaran ini?
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
+
+            <a class="btn btn-primary" href="{{ url('perekrutan/tolak/'.$rekrut->rekrut_id) }}">
+                Ya
+            </a>
+            </div>
+
+        </div>
+        </div>
+    </div>
+    <!-- End Confirm Tolak Modal -->
+
+    <!-- Confirm Batal Tolak Modal -->
+    <div class="modal fade" id="btnBatalTolak">
+        <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+            <h4 class="modal-title">Batal Penolakan Lamaran</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                Apakah anda yakin untuk <b>MEMBATALKAN PENOLAKAN</b> pada lamaran ini?
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
+
+            <input type="submit" class="btn btn-primary" id="sendsubmit" value="Ya">
+            
+            <a class="btn btn-primary" href="{{ url('perekrutan/bataltolak/'.$rekrut->rekrut_id) }}">
+                Ya
+            </a>
+            </div>
+
+        </div>
+        </div>
+    </div>
+    <!-- End Confirm Batal Tolak Modal -->
+    
+    <!-- Confirm Undang Modal -->
+    <div class="modal fade" id="confirmUndangModal">
+        <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+            <h4 class="modal-title">Undang Pelamar untuk Test</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                Anda akan mengirim undangan test kepada mahasiswa ini. Silahkan isi detail di bawah ini:
+                
+                <textarea id="undangPelamar" class="form-control" placeholder="Detail Undangan" name="detail_undangan" required="required"
+                            data-parsley-required
+                            data-parsley-required-message="Masukan detail undangan"></textarea><br /><br />
+                <label>File undangan</label><br />
+                <div class="input-group">
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="cvMahasiswa" name="mahasiswa_cv" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps">
+                        <label class="custom-file-label" for="cvMahasiswa">Pilih file</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
+
+            <input  type="submit" class="btn btn-primary" id="sendsubmit" value="Ya">
+            </div>
+
+        </div>
+        </div>
+    </div>
+    <!-- End Confirm Undang Modal -->
+</form>
 @endsection
 
 @section('bottom')
-<!-- DataTable-->
-<script src="{{ url('datatables/jquery.dataTables.js') }}"></script>
-<script src="{{ url('datatables/dataTables.bootstrap4.js') }}"></script>
 
 <!-- SB-Admin-->
 <script src="{{ url('js/sb-admin.min.js') }}"></script>
+
+<!-- Parsley Form Validation -->
+<script src="{{ url('js/parsley.min.js') }}"></script>
+<script>
+    $("#formadd").parsley({
+        errorClass: 'is-invalid text-danger',
+        errorsWrapper: '<span class="form-text text-danger"></span>',
+        errorTemplate: '<span></span>',
+        trigger: 'change'
+    })
+</script>
+
+<script>
+    $(document).ready(function (){
+        $(".custom-file-input").on("change", function() {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+
+        $('#btnTolak').click(function(){
+            $('#confirmTolakModal').modal('show');
+        });
+
+        $('#btnBatalTolak').click(function(){
+            $('#confirmBatalTolakModal').modal('show');
+        });
+
+        $('#btnUndang').click(function(){
+            $('#formadd').attr('action', '{{ route("perekrutan.undang") }}');
+            $('#confirmUndangModal').modal('show');
+        });
+
+        $('#formadd').parsley().on('form:validate', function (formInstance) {
+            var success = formInstance.isValid();
+            
+            if (!success) {
+                $('#confirmModal').modal('hide');
+            }
+        });
+    });
+</script>
+
+<!-- Jodit-->
+<script src="{{ url('js/jodit.min.js') }}"></script>
+<script>
+    $(document).ready(function(){
+        var editor = new Jodit("#undangPelamar", {
+        "spellcheck": false,
+        "buttons": "undo,redo,|,bold,underline,italic,|,superscript,subscript,|,ul,ol,|,outdent,indent,align,fontsize,|,image,link,|",
+        });
+    })
+</script>
 @endsection
