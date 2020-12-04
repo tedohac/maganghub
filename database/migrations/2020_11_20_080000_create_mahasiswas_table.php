@@ -27,6 +27,7 @@ class CreateMahasiswasTable extends Migration
             $table->string('mahasiswa_profile_pict', 20)->nullable();
             $table->string('mahasiswa_cv', 20)->nullable();
             $table->string('mahasiswa_khs', 20)->nullable();
+            $table->string('mahasiswa_status', 10)->nullable();
             $table->timestamps();
             $table->foreign('mahasiswa_user_email')->references('user_email')->on('users');
             $table->foreign('mahasiswa_dospem_id')->references('dospem_id')->on('dospems');

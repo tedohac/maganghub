@@ -143,4 +143,6 @@ Route::group(['prefix' => 'perekrutan', 'middleware' => 'web'], function () {
     Route::post('undang','PerekrutanController@undang')->name('perekrutan.undang')->middleware('cekrole:perusahaan');
     Route::get('tolak/{id}','PerekrutanController@tolak')->name('perekrutan.tolak')->middleware('cekrole:perusahaan');
     Route::get('bataltolak/{id}','PerekrutanController@bataltolak')->name('perekrutan.bataltolak')->middleware('cekrole:perusahaan');
+    
+    Route::get('lamaranlist','PerekrutanController@lamaranlist')->name('perekrutan.lamaranlist')->middleware('cekrole:mahasiswa');
 });
