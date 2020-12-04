@@ -145,10 +145,6 @@
 @endsection
 
 @section('bottom')
-<!-- DataTable-->
-<script src="{{ url('datatables/jquery.dataTables.js') }}"></script>
-<script src="{{ url('datatables/dataTables.bootstrap4.js') }}"></script>
-
 <!-- SB-Admin-->
 <script src="{{ url('js/sb-admin.min.js') }}"></script>
 @endsection

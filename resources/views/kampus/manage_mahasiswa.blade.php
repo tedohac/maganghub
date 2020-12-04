@@ -107,13 +107,13 @@
                     </td>
                     <td>{{ $mahasiswa->mahasiswa_status }}</td>
                     <td>
-                        <a class="btn btn-outline-info px-1 py-0 verify-form mb-1" href="#" data-id="{{ $mahasiswa->mahasiswa_id }}" title="Verifikasi Ulang">
+                        <a class="btn btn-outline-info p-1 verify-form mb-1" href="#" data-id="{{ $mahasiswa->mahasiswa_id }}" title="Verifikasi Ulang">
                             <i class="fas fa-envelope"></i>
                         </a>
-                        <a class="btn btn-outline-info px-1 py-0 edit-form mb-1" href="#" data-id="{{ $mahasiswa->mahasiswa_id }}" title="Edit">
+                        <a class="btn btn-outline-info p-1 edit-form mb-1" href="#" data-id="{{ $mahasiswa->mahasiswa_id }}" title="Edit">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <a class="btn btn-outline-danger px-1 py-0 hapus-form mb-1" href="#" data-id="{{ $mahasiswa->mahasiswa_id }}" title="Hapus">
+                        <a class="btn btn-outline-danger p-1 hapus-form mb-1" href="#" data-id="{{ $mahasiswa->mahasiswa_id }}" title="Hapus">
                             <i class="fas fa-trash-alt"></i>
                         </a>
                     </td>

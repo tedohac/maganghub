@@ -136,6 +136,17 @@
                     </a>
                 </td>
             </tr>
+            <tr class="align-top">
+                <td>
+                    <small>Daftar Lamaran</small><br />
+                    <div class="text-primary">{{ \App\Rekrut::getCount() }}</div>
+                </td>
+                <td class="text-right">
+                    <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('perekrutan.lamaranlist') }}">
+                        <small>LAMARAN</small>
+                    </a>
+                </td>
+            </tr>
         </table>
     </div>
 
