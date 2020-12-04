@@ -5,9 +5,6 @@
     <!-- SB Admin Template -->
     <link href="{{ asset('styles/sb-admin.css?v=').time() }}" rel="stylesheet">
 
-    <!-- DataTable-->
-    <link href="{{ url('datatables/dataTables.bootstrap4.css') }}" rel="stylesheet">
-
     <!-- Profile -->
     <link href="{{ asset('styles/profile.css?v=').time() }}" rel="stylesheet">
 
@@ -297,7 +294,6 @@
 
 <script>
     $(document).ready(function (){
-        var table = $('#dataTable').DataTable();
 
         $('#btnDraft').click(function(){
             $('#addMode').val('draft');
