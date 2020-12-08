@@ -20,7 +20,10 @@ class ProfilPerusahaanController extends Controller
                                 ->where('perusahaan_id', $id )->first();
         if(empty($perusahaan)) abort(404);
 
-        $lowongans = Lowongan::where('lowongan_perusahaan_id', $id )
+        $lowongans = Lowongan::join('perusahaans', 'perusahaans.perusahaan_id', '=', 'lowongans.lowongan_perusahaan_id')
+                             ->join('cities', 'cities.city_id', '=', 'lowongans.lowongan_city_id')
+                             ->join('fungsis', 'fungsis.fungsi_id', '=', 'lowongans.lowongan_fungsi_id')
+                             ->where('lowongan_perusahaan_id', $id )
                              ->where('lowongan_status', 'post')
                              ->get();
 

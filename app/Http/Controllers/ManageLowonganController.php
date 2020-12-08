@@ -45,6 +45,12 @@ class ManageLowonganController extends Controller
         
         if(!empty($request->filter_city)) $filter->city = $request->filter_city;
         else $filter->city = "";
+        
+        if(!empty($request->filter_mulaidari)) $filter->mulaidari = $request->filter_mulaidari;
+        else $filter->mulaidari = "";
+        
+        if(!empty($request->filter_mulaisampai)) $filter->mulaisampai = $request->filter_mulaisampai;
+        else $filter->mulaisampai = "";
 
         $lowongans = Lowongan::query();
         $lowongans = $lowongans->join('perusahaans', 'perusahaans.perusahaan_id', '=', 'lowongans.lowongan_perusahaan_id')
@@ -67,6 +73,15 @@ class ManageLowonganController extends Controller
             $city = City::where('city_id', $request->filter_city)->first();
             $filter->city_nama = $city->city_nama;
         }
+        
+        if(!empty($request->filter_mulaidari)) {
+            $lowongans = $lowongans->where('lowongan_tgl_mulai', ">=", $request->filter_mulaidari);
+        }
+        
+        if(!empty($request->filter_mulaisampai)) {
+            $lowongans = $lowongans->where('lowongan_tgl_mulai', "<=", $request->filter_mulaisampai);
+        }
+
         $lowongans = $lowongans->paginate(10);
 
         $fungsis = Fungsi::get();

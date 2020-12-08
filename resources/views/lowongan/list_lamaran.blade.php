@@ -15,6 +15,11 @@
         .font-20 {
             font-size: 20px;
         }
+        .longtext {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
     </style>
 @endsection
 
@@ -73,8 +78,9 @@
                 <tr>
                     <th>#</th>
                     <th>Tgl Melamar</th>
-                    <th>Kampus</th>
-                    <th>Prodi</th>
+                    <th>Lowongan</th>
+                    <th>Perusahaan</th>
+                    <th>Fungsi</th>
                     <th>Mahasiswa</th>
                     <th>Status</th>
                     <th>Opsi</th>
@@ -85,12 +91,22 @@
             @foreach($rekruts as $rekrut)
                 <tr>
                     <td>{{ $num }}</td>
-                    <td>{{ $rekrut->rekrut_tgl_melamar }}</td>
-                    <td>{{ $rekrut->univ_nama }}</td>
-                    <td>{{ $rekrut->prodi_nama }}</td>
+                    <td>{{ date('Y-m-d', strtotime($rekrut->rekrut_waktu_melamar)) }}</td>
+                    <td>
+                        <a href="{{ url('lowongan/detail/'.$rekrut->lowongan_id) }}">
+                            {{ $rekrut->lowongan_judul }}
+                        </a>
+                    </td>
+                    <td>{{ $rekrut->perusahaan_nama }}</td>
+                    <td>{{ $rekrut->fungsi_nama }}</td>
                     <td>{{ $rekrut->mahasiswa_nama }}</td>
                     <td>{{ $rekrut->rekrut_status }}</td>
                     <td>
+                        @if($rekrut->rekrut_waktu_diundang)
+                        <a class="btn btn-outline-info p-1 edit-form" href="{{ url('perekrutan/detailundangan/'.$rekrut->rekrut_id) }}" title="Undangan">
+                            <small><i class="fas fa-envelope"></i></small>
+                        </a>
+                        @endif
                     </td>
                 </tr>
                 @php ($num++)
@@ -120,14 +136,6 @@
             $('#submitDelete').attr('href', '{{ route("lowongan.delete") }}?id='+id);
             $('.modal-body').html('Apakah anda yakin untuk menghapus lowongan terpilih ?');
             $('#deleteModal').modal('show');
-        });
-
-        $('#formadd').parsley().on('form:validate', function (formInstance) {
-            var success = formInstance.isValid();
-            
-            if (!success) {
-                $('#confirmModal').modal('hide');
-            }
         });
     });
 </script>

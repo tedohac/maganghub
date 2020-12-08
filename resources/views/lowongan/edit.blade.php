@@ -163,9 +163,9 @@
                                 <select class="form-control" name="lowongan_durasi_a" required="required"
                                     data-parsley-required
                                     data-parsley-required-message="Pilih jumlah durasi">
-                                    <option value="{{ $durasi[0] }}" selected>{{ $durasi[0] }}</option>
                                 @for($i=1; $i<=30; $i++)
-                                    <option value="{{ $i }}">{{ $i }}</option>
+                                    @php ($selected = ($durasi[0]==$i) ? "selected" : "")
+                                    <option value="{{ $i }}" {{ $selected }}>{{ $i }}</option>
                                 @endfor
                                 </select>
                             </div>
@@ -173,9 +173,8 @@
                                 <select class="form-control" name="lowongan_durasi_b" required="required"
                                     data-parsley-required
                                     data-parsley-required-message="Pilih satuan durasi">
-                                    <option value="{{ $durasi[1] }}" selected>{{ $durasi[1] }}</option>
-                                    <option value="Hari">Hari</option>
-                                    <option value="Bulan">Bulan</option>
+                                    <option value="Hari" {{ ($durasi[1]=="Hari") ? "selected" : "" }}>Hari</option>
+                                    <option value="Bulan" {{ ($durasi[1]=="Bulan") ? "selected" : "" }}>Bulan</option>
                                 </select>
                             </div>
                         </div>
@@ -194,9 +193,9 @@
                                 <select class="form-control" name="lowongan_jlh_dibutuhkan" required="required"
                                     data-parsley-required
                                     data-parsley-required-message="Pilih jumlah tenaga dibutuhkan">
-                                    <option value="{{ $lowongan->lowongan_jlh_dibutuhkan }}" selected>{{ $lowongan->lowongan_jlh_dibutuhkan }}</option>
                                 @for($i=1; $i<=30; $i++)
-                                    <option value="{{ $i }}">{{ $i }}</option>
+                                    @php ($selected = ($lowongan->lowongan_jlh_dibutuhkan==$i) ? "selected" : "")
+                                    <option value="{{ $i }}" {{ $selected }}>{{ $i }}</option>
                                 @endfor
                                 </select>
                             </div>

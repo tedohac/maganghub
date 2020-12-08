@@ -66,6 +66,13 @@
         {{ $lowongan->lowongan_judul }}
     </h5>
     <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-3">
+        
+        @if(Auth::check() && Auth::user()->user_role == 'mahasiswa')
+        <a class="btn btn-block btn-outline-info p-1 mb-3" href="#" data-toggle="modal" data-target="#confirmModal">
+            <i class="fas fa-share-square"></i> Melamar Lowongan
+        </a>
+        @endif
+
         <table class="table table-sm" cellspacing="0">
             <tr>
                 <td class="greybox"><b>Perusahaan</b></td>
@@ -112,12 +119,6 @@
         
         <h5 class="mt-3 p-1 border-bottom">Job Desk</h5>
         {!! $lowongan->lowongan_jobdesk !!}
-        
-        @if(Auth::check() && Auth::user()->user_role == 'mahasiswa')
-        <a class="btn btn-block btn-outline-info p-1" href="#" data-toggle="modal" data-target="#confirmModal">
-            <i class="fas fa-share-square"></i> Melamar Lowongan
-        </a>
-        @endif
     </div>
     <!-- end detail lowongan -->
 

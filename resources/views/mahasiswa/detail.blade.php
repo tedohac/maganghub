@@ -115,13 +115,27 @@
             <tr>
                 <td class="greybox"><b>CV</b></td>
                 <td>
-                    {{ $mahasiswa->mahasiswa_cv ? $mahasiswa->mahasiswa_cv : '-' }}
+                    @if($mahasiswa->mahasiswa_cv)
+                        <a class="btn btn-outline-success p-1" href="{{ url('storage/mahasiswa_cv/'.$mahasiswa->mahasiswa_cv) }}"> 
+                            <i class="fas fa-cloud-download-alt"></i>
+                            Download CV
+                        </a>
+                    @else
+                        <span class="badge badge-danger p-1">Belum melengkapi CV</span>
+                    @endif
                 </td>
             </tr>
             <tr>
                 <td class="greybox"><b>KHS</b></td>
                 <td>
-                    {{ $mahasiswa->mahasiswa_khs ? $mahasiswa->mahasiswa_khs : '-' }}
+                    @if($mahasiswa->mahasiswa_khs)
+                        <a class="btn btn-outline-success p-1" href="{{ url('storage/mahasiswa_khs/'.$mahasiswa->mahasiswa_khs) }}"> 
+                            <i class="fas fa-cloud-download-alt"></i>
+                            Download KHS
+                        </a>
+                    @else
+                        <span class="badge badge-danger p-1">Belum melengkapi KHS</span>
+                    @endif
                 </td>
             </tr>
             <tr>
