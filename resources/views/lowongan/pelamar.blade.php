@@ -129,7 +129,7 @@
             @foreach($rekruts as $rekrut)
                 <tr>
                     <td>{{ $num }}</td>
-                    <td>{{ $rekrut->rekrut_tgl_melamar }}</td>
+                    <td>{{ date('Y-m-d', strtotime($rekrut->rekrut_waktu_melamar)) }}</td>
                     <td>{{ $rekrut->univ_nama }}</td>
                     <td>{{ $rekrut->prodi_nama }}</td>
                     <td>{{ $rekrut->mahasiswa_nama }}</td>

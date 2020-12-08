@@ -74,6 +74,7 @@
         Kelola Dosen Pembimbing
     </h5>
     <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-3">
+    <div class="table-responsive">
         <table class="table table-sm table-striped table-hover" id="dataTable" width="100%" cellspacing="0">
             <thead class="greybox">
                 <tr>
@@ -122,6 +123,7 @@
             @endforeach
             </tbody>
         </table>
+    </div>
     </div>
     <!-- end dospem list -->
     

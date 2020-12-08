@@ -8,6 +8,9 @@
     <!-- Auto complete -->
     <link href="{{ url('styles/select2.min.css') }}" rel="stylesheet" />
 
+    <!-- Datepicker -->
+    <link href="{{ url('styles/bootstrap-datepicker3.css') }}" rel="stylesheet">
+
     <style>
         .company-thumb img {
             max-width: 100%;
@@ -74,10 +77,8 @@
 
             <div class="row">
                 <div class="col-6 mb-2">
-                    <div class="form-label-group">
-                        <input id="perusahaanFilter" class="form-control" placeholder="Perusahaan" name="filter_perusahaan" value="{{ $filter->perusahaan }}">
-                        <label for="perusahaanFilter">Perusahaan</label>
-                    </div>
+                    <small>Perusahaan</small><br>
+                    <input class="form-control" name="filter_perusahaan" value="{{ $filter->perusahaan }}">
                 </div>
                 
                 <div class="col-6 mb-2">
@@ -88,6 +89,16 @@
                             <option value="{{ $fungsi->fungsi_id }}" {{ $selected }}>{{ $fungsi->fungsi_nama }}</option>
                         @endforeach
                     </select>
+                </div>
+                
+                <div class="col-6 mb-2">
+                    <small>Filter Mulai Magang - Dari</small><br>
+                    <input id="mulaidariFilter" class="form-control" placeholder="Dari" name="filter_mulaidari" type="text" value="{{ $filter->mulaidari }}">
+                </div>
+                
+                <div class="col-6 mb-2">
+                    <small>Filter Mulai Magang - Sampai</small><br>
+                    <input id="mulaisampaiFilter" class="form-control" placeholder="Sampai" name="filter_mulaisampai" type="text" value="{{ $filter->mulaisampai }}">
                 </div>
 
                 <div class="col-6 mb-2">
@@ -181,5 +192,38 @@ $(document).ready(function() {
         width: '100%'
     });
 });
+</script>
+
+<!-- Datepicker-->
+<script src="{{ url('js/bootstrap-datepicker.min.js') }}"></script>
+<script>
+    $(document).ready(function(){
+
+        var uploaded=$('input[name="filter_mulaidari"]');
+        uploaded.datepicker({
+            format: "yyyy-mm-dd",
+            container: $('#mulaidariFilter').parent(),
+            todayHighlight: true,
+            autoclose: true,
+            orientation: "auto",
+        });
+        
+        var uploaded=$('input[name="filter_mulaisampai"]');
+        uploaded.datepicker({
+            format: "yyyy-mm-dd",
+            container: $('#mulaisampaiFilter').parent(),
+            todayHighlight: true,
+            autoclose: true,
+            orientation: "auto",
+        });
+        
+        $("#mulaidariFilter").on('changeDate', function(selected) {
+            var startDate = new Date(selected.date.valueOf());
+            $("#mulaisampaiFilter").datepicker('setStartDate', startDate);
+            if($("#mulaidariFilter").val() > $("#mulaisampaiFilter").val()){
+            $("#mulaisampaiFilter").val($("#mulaidariFilter").val());
+            }
+        });
+    })
 </script>
 @endsection
