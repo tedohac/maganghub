@@ -16,4 +16,10 @@ class Mahasiswa extends Model
                                 ->get();
         return $mahasiswa->count();
     }
+    
+    public static function getStatus()
+    {
+        $mahasiswa = Mahasiswa::where('mahasiswa_user_email', Auth::User()->user_email)->first();
+        return $mahasiswa->mahasiswa_status;
+    }
 }

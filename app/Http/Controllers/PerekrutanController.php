@@ -419,8 +419,18 @@ class PerekrutanController extends Controller
 
             Rekrut::where('rekrut_id', $id)
                 ->update([
-                    'rekrut_status'                 => 'lulus',
+                    'rekrut_status' => 'lulus',
                     'rekrut_waktu_diterima'  => date("Y-m-d H:i:s"),
+                ]);
+
+            Rekrut::where('rekrut_id', '!=', $id)
+                ->update([
+                    'rekrut_status' => 'magang',
+                ]);
+
+            Mahasiswa::where('mahasiswa_id', $rekrut->mahasiswa_id)
+                ->update([
+                    'mahasiswa_status' => 'magang',
                 ]);
 
             Mail::to($rekrut->mahasiswa_user_email)->send(new DiterimaEmail($rekrut));

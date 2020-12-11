@@ -74,7 +74,11 @@
     </h5>
     <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-5">
 
-        @if($rekrut->rekrut_status=="melamar")
+        @if($rekrut->rekrut_status=="magang")
+        <div class="alert alert-warning">
+            Anda sudah diterima magang pada lowongan lain.
+        </div>
+        @elseif($rekrut->rekrut_status=="melamar")
         <div class="alert alert-warning">
             Menunggu undangan test dari perusahaan.
         </div>
