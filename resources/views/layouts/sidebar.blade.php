@@ -121,6 +121,12 @@
             <small>Mahasiswa</small><br>
             <b>{{ $univsb->mahasiswa_nim }}</b><br>
             {{ $univsb->mahasiswa_nama }}
+            
+            @if(\App\Mahasiswa::getStatus()=='magang')
+            <div class="alert alert-info p-1">
+                <small>sedang magang</small>
+            </div>
+            @endif
         </div>
     </div>
     <div class="p-2">
@@ -136,6 +142,7 @@
                     </a>
                 </td>
             </tr>
+            @if(\App\Mahasiswa::getStatus()=='melamar')
             <tr class="align-top">
                 <td>
                     <small>Lamaran Baru</small><br />
@@ -169,6 +176,30 @@
                     </a>
                 </td>
             </tr>
+            @else
+            <tr class="align-top">
+                <td>
+                    <small>Riwayat Lamaran</small><br />
+                    <div class="text-primary">{{ \App\Rekrut::getCountAll() }}</div>
+                </td>
+                <td class="text-right">
+                    <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('perekrutan.lamaranlist') }}">
+                        <small>LAMARAN</small>
+                    </a>
+                </td>
+            </tr>
+            <tr class="align-top">
+                <td>
+                    <small>Kelola Kegiatan</small><br />
+                    <div class="text-primary">0</div>
+                </td>
+                <td class="text-right">
+                    <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('perekrutan.lamaranlist') }}">
+                        <small>KEGIATAN</small>
+                    </a>
+                </td>
+            </tr>
+            @endif
         </table>
     </div>
 

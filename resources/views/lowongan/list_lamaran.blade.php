@@ -143,7 +143,9 @@
                     <td>{{ $rekrut->fungsi_nama }}</td>
                     <td>{{ $rekrut->mahasiswa_nama }}</td>
                     <td>
-                        @if($rekrut->rekrut_status=="melamartlk")
+                        @if($rekrut->rekrut_status=='magang')
+                            Sedang Magang
+                        @elseif($rekrut->rekrut_status=="melamartlk")
                             Ditolak
                         @elseif($rekrut->rekrut_status=="tlkundang")
                             Undangan ditolak mahasiswa

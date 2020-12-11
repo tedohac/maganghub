@@ -82,7 +82,11 @@
     </h5>
     <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-5">
 
-        @if($rekrut->rekrut_status=="melamar")
+        @if($rekrut->rekrut_status=="magang")
+        <div class="alert alert-warning">
+            Mahasiswa ini sudah lulus pada lowongan lain dan sedang melakukan magang
+        </div>
+        @elseif($rekrut->rekrut_status=="melamar")
         <div class="row">
             <div class="col-6">
                 <input type="button" class="btn btn-danger btn-block" value="Tolak Lamaran" id="btnTolak">
@@ -129,7 +133,8 @@
         </div>
         @elseif($rekrut->rekrut_status=="lulus")
         <div class="alert alert-warning">
-            Anda telah menerima mahasiswa ini lulus tes dan ditarima magang pada lowongan ini, mahasiswa dapat langsung membuat kegiatan magang di hari pertama magang.
+            Anda telah menyatakan bahwa mahasiswa ini lulus test dan diterima magang pada lowongan ini.<br />
+            Mahasiswa dapat langsung membuat kegiatan magang.
         </div>
         @endif
 

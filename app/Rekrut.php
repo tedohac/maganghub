@@ -7,6 +7,14 @@ use Auth;
 
 class Rekrut extends Model
 {
+    public static function getCountAll()
+    {
+        $rekrut = Rekrut::join('mahasiswas', 'mahasiswas.mahasiswa_id', '=', 'rekruts.rekrut_mahasiswa_id')
+                      ->where('mahasiswa_user_email', Auth::User()->user_email)
+                      ->get();
+        return $rekrut->count();
+    }
+
     public static function getCount($status)
     {
         $rekrut = Rekrut::join('mahasiswas', 'mahasiswas.mahasiswa_id', '=', 'rekruts.rekrut_mahasiswa_id')
