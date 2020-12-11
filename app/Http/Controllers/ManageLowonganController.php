@@ -263,4 +263,20 @@ class ManageLowonganController extends Controller
         Session::flash('success', 'Hapus lowongan berhasil');
         return redirect()->back();
     }
+
+    public function autocom(Request $request)
+    {
+        $json = [];
+
+        if(!empty($request->query('q'))){
+            // DB::enableQueryLog();
+            $json = Lowongan::join('perusahaans', 'perusahaans.perusahaan_id', '=', 'lowongans.lowongan_perusahaan_id')
+                            ->where('perusahaan_user_email', Auth::user()->user_email )
+                            ->where('lowongan_judul', 'LIKE', '%'.$request->query('q').'%')
+                            ->select('lowongan_id as id', 'lowongan_judul as text')
+                            ->get()->take(5);
+            // dd(DB::getQueryLog());
+        }
+        echo json_encode($json);
+    }
 }

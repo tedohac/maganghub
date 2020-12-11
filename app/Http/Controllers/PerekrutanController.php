@@ -7,6 +7,7 @@ use App\Mail\DiterimaEmail;
 use App\Mail\UndanganEmail;
 use App\Lowongan;
 use App\Mahasiswa;
+use App\Perusahaan;
 use App\Rekrut;
 use App\Skill;
 use Auth;
@@ -42,7 +43,7 @@ class PerekrutanController extends Controller
         $rekrut = new Rekrut;
         $rekrut->rekrut_lowongan_id  = $lowongan->lowongan_id;
         $rekrut->rekrut_mahasiswa_id = $mahasiswa->mahasiswa_id;
-        $rekrut->rekrut_waktu_melamar  = date("Y-m-d H:i:s");
+        $rekrut->rekrut_waktu_melamar= date("Y-m-d H:i:s");
         $rekrut->rekrut_status       = 'melamar';
         $simpanrekrut = $rekrut->save();
                             
@@ -56,32 +57,53 @@ class PerekrutanController extends Controller
         }
     }
 
-    public function pelamar($id)
+    public function pelamar(Request $request)
     {
+        $filter = new \stdClass();
+        
+        if(!empty($request->filter_lowongan)) $filter->lowongan = $request->filter_lowongan;
+        else $filter->lowongan = "";
+        
+        if(!empty($request->filter_status)) $filter->status = $request->filter_status;
+        else $filter->status = "";
 
-        // DB::enableQueryLog();
-        $lowongan = Lowongan::join('perusahaans', 'perusahaans.perusahaan_id', '=', 'lowongans.lowongan_perusahaan_id')
-                            ->join('cities', 'cities.city_id', '=', 'lowongans.lowongan_city_id')
-                            ->join('fungsis', 'fungsis.fungsi_id', '=', 'lowongans.lowongan_fungsi_id')
-                            ->where('lowongan_id', $id)
-                            ->where('perusahaan_user_email', Auth::user()->user_email )->first();
-        // dd(DB::getQueryLog());
-        if(empty($lowongan)) return abort(404);
+        // // DB::enableQueryLog();
+        $perusahaan = Perusahaan::where('perusahaan_user_email', Auth::user()->user_email )->first();
+        // // dd(DB::getQueryLog());
+        if(empty($perusahaan)) return abort(404);
         
         $rekruts = Rekrut::join('mahasiswas', 'mahasiswas.mahasiswa_id', '=', 'rekruts.rekrut_mahasiswa_id')
+                        ->join('lowongans', 'lowongans.lowongan_id', '=', 'rekruts.rekrut_lowongan_id')
                         ->join('dospems', 'dospems.dospem_id', '=', 'mahasiswas.mahasiswa_dospem_id')
                         ->join('prodis', 'prodis.prodi_id', '=', 'dospems.dospem_prodi_id')
                         ->join('univs', 'univs.univ_id', '=', 'prodis.prodi_univ_id')
-                        ->where('rekrut_lowongan_id', $id)->get();
+                        ->where('lowongan_perusahaan_id', "=", $perusahaan->perusahaan_id);
+                        
+        if(!empty($request->filter_lowongan)) {
+            $rekruts = $rekruts->where('rekrut_lowongan_id', "=", $request->filter_lowongan);
+            $lowongan = Lowongan::where('lowongan_id', $request->filter_lowongan)->first();
+            $filter->lowongan_judul = $lowongan->lowongan_judul;
+        }     
+
+        if(!empty($request->filter_status)) {
+            $rekruts = $rekruts->where('rekrut_status', "=", $request->filter_status);
+        }
+        
+        $rekruts = $rekruts->get();
 
     	return view('lowongan.pelamar', [
-            'lowongan' => $lowongan,
+            'perusahaan' => $perusahaan,
+            'filter' => $filter,
             'rekruts' => $rekruts,
         ]);
     }
     
-    public function lamaranlist()
+    public function lamaranlist(Request $request)
     {
+        $filter = new \stdClass();
+        
+        if(!empty($request->filter_status)) $filter->status = $request->filter_status;
+        else $filter->status = "";
 
         // DB::enableQueryLog();
         $mahasiswa = Mahasiswa::join('dospems', 'dospems.dospem_id', '=', 'mahasiswas.mahasiswa_dospem_id')
@@ -96,10 +118,17 @@ class PerekrutanController extends Controller
                         ->join('cities', 'cities.city_id', '=', 'lowongans.lowongan_city_id')
                         ->join('fungsis', 'fungsis.fungsi_id', '=', 'lowongans.lowongan_fungsi_id')
                         ->join('mahasiswas', 'mahasiswas.mahasiswa_id', '=', 'rekruts.rekrut_mahasiswa_id')
-                        ->where('mahasiswa_user_email', Auth::user()->user_email )->get();
+                        ->where('mahasiswa_id', $mahasiswa->mahasiswa_id);
         
+        if(!empty($request->filter_status)) {
+            $rekruts = $rekruts->where('rekrut_status', "=", $request->filter_status);
+        }
+        
+        $rekruts = $rekruts->get();
+
     	return view('lowongan.list_lamaran', [
             'mahasiswa' => $mahasiswa,
+            'filter' => $filter,
             'rekruts' => $rekruts,
         ]);
     }
@@ -107,6 +136,7 @@ class PerekrutanController extends Controller
     public function detailpelamar($id)
     {
 
+                        // DB::enableQueryLog();
         $rekrut = Rekrut::join('lowongans', 'lowongans.lowongan_id', '=', 'rekruts.rekrut_lowongan_id')
                         ->join('perusahaans', 'perusahaans.perusahaan_id', '=', 'lowongans.lowongan_perusahaan_id')
                         ->join('cities', 'cities.city_id', '=', 'lowongans.lowongan_city_id')
@@ -117,6 +147,7 @@ class PerekrutanController extends Controller
                         ->join('univs', 'univs.univ_id', '=', 'prodis.prodi_univ_id')
                         ->where('perusahaan_user_email', Auth::user()->user_email )
                         ->where('rekrut_id', $id)->first();
+                        // dd(DB::getQueryLog());
         if(empty($rekrut)) return abort(404);
 
         $skills = Skill::where('skill_mahasiswa_id', $rekrut->rekrut_mahasiswa_id)
@@ -124,6 +155,7 @@ class PerekrutanController extends Controller
 
         $rekrut->lowongan_requirement = htmlspecialchars_decode($rekrut->lowongan_requirement);
         $rekrut->lowongan_jobdesk     = htmlspecialchars_decode($rekrut->lowongan_jobdesk);
+        $rekrut->rekrut_undangan_desc = htmlspecialchars_decode($rekrut->rekrut_undangan_desc);
 
     	return view('lowongan.detail_pelamar', [
             'rekrut' => $rekrut,
@@ -145,7 +177,7 @@ class PerekrutanController extends Controller
         {
             Rekrut::where('rekrut_id',$id)
                 ->update([
-                    'rekrut_status' => 'ditolak',
+                    'rekrut_status' => 'melamartlk',
                 ]);
         } catch (\Illuminate\Database\QueryException $e) {
             Session::flash('error', 'Proses gagal, mohon coba kembali beberapa saat lagi atau hubungi admin MagangHub');
@@ -241,7 +273,51 @@ class PerekrutanController extends Controller
         return redirect()->back();
     }
     
-    public function detailundangan($id)
+    public function tolakundangan(Request $request)
+    {
+        if(empty($request->rekrut_id)) abort(404);
+
+        $rekrut = Rekrut::join('mahasiswas', 'mahasiswas.mahasiswa_id', '=', 'rekruts.rekrut_mahasiswa_id')
+                        ->where('mahasiswa_user_email', Auth::user()->user_email )
+                        ->where('rekrut_id', $request->rekrut_id)->first();
+        if(empty($rekrut)) return abort(404);
+
+        $rules = [
+            'alasan_penolakan'     => 'required',
+        ];
+ 
+        $messages = [
+            'alasan_penolakan.required'    => 'Masukan alasan penolakan',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+ 
+        if($validator->fails()){
+            return redirect()->back()->withErrors($validator)->withInput($request->all);
+        }
+        
+
+        try
+        {
+            date_default_timezone_set('Asia/Jakarta');
+
+            Rekrut::where('rekrut_id', $request->rekrut_id)
+                ->update([
+                    'rekrut_status'              => 'tlkundang',
+                    'rekrut_tolakundangan_reason'=> $request->alasan_penolakan,
+                    'rekrut_waktu_tolakundangan' => date("Y-m-d H:i:s"),
+                ]);
+
+        } catch (\Illuminate\Database\QueryException $e) {
+            Session::flash('error', 'Proses gagal, mohon coba kembali beberapa saat lagi atau hubungi admin MagangHub');
+            return redirect()->back();
+        }
+
+        Session::flash('success', 'Penolakan undangan berhasil, mohon hubungi perusahaan untuk penawaran undangan kembali.');
+        return redirect()->back();
+    }
+    
+    public function detaillamaran($id)
     {
         
         $rekrut = Rekrut::join('lowongans', 'lowongans.lowongan_id', '=', 'rekruts.rekrut_lowongan_id')
@@ -257,10 +333,10 @@ class PerekrutanController extends Controller
         if(empty($rekrut)) return abort(404);
 
         $rekrut->lowongan_requirement = htmlspecialchars_decode($rekrut->lowongan_requirement);
-        $rekrut->lowongan_requirement = htmlspecialchars_decode($rekrut->lowongan_requirement);
+        $rekrut->lowongan_jobdesk     = htmlspecialchars_decode($rekrut->lowongan_jobdesk);
         $rekrut->rekrut_undangan_desc = htmlspecialchars_decode($rekrut->rekrut_undangan_desc);
 
-    	return view('lowongan.detail_undangan', [
+    	return view('lowongan.detail_lamaran', [
             'rekrut' => $rekrut
         ]);
     }

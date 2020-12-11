@@ -72,6 +72,47 @@
     <h5 class="mb-2 p-0">
         Daftar Lamaran
     </h5>
+    
+    <!-- filter -->
+    <div class="card mb-3 p-1">
+        <div class="card-header p-1">
+            
+            <a class="btn btn-outline-primary p-1" data-toggle="collapse" href="#collapseSearchCon" role="button" aria-expanded="false" aria-controls="collapseSearchCon">    
+                <i class="fas fa-filter"></i>
+                Filter
+            </a>
+
+            @if($filter->status!="")
+                <a href="{{ route('perekrutan.lamaranlist') }}"><span class="badge badge-danger">Clear</span></a>
+            @endif
+        </div>
+        <div class="card-body collapse p-1" id="collapseSearchCon">
+        <form method="get" id="formadd" action="{{ route('perekrutan.pelamar') }}">
+
+            <div class="row">
+
+                <div class="col-6">
+                    <small>Status Pelamar</small><br>
+                    <select class="form-control" name="filter_status">
+                        <option value="" {{ ($filter->status=='') ? 'selected' : '' }}>-- Pilih status pelamar --</option>
+                        <option value="melamar" {{ ($filter->status=='melamar') ? 'selected' : '' }}>Melamar</option>
+                        <option value="melamartlk" {{ ($filter->status=='melamartlk') ? 'selected' : '' }}>Melamar Ditolak</option>
+                        <option value="diundang" {{ ($filter->status=='diundang') ? 'selected' : '' }}>Diundang</option>
+                        <option value="siap test" {{ ($filter->status=='siap test') ? 'selected' : '' }}>Siap Test</option>
+                    </select>
+                </div>
+
+                <div class="col-12">
+                    <input type="submit" formmethod="get" class="btn btn-primary btn-block h-100" value="Apply" formaction="#">
+                </div>
+
+            </div>
+
+        </form>
+        </div>
+    </div>
+    <!-- end filter -->
+
     <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-3">
         <table class="table table-sm table-striped table-hover" id="dataTable" width="100%" cellspacing="0">
             <thead class="greybox">
@@ -100,13 +141,17 @@
                     <td>{{ $rekrut->perusahaan_nama }}</td>
                     <td>{{ $rekrut->fungsi_nama }}</td>
                     <td>{{ $rekrut->mahasiswa_nama }}</td>
-                    <td>{{ $rekrut->rekrut_status }}</td>
                     <td>
-                        @if($rekrut->rekrut_waktu_diundang)
-                        <a class="btn btn-outline-info p-1 edit-form" href="{{ url('perekrutan/detailundangan/'.$rekrut->rekrut_id) }}" title="Undangan">
-                            <small><i class="fas fa-envelope"></i></small>
-                        </a>
+                        @if($rekrut->rekrut_status=="melamartlk")
+                            Ditolak
+                        @else
+                            {{ $rekrut->rekrut_status }}
                         @endif
+                    </td>
+                    <td>
+                        <a class="btn btn-outline-info p-1 edit-form" href="{{ url('perekrutan/detaillamaran/'.$rekrut->rekrut_id) }}" title="Undangan">
+                            <small><i class="fas fa-ellipsis-h"></i></small>
+                        </a>
                     </td>
                 </tr>
                 @php ($num++)
