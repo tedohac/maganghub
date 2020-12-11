@@ -106,10 +106,10 @@
         </div>
         <div class="row">
             <div class="col-6">
-                <input type="button" class="btn btn-danger btn-block" value="Tidak Lolos Test" id="btnTdkLolos">
+                <input type="button" class="btn btn-danger btn-block" value="Tidak Lulus Test" id="btnTdkLulus">
             </div>
             <div class="col-6 pl-0">
-                <input type="button" class="btn btn-primary btn-block" value="Lolos Test dan Diterima" id="btnLolos">
+                <input type="button" class="btn btn-primary btn-block" value="Lulus Test dan Diterima" id="btnLulus">
             </div>
         </div>
         @elseif($rekrut->rekrut_status=="tlkundang")
@@ -120,11 +120,16 @@
         </div>
         <div class="row">
             <div class="col-6">
-                <input type="button" class="btn btn-danger btn-block" value="Tolak Lamaran" id="btnTolak">
+                <input type="button" class="btn btn-primary btn-block" value="Undang Test Kembali" id="btnUndang">
             </div>
-            <div class="col-6 pl-0">
-                <input type="button" class="btn btn-primary btn-block" value="Undang Test" id="btnUndang">
-            </div>
+        </div>
+        @elseif($rekrut->rekrut_status=="tdklulus")
+        <div class="alert alert-warning">
+            Anda telah menyatakan bahwa mahasiswa ini tidak lulus test.
+        </div>
+        @elseif($rekrut->rekrut_status=="lulus")
+        <div class="alert alert-warning">
+            Anda telah menerima mahasiswa ini lulus tes dan ditarima magang pada lowongan ini, mahasiswa dapat langsung membuat kegiatan magang di hari pertama magang.
         </div>
         @endif
 
@@ -475,28 +480,27 @@
     </div>
     <!-- End Confirm Undang Modal -->
     
-    <!-- Confirm Lolos Modal -->
-    <div class="modal fade" id="lolosModal">
+    <!-- Confirm Lulus Modal -->
+    <div class="modal fade" id="lulusModal">
         <div class="modal-dialog">
         <div class="modal-content">
 
             <!-- Modal Header -->
             <div class="modal-header">
-            <h4 class="modal-title">Lolos Test dan Siap Magang</h4>
+            <h4 class="modal-title">Lulus Test dan Siap Magang</h4>
             <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
 
             <!-- Modal body -->
             <div class="modal-body">
-                Apakah anda yakin untuk menyatakan bahwa mahasiswa ini lolos test dan <b>DITERIMA</b> sebagai mahasiswa magang di perusahaan anda?<br />
-                Mahasiswa butuh konfirmasi sekali lagi untuk mulai magang.
+                Apakah anda yakin untuk menyatakan bahwa mahasiswa ini lulus test dan <b>DITERIMA</b> sebagai mahasiswa magang di perusahaan anda?
             </div>
 
             <!-- Modal footer -->
             <div class="modal-footer">
             <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
 
-            <a class="btn btn-primary" href="{{ url('perekrutan/lolos/'.$rekrut->rekrut_id) }}">
+            <a class="btn btn-primary" href="{{ url('perekrutan/lulus/'.$rekrut->rekrut_id) }}">
                 Ya
             </a>
             </div>
@@ -504,7 +508,37 @@
         </div>
         </div>
     </div>
-    <!-- End Confirm Tolak Modal -->
+    <!-- End Confirm Lulus Modal -->
+    
+    <!-- Confirm Lulus Modal -->
+    <div class="modal fade" id="tdkLulusModal">
+        <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+            <h4 class="modal-title">Tidak Lulus Test</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                Apakah anda yakin untuk menyatakan bahwa mahasiswa ini <b>TIDAK LULUS TEST</b> pada lowongan magang ini?
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
+
+            <a class="btn btn-primary" href="{{ url('perekrutan/tdklulus/'.$rekrut->rekrut_id) }}">
+                Ya
+            </a>
+            </div>
+
+        </div>
+        </div>
+    </div>
+    <!-- End Confirm Lulus Modal -->
 </form>
 @endsection
 
@@ -539,8 +573,12 @@
             $('#confirmBatalTolakModal').modal('show');
         });
 
-        $('#btnLolos').click(function(){
-            $('#lolosModal').modal('show');
+        $('#btnTdkLulus').click(function(){
+            $('#tdkLulusModal').modal('show');
+        });
+
+        $('#btnLulus').click(function(){
+            $('#lulusModal').modal('show');
         });
 
         $('#btnUndang').click(function(){

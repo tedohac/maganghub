@@ -99,6 +99,7 @@
                         <option value="melamartlk" {{ ($filter->status=='melamartlk') ? 'selected' : '' }}>Melamar Ditolak</option>
                         <option value="diundang" {{ ($filter->status=='diundang') ? 'selected' : '' }}>Diundang</option>
                         <option value="siap test" {{ ($filter->status=='siap test') ? 'selected' : '' }}>Siap Test</option>
+                        <option value="tdklulus" {{ ($filter->status=='tdklulus') ? 'selected' : '' }}>Tidak Lulus</option>
                     </select>
                 </div>
 
@@ -144,6 +145,8 @@
                     <td>
                         @if($rekrut->rekrut_status=="melamartlk")
                             Ditolak
+                        @elseif($rekrut->rekrut_status=="tlkundang")
+                            Undangan ditolak mahasiswa
                         @else
                             {{ $rekrut->rekrut_status }}
                         @endif

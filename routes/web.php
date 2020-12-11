@@ -151,6 +151,6 @@ Route::group(['prefix' => 'perekrutan', 'middleware' => 'web'], function () {
     Route::get('confirmundangan/{id}','PerekrutanController@confirmundangan')->name('perekrutan.confirmundangan')->middleware('cekrole:mahasiswa');
     Route::post('tolakundangan','PerekrutanController@tolakundangan')->name('perekrutan.tolakundangan')->middleware('cekrole:mahasiswa');
     
-    Route::get('lolos/{id}','PerekrutanController@lolos')->name('perekrutan.lolos')->middleware('cekrole:perusahaan');
-    Route::get('tidaklolos/{id}','PerekrutanController@tidaklolos')->name('perekrutan.tidaklolos')->middleware('cekrole:perusahaan');
+    Route::get('lulus/{id}','PerekrutanController@lulus')->name('perekrutan.lulus')->middleware('cekrole:perusahaan');
+    Route::get('tdklulus/{id}','PerekrutanController@tdklulus')->name('perekrutan.tdklulus')->middleware('cekrole:perusahaan');
 });
