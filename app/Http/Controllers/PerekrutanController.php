@@ -369,7 +369,7 @@ class PerekrutanController extends Controller
         return redirect()->back();
     }
 
-    public function lolos($id)
+    public function tdklulus($id)
     {
         if(empty($id)) abort(404);
         
@@ -388,7 +388,38 @@ class PerekrutanController extends Controller
 
             Rekrut::where('rekrut_id', $id)
                 ->update([
-                    'rekrut_status'                 => 'diterima',
+                    'rekrut_status'          => 'tdklulus'
+                ]);
+
+        } catch (\Illuminate\Database\QueryException $e) {
+            Session::flash('error', 'Proses gagal, mohon coba kembali beberapa saat lagi atau hubungi admin MagangHub ');
+            return redirect()->back();
+        }
+
+        Session::flash('success', 'Mahasiswa berhasil dinyatakan tidak lulus test');
+        return redirect()->back();
+    }
+
+    public function lulus($id)
+    {
+        if(empty($id)) abort(404);
+        
+        $rekrut = Rekrut::join('lowongans', 'lowongans.lowongan_id', '=', 'rekruts.rekrut_lowongan_id')
+                        ->join('perusahaans', 'perusahaans.perusahaan_id', '=', 'lowongans.lowongan_perusahaan_id')
+                        ->join('cities', 'cities.city_id', '=', 'lowongans.lowongan_city_id')
+                        ->join('fungsis', 'fungsis.fungsi_id', '=', 'lowongans.lowongan_fungsi_id')
+                        ->join('mahasiswas', 'mahasiswas.mahasiswa_id', '=', 'rekruts.rekrut_mahasiswa_id')
+                        ->where('perusahaan_user_email', Auth::user()->user_email )
+                        ->where('rekrut_id', $id)->first();
+        if(empty($rekrut)) return abort(404);
+
+        try
+        {
+            date_default_timezone_set('Asia/Jakarta');
+
+            Rekrut::where('rekrut_id', $id)
+                ->update([
+                    'rekrut_status'                 => 'lulus',
                     'rekrut_waktu_diterima'  => date("Y-m-d H:i:s"),
                 ]);
 
@@ -399,7 +430,7 @@ class PerekrutanController extends Controller
             return redirect()->back();
         }
 
-        Session::flash('success', 'Penerimaan mahasiswa magang berhasil, menunggu konfirmasi dari mahasiswa untuk mulai magang');
+        Session::flash('success', 'Penerimaan mahasiswa magang berhasil. Mahasiswa dapat langsung melakukan pencatatan kegiatan magang');
         return redirect()->back();
     }
 }

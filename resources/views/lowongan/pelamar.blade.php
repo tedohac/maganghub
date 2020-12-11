@@ -147,6 +147,8 @@
                     <td>
                         @if($rekrut->rekrut_status=="melamartlk")
                             Ditolak
+                        @elseif($rekrut->rekrut_status=="tlkundang")
+                            Undangan ditolak mahasiswa
                         @else
                             {{ $rekrut->rekrut_status }}
                         @endif

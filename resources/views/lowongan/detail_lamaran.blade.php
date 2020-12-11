@@ -103,6 +103,14 @@
         <div class="alert alert-warning">
             Anda sudah menolak undangan test pada lamaran ini, mohon hubungi perusahaan untuk penawaran undangan kembali.
         </div>
+        @elseif($rekrut->rekrut_status=="tdklulus")
+        <div class="alert alert-warning">
+            Anda dinyatakan tidak lulus test pada lowongan magang ini, tetap semangat dan semoga sukses!
+        </div>
+        @elseif($rekrut->rekrut_status=="lulus")
+        <div class="alert alert-warning">
+            Anda telah diterima magang pada lowongan ini, anda dapat langsung membuat kegiatan magang pada hari pertama magang anda.
+        </div>
         @endif
 
         <div class="track">
