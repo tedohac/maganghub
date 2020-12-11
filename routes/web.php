@@ -58,6 +58,7 @@ Route::group(['prefix' => 'kampus', 'middleware' => 'web'], function () {
 Route::get('cityautocom','CityController@autocom')->name('cityautocom');
 Route::get('prodiautocom','ManageProdiController@autocom')->name('prodiautocom');
 Route::get('dospemautocom','ManageDospemController@autocom')->name('dospemautocom');
+Route::get('lowonganautocom','ManageLowonganController@autocom')->name('lowonganautocom');
 
 Route::group(['prefix' => 'prodi', 'middleware' => 'web'], function () {
 
@@ -137,7 +138,7 @@ Route::group(['prefix' => 'lowongan', 'middleware' => 'web'], function () {
 
 Route::group(['prefix' => 'perekrutan', 'middleware' => 'web'], function () {
     Route::get('apply/{id}','PerekrutanController@apply')->name('perekrutan.apply')->middleware('cekrole:mahasiswa');
-    Route::get('pelamar/{id}','PerekrutanController@pelamar')->name('perekrutan.pelamar')->middleware('cekrole:perusahaan');
+    Route::get('pelamar','PerekrutanController@pelamar')->name('perekrutan.pelamar')->middleware('cekrole:perusahaan');
     Route::get('detailpelamar/{id}','PerekrutanController@detailpelamar')->name('perekrutan.detailpelamar')->middleware('cekrole:perusahaan');
     
     Route::post('undang','PerekrutanController@undang')->name('perekrutan.undang')->middleware('cekrole:perusahaan');
@@ -145,10 +146,10 @@ Route::group(['prefix' => 'perekrutan', 'middleware' => 'web'], function () {
     Route::get('bataltolak/{id}','PerekrutanController@bataltolak')->name('perekrutan.bataltolak')->middleware('cekrole:perusahaan');
     
     Route::get('lamaranlist','PerekrutanController@lamaranlist')->name('perekrutan.lamaranlist')->middleware('cekrole:mahasiswa');
-    Route::get('detailundangan/{id}','PerekrutanController@detailundangan')->name('perekrutan.detailundangan')->middleware('cekrole:mahasiswa');
+    Route::get('detaillamaran/{id}','PerekrutanController@detaillamaran')->name('perekrutan.detaillamaran')->middleware('cekrole:mahasiswa');
     
     Route::get('confirmundangan/{id}','PerekrutanController@confirmundangan')->name('perekrutan.confirmundangan')->middleware('cekrole:mahasiswa');
-    Route::get('tolakundangan/{id}','PerekrutanController@tolakundangan')->name('perekrutan.tolakundangan')->middleware('cekrole:mahasiswa');
+    Route::post('tolakundangan','PerekrutanController@tolakundangan')->name('perekrutan.tolakundangan')->middleware('cekrole:mahasiswa');
     
     Route::get('lolos/{id}','PerekrutanController@lolos')->name('perekrutan.lolos')->middleware('cekrole:perusahaan');
     Route::get('tidaklolos/{id}','PerekrutanController@tidaklolos')->name('perekrutan.tidaklolos')->middleware('cekrole:perusahaan');

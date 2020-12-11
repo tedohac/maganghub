@@ -23,7 +23,7 @@ class ManageKampusController extends Controller
     {
         $univs = Univ::join('users', 'univs.univ_user_email', '=', 'users.user_email')
                     ->whereNotNull('user_email_verified_at')
-                    ->paginate(5);
+                    ->paginate(6);
 
         return view('kampus.list', [
             'univs' => $univs,

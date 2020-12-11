@@ -11,12 +11,6 @@
     <!-- Profile -->
     <link href="{{ asset('styles/profile.css?v=').time() }}" rel="stylesheet">
 
-    <!-- Jodit -->
-    <link href="{{ url('styles/jodit.min.css') }}" rel="stylesheet">
-
-    <!-- Datepicker -->
-    <link href="{{ url('styles/bootstrap-datepicker3.css') }}" rel="stylesheet">
-
     <!-- Tracking -->
     <link href="{{ asset('styles/tracking.css?v=').time() }}" rel="stylesheet">
 
@@ -30,15 +24,15 @@
 @section('banner-front')
 <div class="row m-0 mt-5 panel">
     <div class="profile-thumb col-lg-3 col-md-4 pr-md-0 text-center text-dark">
-        @if(empty($rekrut->mahasiswa_profile_pict))
-        <i class="fas fa-user-graduate bg-white border p-2 shadow-sm" style="font-size: 130px"></i>
+        @if(empty($rekrut->perusahaan_profile_pict))
+        <i class="fas fa-briefcase bg-white border p-2 shadow-sm" style="font-size: 130px"></i>
         @else
-        <img src="{{ url('storage/mahasiswa_profile/'.$rekrut->mahasiswa_profile_pict) }}" class="bg-white border p-2 shadow">
+        <img src="{{ url('storage/perusahaan_profile/'.$rekrut->perusahaan_profile_pict) }}" class="bg-white border p-2 shadow">
         @endif
     </div>
     <div class="profile-text col-lg-9 col-md-8 p-md-0 mb-2">
-        <h3 class="m-0">{{ $rekrut->mahasiswa_nama }}</h3>
-        {{ $rekrut->mahasiswa_nim }} - <a href="{{ url('kampus/detail/'.$rekrut->univ_id) }}" class="text-white">{{ $rekrut->univ_nama }}</a>
+        <h3 class="m-0">{{ $rekrut->perusahaan_nama }}</h3>
+        <small>Menunggu kelengkapan profil untuk verifikasi</small>
     </div>
 </div>
 @endsection
@@ -48,7 +42,7 @@
     <ol class="breadcrumb p-1 ml-auto">
         <li class="breadcrumb-item ml-auto"><a href="{{ route('/') }}">MagangHub</a></li>
         <li class="breadcrumb-item ml-auto"><a href="{{ route('perekrutan.lamaranlist') }}">Daftar Lamaran</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Undangan</li>
+        <li class="breadcrumb-item active" aria-current="page">Detail Lamaran</li>
     </ol>
 
     @if(session('errors'))
@@ -76,11 +70,22 @@
 
     <!-- detail info -->
     <h5 class="mb-2 p-0">
-        Undangan Test Magang
+        Detail Lamaran
     </h5>
     <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-5">
 
-        @if($rekrut->rekrut_status=="diundang")
+        @if($rekrut->rekrut_status=="melamar")
+        <div class="alert alert-warning">
+            Menunggu undangan test dari perusahaan.
+        </div>
+        @elseif($rekrut->rekrut_status=="melamartlk")
+        <div class="alert alert-warning">
+            Mohon maaf, lamaran ini ditolak perusahaan. Tetap semangat dan jangan menyerah!
+        </div>
+        @elseif($rekrut->rekrut_status=="diundang")
+        <div class="alert alert-warning">
+            Perusahaan mengundang anda untuk test, perhatikan pada informasi undangan di bawah. Mohon konfirmasi bahwa anda akan hadir pada test tersebut.
+        </div>
         <div class="row">
                 <div class="col-6">
                     <input type="button" class="btn btn-danger btn-block" value="Tolak Undangan" id="btnTolak">
@@ -90,6 +95,14 @@
                 </div>
             </div>
         </td>
+        @elseif($rekrut->rekrut_status=="siap test")
+        <div class="alert alert-warning">
+            Anda sudah mengkonfirmasi untuk menghadiri test, semoga sukses!
+        </div>
+        @elseif($rekrut->rekrut_status=="tlkundang")
+        <div class="alert alert-warning">
+            Anda sudah menolak undangan test pada lamaran ini, mohon hubungi perusahaan untuk penawaran undangan kembali.
+        </div>
         @endif
 
         <div class="track">
@@ -131,7 +144,8 @@
             </div>
         </div>
 
-        <div class="py-1">{{ $rekrut->perusahaan_nama }} mengundang anda untuk test magang pada:</div>
+        @if($rekrut->rekrut_waktu_diundang)
+        <h5 class="mt-3 p-1 border-bottom">Undangan Test</h5>
         <table class="table" cellspacing="0">
             <tr>
                 <td class="greybox"><b>Waktu</b></td>
@@ -146,6 +160,7 @@
                 <td>{!! $rekrut->rekrut_undangan_desc !!}</td>
             </tr>
         </table>
+        @endif
 
         <div class="py-1">Informasi Lowongan</div>
         <table class="table" cellspacing="0">
@@ -202,6 +217,8 @@
     </div>
     <!-- end detail info -->
 
+<form method="post" id="formadd" action="{{ route('perekrutan.undang') }}">
+@csrf
     <!-- Confirm Undangan Modal -->
     <div class="modal fade" id="confirmModal">
         <div class="modal-dialog">
@@ -247,15 +264,20 @@
             <!-- Modal body -->
             <div class="modal-body">
                 Apakah anda yakin untuk <b>MENOLAK</b> undangan test ini?
+                
+                <input type="hidden" name="rekrut_id" value="{{ $rekrut->rekrut_id }}">
+                <label class="mt-2">Alasan Penolakan</label><br />
+                <textarea id="alasanPenolakan" class="form-control" placeholder="Alasan Penolakan" name="alasan_penolakan" required="required"
+                    data-parsley-required
+                    data-parsley-required-message="Masukan alasan penolakan"></textarea>
+
             </div>
 
             <!-- Modal footer -->
             <div class="modal-footer">
             <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
 
-            <a class="btn btn-primary" href="{{ url('perekrutan/tolakundangan/'.$rekrut->rekrut_id) }}">
-                Ya
-            </a>
+            <input  type="submit" class="btn btn-primary" id="sendsubmit" value="Ya">
             </div>
 
         </div>
@@ -292,6 +314,7 @@
         </div>
     </div>
     <!-- End Confirm Batal Tolak Modal -->
+</form>
 @endsection
 
 @section('bottom')
@@ -318,6 +341,7 @@
         });
 
         $('#btnTolak').click(function(){
+            $('#formadd').attr('action', '{{ route("perekrutan.tolakundangan") }}');
             $('#tolakModal').modal('show');
         });
 
@@ -339,30 +363,4 @@
     });
 </script>
 
-<!-- Jodit-->
-<script src="{{ url('js/jodit.min.js') }}"></script>
-<script>
-    $(document).ready(function(){
-        var editor = new Jodit("#descUndangan", {
-        "spellcheck": false,
-        "buttons": "undo,redo,|,bold,underline,italic,|,superscript,subscript,|,ul,ol,|,outdent,indent,align,fontsize,|,image,link,|",
-        });
-    })
-</script>
-
-<!-- Datepicker-->
-<script src="{{ url('js/bootstrap-datepicker.min.js') }}"></script>
-<script>
-    $(document).ready(function(){
-
-        var uploaded=$('input[name="undangan_tanggal"]');
-        uploaded.datepicker({
-            format: "yyyy-mm-dd",
-            container: $('#tglUndangan').parent(),
-            todayHighlight: true,
-            autoclose: true,
-            orientation: "auto",
-        });
-    })
-</script>
 @endsection

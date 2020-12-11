@@ -84,15 +84,14 @@
 
         @if($rekrut->rekrut_status=="melamar")
         <div class="row">
-                <div class="col-6">
-                    <input type="button" class="btn btn-danger btn-block" value="Tolak Lamaran" id="btnTolak">
-                </div>
-                <div class="col-6 pl-0">
-                    <input type="button" class="btn btn-primary btn-block" value="Undang Test" id="btnUndang">
-                </div>
+            <div class="col-6">
+                <input type="button" class="btn btn-danger btn-block" value="Tolak Lamaran" id="btnTolak">
             </div>
-        </td>
-        @elseif($rekrut->rekrut_status=="ditolak")
+            <div class="col-6 pl-0">
+                <input type="button" class="btn btn-primary btn-block" value="Undang Test" id="btnUndang">
+            </div>
+        </div>
+        @elseif($rekrut->rekrut_status=="melamartlk")
         <div class="alert alert-warning">
             Anda sudah menolak lamaran ini. <input type="button" class="btn btn-primary p-1" value="Batal Penolakan" id="btnBatalTolak">
         </div>
@@ -104,15 +103,28 @@
         @elseif($rekrut->rekrut_status=="siap test")
         <div class="alert alert-warning">
             Mahasiswa mengkonfirmasi atas undangan test dari anda, sudah ada hasil test?
-            <div class="row">
-                    <div class="col-6">
-                        <input type="button" class="btn btn-danger btn-block" value="Tidak Lolos Test" id="btnTdkLolos">
-                    </div>
-                    <div class="col-6 pl-0">
-                        <input type="button" class="btn btn-primary btn-block" value="Lolos Test dan Diterima" id="btnLolos">
-                    </div>
-                </div>
-            </td>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <input type="button" class="btn btn-danger btn-block" value="Tidak Lolos Test" id="btnTdkLolos">
+            </div>
+            <div class="col-6 pl-0">
+                <input type="button" class="btn btn-primary btn-block" value="Lolos Test dan Diterima" id="btnLolos">
+            </div>
+        </div>
+        @elseif($rekrut->rekrut_status=="tlkundang")
+        <div class="alert alert-warning">
+            Mahasiswa menolak undangan terakhir dari anda (mohon lihat detail undangan di bawah) dengan alasan:<br />
+            {{ $rekrut->rekrut_tolakundangan_reason }}<br />
+            Anda dapat mengirim kembali undangan ke mahasiswa tersebut.
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <input type="button" class="btn btn-danger btn-block" value="Tolak Lamaran" id="btnTolak">
+            </div>
+            <div class="col-6 pl-0">
+                <input type="button" class="btn btn-primary btn-block" value="Undang Test" id="btnUndang">
+            </div>
         </div>
         @endif
 
@@ -155,6 +167,24 @@
             </div>
         </div>
 
+        @if($rekrut->rekrut_waktu_diundang)
+        <h5 class="mt-3 p-1 border-bottom">Undangan Test</h5>
+        <table class="table" cellspacing="0">
+            <tr>
+                <td class="greybox"><b>Waktu</b></td>
+                <td>{{ date('d M Y H:i', strtotime($rekrut->rekrut_undangan_waktu)) }}</td>
+            </tr>
+            <tr>
+                <td class="greybox"><b>Tempat</b></td>
+                <td>{{ $rekrut->rekrut_undangan_alamat }}</td>
+            </tr>
+            <tr>
+                <td class="greybox"><b>Deskripsi</b></td>
+                <td>{!! $rekrut->rekrut_undangan_desc !!}</td>
+            </tr>
+        </table>
+        @endif
+
         <div class="py-1">Informasi Mahasiswa Pelamar</div>
         <table class="table" cellspacing="0">
             <tr>
@@ -166,7 +196,13 @@
             <tr>
                 <td class="greybox"><b>NIM</b></td>
                 <td>
-                    {{ $rekrut->mahasiswa_nim ? $rekrut->mahasiswa_nim : '-' }}
+                    {{ $rekrut->mahasiswa_nim }}
+                </td>
+            </tr>
+            <tr>
+                <td class="greybox"><b>Mahasiswa</b></td>
+                <td>
+                    {{ $rekrut->mahasiswa_nama }}
                 </td>
             </tr>
             <tr>

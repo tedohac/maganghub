@@ -138,12 +138,34 @@
             </tr>
             <tr class="align-top">
                 <td>
-                    <small>Daftar Lamaran</small><br />
-                    <div class="text-primary">{{ \App\Rekrut::getCount() }}</div>
+                    <small>Lamaran Baru</small><br />
+                    <div class="text-primary">{{ \App\Rekrut::getCount('melamar') }}</div>
                 </td>
                 <td class="text-right">
-                    <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('perekrutan.lamaranlist') }}">
+                    <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('perekrutan.lamaranlist').'?filter_status=melamar' }}">
                         <small>LAMARAN</small>
+                    </a>
+                </td>
+            </tr>
+            <tr class="align-top">
+                <td>
+                    <small>Undangan Test</small><br />
+                    <div class="text-primary">{{ \App\Rekrut::getCount('diundang') }}</div>
+                </td>
+                <td class="text-right">
+                    <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('perekrutan.lamaranlist').'?filter_status=diundang' }}">
+                        <small>UNDANGAN TEST</small>
+                    </a>
+                </td>
+            </tr>
+            <tr class="align-top">
+                <td>
+                    <small>Siap Test</small><br />
+                    <div class="text-primary">{{ \App\Rekrut::getCount('siap test') }}</div>
+                </td>
+                <td class="text-right">
+                    <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('perekrutan.lamaranlist').'?filter_status=siap test' }}">
+                        <small>SIAP TEST</small>
                     </a>
                 </td>
             </tr>
@@ -192,12 +214,34 @@
             </tr>
             <tr class="align-top">
                 <td>
-                    <small>Post Lowongan</small><br />
+                    <small>Lowongan Diposting</small><br />
                     <div class="text-primary">{{ \App\Lowongan::getCountPosted() }}</div>
                 </td>
                 <td class="text-right">
                     <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('lowongan.manage') }}">
                         <small>LOWONGAN</small>
+                    </a>
+                </td>
+            </tr>
+            <tr class="align-top">
+                <td>
+                    <small>Pelamar Baru</small><br />
+                    <div class="text-primary">{{ \App\Rekrut::getCountPerusahaan('melamar') }}</div>
+                </td>
+                <td class="text-right">
+                    <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('perekrutan.pelamar').'?filter_status=melamar' }}">
+                        <small>PELAMAR BARU</small>
+                    </a>
+                </td>
+            </tr>
+            <tr class="align-top">
+                <td>
+                    <small>Siap Test</small><br />
+                    <div class="text-primary">{{ \App\Rekrut::getCountPerusahaan('siap test') }}</div>
+                </td>
+                <td class="text-right">
+                    <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('perekrutan.pelamar').'?filter_status=siap test' }}">
+                        <small>SIAP TEST</small>
                     </a>
                 </td>
             </tr>
