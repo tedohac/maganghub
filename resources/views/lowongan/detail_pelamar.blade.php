@@ -80,7 +80,8 @@
     <h5 class="mb-2 p-0">
         Detail Pelamar
     </h5>
-    <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-5">
+    <!-- lamaran status -->
+    <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-3">
 
         @if($rekrut->rekrut_status=="magang")
         <div class="alert alert-warning">
@@ -176,9 +177,13 @@
                 </span>
             </div>
         </div>
+    </div>
+    <!-- end lamaran status -->
 
-        @if($rekrut->rekrut_waktu_diundang)
-        <h5 class="mt-3 p-1 border-bottom">Undangan Test</h5>
+    @if($rekrut->rekrut_waktu_diundang)
+    <!-- undangan test -->
+    <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-3">
+        <div class="py-1">Undangan Test</div>
         <table class="table" cellspacing="0">
             <tr>
                 <td class="greybox"><b>Waktu</b></td>
@@ -193,8 +198,12 @@
                 <td>{!! $rekrut->rekrut_undangan_desc !!}</td>
             </tr>
         </table>
-        @endif
+    </div>
+    <!-- end undangan test -->
+    @endif
 
+    <!-- info mahasiswa -->
+    <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-3">
         <div class="py-1">Informasi Mahasiswa Pelamar</div>
         <table class="table" cellspacing="0">
             <tr>
@@ -274,7 +283,11 @@
                 </td>
             </tr>
         </table>
+    </div>
+    <!-- end info mahasiswa -->
         
+    <!-- info lowongan -->
+    <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-3">
         <div class="py-1">Informasi Lowongan</div>
         <table class="table" cellspacing="0">
             <tr>
@@ -320,7 +333,7 @@
         <h5 class="mt-3 p-1 border-bottom">Job Desk</h5>
         {!! $rekrut->lowongan_jobdesk !!}
     </div>
-    <!-- end detail info -->
+    <!-- end info lowongan -->
 
 <form method="post" id="formadd" action="{{ route('perekrutan.undang') }}">
 @csrf

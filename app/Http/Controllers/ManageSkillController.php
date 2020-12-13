@@ -13,8 +13,6 @@ class ManageSkillController extends Controller
 {
     public function manage()
     {
-        if(Auth::user()->user_role != 'mahasiswa') return abort(404);
-
         $mahasiswa = Mahasiswa::join('dospems', 'dospems.dospem_id', '=', 'mahasiswas.mahasiswa_dospem_id')
                             ->join('prodis', 'prodis.prodi_id', '=', 'dospems.dospem_prodi_id')
                             ->join('univs', 'univs.univ_id', '=', 'prodis.prodi_univ_id')

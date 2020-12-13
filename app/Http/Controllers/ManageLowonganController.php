@@ -16,11 +16,6 @@ class ManageLowonganController extends Controller
 {
     public function manage()
     {
-        if(Auth::user()->user_role != 'perusahaan') return abort(404);
-
-        $perusahaan = Perusahaan::where('perusahaan_user_email', Auth::user()->user_email )->first();
-        if(empty($perusahaan)) return abort(404);
-
         $lowongans = Lowongan::join('perusahaans', 'perusahaans.perusahaan_id', '=', 'lowongans.lowongan_perusahaan_id')
                             ->join('fungsis', 'fungsis.fungsi_id', '=', 'lowongans.lowongan_fungsi_id')
                             ->join('cities', 'cities.city_id', '=', 'lowongans.lowongan_city_id')
@@ -28,7 +23,6 @@ class ManageLowonganController extends Controller
                             ->where('perusahaan_user_email', Auth::user()->user_email)->get();
 
     	return view('lowongan.manage', [
-            'perusahaan' => $perusahaan,
             'lowongans' => $lowongans
         ]);
     }
@@ -95,8 +89,6 @@ class ManageLowonganController extends Controller
 
     public function detail($id)
     {
-        $user_role = Auth::user()->user_role;
-        if($user_role != 'mahasiswa' && $user_role != 'dospem' && $user_role != 'perusahaan') return abort(404);
         // DB::enableQueryLog();
         $lowongan = Lowongan::join('perusahaans', 'perusahaans.perusahaan_id', '=', 'lowongans.lowongan_perusahaan_id')
                             ->join('cities', 'cities.city_id', '=', 'lowongans.lowongan_city_id')
@@ -117,15 +109,9 @@ class ManageLowonganController extends Controller
 
     public function add()
     {
-        if(Auth::user()->user_role != 'perusahaan') return abort(404);
-
-        $perusahaan = Perusahaan::where('perusahaan_user_email', Auth::user()->user_email )->first();
-        if(empty($perusahaan)) return abort(404);
-
         $fungsis = Fungsi::get();
 
     	return view('lowongan.add', [
-            'perusahaan' => $perusahaan,
             'fungsis' => $fungsis
         ]);
     }
@@ -229,7 +215,6 @@ class ManageLowonganController extends Controller
     
     public function edit($id)
     {
-        if(Auth::user()->user_role != 'perusahaan') return abort(404);
         // DB::enableQueryLog();
         $lowongan = Lowongan::join('perusahaans', 'perusahaans.perusahaan_id', '=', 'lowongans.lowongan_perusahaan_id')
                             ->join('cities', 'cities.city_id', '=', 'lowongans.lowongan_city_id')

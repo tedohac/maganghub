@@ -24,18 +24,7 @@
 @endsection
 
 @section('banner-front')
-<div class="row m-0 mt-5 panel">
-    <div class="profile-thumb col-lg-3 col-md-4 pr-md-0 text-center text-dark">
-        @if(empty($mahasiswa->mahasiswa_profile_pict))
-        <i class="fas fa-user-graduate bg-white border p-2 shadow-sm" style="font-size: 130px"></i>
-        @else
-        <img src="{{ url('storage/mahasiswa_profile/'.$mahasiswa->mahasiswa_profile_pict) }}" class="bg-white border p-2 shadow">
-        @endif
-    </div>
-    <div class="profile-text col-lg-9 col-md-8 p-md-0 mb-2">
-        <h3 class="m-0">{{ $mahasiswa->mahasiswa_nama }}</h3>
-        {{ $mahasiswa->mahasiswa_nim }} - <a href="{{ url('kampus/detail/'.$mahasiswa->univ_id) }}" class="text-white">{{ $mahasiswa->univ_nama }}</a>
-    </div>
+<div class="row m-0 mt-5 py-4 panel">
 </div>
 @endsection
 
@@ -70,7 +59,7 @@
 
     <!-- detail lowongan -->
     <h5 class="mb-2 p-0">
-        Daftar Lamaran
+        Daftar Lamaran Anda
     </h5>
     
     <!-- filter -->
