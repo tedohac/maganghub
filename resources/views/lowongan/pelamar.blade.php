@@ -22,18 +22,7 @@
 @endsection
 
 @section('banner-front')
-<div class="row m-0 mt-5 panel">
-    <div class="profile-thumb col-lg-3 col-md-4 pr-md-0 text-center text-dark">
-        @if(empty($perusahaan->perusahaan_profile_pict))
-        <i class="fas fa-briefcase bg-white border p-2 shadow-sm" style="font-size: 130px"></i>
-        @else
-        <img src="{{ url('storage/perusahaan_profile/'.$perusahaan->perusahaan_profile_pict) }}" class="bg-white border p-2 shadow">
-        @endif
-    </div>
-    <div class="profile-text col-lg-9 col-md-8 p-md-0 mb-2">
-        <h3 class="m-0">{{ $perusahaan->perusahaan_nama }}</h3>
-        <small>Menunggu kelengkapan profil untuk verifikasi</small>
-    </div>
+<div class="row m-0 mt-5 py-4 panel">
 </div>
 @endsection
 

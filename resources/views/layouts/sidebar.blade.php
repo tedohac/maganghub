@@ -142,7 +142,7 @@
                     </a>
                 </td>
             </tr>
-            @if(\App\Mahasiswa::getStatus()=='melamar')
+            @if(\App\Mahasiswa::getStatus()=='mencari')
             <tr class="align-top">
                 <td>
                     <small>Lamaran Baru</small><br />
@@ -190,11 +190,11 @@
             </tr>
             <tr class="align-top">
                 <td>
-                    <small>Kelola Kegiatan</small><br />
+                    <small>Kegiatan Magang</small><br />
                     <div class="text-primary">0</div>
                 </td>
                 <td class="text-right">
-                    <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('perekrutan.lamaranlist') }}">
+                    <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('kegiatan.manage') }}">
                         <small>KEGIATAN</small>
                     </a>
                 </td>
@@ -230,7 +230,7 @@
             {{ $univsb->perusahaan_nama }}
         </div>
     </div>
-    <div class="p-2">
+    <div class="sidebar-profile-bot w-100 p-2">
         <table class="w-100">
             <tr class="align-top">
                 <td>
@@ -243,6 +243,10 @@
                     </a>
                 </td>
             </tr>
+        </table>
+    </div>
+    <div class="sidebar-profile-bot w-100 p-2">
+        <table class="w-100">
             <tr class="align-top">
                 <td>
                     <small>Lowongan Diposting</small><br />
@@ -254,6 +258,21 @@
                     </a>
                 </td>
             </tr>
+        </table>
+    </div>
+    <div class="sidebar-profile-bot w-100 p-2">
+        <table class="w-100">
+            <tr class="align-top">
+                <td>
+                    <small>Daftar Pelamar</small><br />
+                    <div class="text-primary">{{ \App\Rekrut::getCountPerusahaanAll() }}</div>
+                </td>
+                <td class="text-right">
+                    <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('perekrutan.pelamar') }}">
+                        <small>PELAMAR</small>
+                    </a>
+                </td>
+            </tr>
             <tr class="align-top">
                 <td>
                     <small>Pelamar Baru</small><br />
@@ -261,7 +280,7 @@
                 </td>
                 <td class="text-right">
                     <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('perekrutan.pelamar').'?filter_status=melamar' }}">
-                        <small>PELAMAR BARU</small>
+                        <small>BARU</small>
                     </a>
                 </td>
             </tr>
@@ -273,6 +292,17 @@
                 <td class="text-right">
                     <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('perekrutan.pelamar').'?filter_status=siap test' }}">
                         <small>SIAP TEST</small>
+                    </a>
+                </td>
+            </tr>
+            <tr class="align-top">
+                <td>
+                    <small>Magang Berjalan</small><br />
+                    <div class="text-primary">{{ \App\Rekrut::getCountPerusahaan('lulus') }}</div>
+                </td>
+                <td class="text-right">
+                    <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('perekrutan.pelamar').'?filter_status=lulus' }}">
+                        <small>BERJALAN</small>
                     </a>
                 </td>
             </tr>

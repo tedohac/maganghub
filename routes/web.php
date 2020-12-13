@@ -154,3 +154,10 @@ Route::group(['prefix' => 'perekrutan', 'middleware' => 'web'], function () {
     Route::get('lulus/{id}','PerekrutanController@lulus')->name('perekrutan.lulus')->middleware('cekrole:perusahaan');
     Route::get('tdklulus/{id}','PerekrutanController@tdklulus')->name('perekrutan.tdklulus')->middleware('cekrole:perusahaan');
 });
+
+Route::group(['prefix' => 'kegiatan', 'middleware' => 'web'], function () {
+    Route::get('manage','ManageKegiatanController@manage')->name('kegiatan.manage')->middleware('cekrole:mahasiswa');
+    
+    Route::get('add/{date}','ManageKegiatanController@add')->name('kegiatan.add')->middleware('cekrole:mahasiswa');
+    Route::post('save','ManageKegiatanController@save')->name('kegiatan.save')->middleware('cekrole:mahasiswa');
+});

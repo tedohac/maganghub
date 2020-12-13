@@ -35,7 +35,7 @@
     <ol class="breadcrumb p-1 ml-auto">
         <li class="breadcrumb-item ml-auto"><a href="{{ route('/') }}">MagangHub</a></li>
         <li class="breadcrumb-item"><a href="{{ url('perusahaan/detail/'.$lowongan->perusahaan_id) }}">Profil Perusahaan</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Detai Lowongan</li>
+        <li class="breadcrumb-item active" aria-current="page">Detail Lowongan</li>
     </ol>
 
     @if(session('errors'))

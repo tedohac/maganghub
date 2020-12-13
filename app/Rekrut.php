@@ -32,4 +32,12 @@ class Rekrut extends Model
                         ->where('rekrut_status', $status);
         return $rekrut->count();
     }
+    
+    public static function getCountPerusahaanAll()
+    {
+        $rekrut = Rekrut::join('lowongans', 'lowongans.lowongan_id', '=', 'rekruts.rekrut_lowongan_id')
+                        ->join('perusahaans', 'perusahaans.perusahaan_id', '=', 'lowongans.lowongan_perusahaan_id')
+                        ->where('perusahaan_user_email', Auth::User()->user_email);
+        return $rekrut->count();
+    }
 }

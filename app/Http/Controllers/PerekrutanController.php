@@ -127,7 +127,6 @@ class PerekrutanController extends Controller
         $rekruts = $rekruts->get();
 
     	return view('lowongan.list_lamaran', [
-            'mahasiswa' => $mahasiswa,
             'filter' => $filter,
             'rekruts' => $rekruts,
         ]);
