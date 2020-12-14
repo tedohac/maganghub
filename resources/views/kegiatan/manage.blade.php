@@ -52,6 +52,10 @@
     <!-- begin content -->
     <h5 class="mb-2 p-0">
         Kegiatan Magang
+        
+        <a class="btn btn-outline-info p-1 float-right" href="{{ route('kegiatan.printpreview') }}">
+            <small><i class="fas fa-file-pdf"></i> Cetak Laporan</small>
+        </a>
     </h5>
     <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-3">
     

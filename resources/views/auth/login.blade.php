@@ -81,10 +81,10 @@
                 
                 <div class="d-flex justify-content-between">
                     <div>
-                        <input id="rememberLogin" type="checkbox" name="login_remember">
+                        <!-- <input id="rememberLogin" type="checkbox" name="login_remember">
                         <label for="rememberLogin">
                             Ingat saya
-                        </label>
+                        </label> -->
                     </div>
 
                     <div>

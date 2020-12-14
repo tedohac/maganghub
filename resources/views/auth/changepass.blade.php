@@ -22,8 +22,7 @@
 @section('content')
     <div class="container mt-5">
         <div class="card-login mx-auto shadow px-4 py-5" id="content">
-            <h4>Reset Password</h4>
-            <p class="text-justify">Silahkan masukan password baru anda.</p>
+            <h4>Ubah Password</h4>
             
             @if(session('errors'))
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -48,16 +47,26 @@
                 </div>
             @endif
 
-            <form action="{{ route('resetpassprocess') }}" method="post" id="registform">
+            <form action="{{ route('changepassprocess') }}" method="post" id="registform">
             @csrf
             
             <div class="form-label-group mb-3">
-                <input type="hidden" name="email" value="{{ $email }}">
-                <input type="hidden" name="token" value="{{ $token }}">
-                <input id="passKampus" class="form-control" placeholder="" name="user_password" required="required" autofocus="autofocus"  type="password"
+                <input id="passLama" class="form-control" placeholder="" name="user_password_lama" required="required" autofocus="autofocus" type="password"
                     data-parsley-required
-                    data-parsley-required-message="Masukkan password">
-                <label for="passKampus">Password</label>
+                    data-parsley-required-message="Masukkan password lama">
+                <label for="passLama">Password Lama</label>
+                @error('user_password_lama')
+                    <span class="form-text text-danger">
+                        {{ $message }}
+                    </span>    
+                @enderror
+            </div>
+
+            <div class="form-label-group mb-3">
+                <input id="passBaru" class="form-control" placeholder="" name="user_password_baru" required="required" type="password"
+                    data-parsley-required
+                    data-parsley-required-message="Masukkan password baru">
+                <label for="passBaru">Password Baru</label>
                 @error('user_password')
                     <span class="form-text text-danger">
                         {{ $message }}
@@ -66,12 +75,12 @@
             </div>
         
             <div class="form-label-group mb-3">
-                <input id="copassKampus" class="form-control" placeholder="" name="pass_confirmation" required="required"  type="password"
+                <input id="copassKampus" class="form-control" placeholder="" name="pass_confirmation" required="required" type="password"
                     data-parsley-required
-                    data-parsley-required-message="Masukkan password"
-                    data-parsley-equalto="#passKampus"
-                    data-parsley-equalto-message="Password harus sama">
-                <label for="copassKampus">Konfirmasi Password</label>
+                    data-parsley-required-message="Masukkan konfirmasi password baru"
+                    data-parsley-equalto="#passBaru"
+                    data-parsley-equalto-message="Konfirmasi password harus baru harus sama denggan password baru">
+                <label for="copassKampus">Konfirmasi Password Baru</label>
                 @error('pass_confirmation')
                     <span class="form-text text-danger">
                         {{ $message }}
