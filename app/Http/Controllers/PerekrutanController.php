@@ -423,6 +423,7 @@ class PerekrutanController extends Controller
                 ]);
 
             Rekrut::where('rekrut_id', '!=', $id)
+                ->where('rekrut_mahasiswa_id', '!=', $rekrut->mahasiswa_id)
                 ->update([
                     'rekrut_status' => 'magang',
                 ]);
