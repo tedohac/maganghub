@@ -174,5 +174,4 @@ Route::group(['prefix' => 'kegiatan', 'middleware' => 'web'], function () {
     Route::get('verify/{id}','ManageKegiatanController@verify')->name('kegiatan.verify')->middleware('cekrole:perusahaan');
     
     Route::get('print','ManageKegiatanController@print')->name('kegiatan.print')->middleware('cekrole:mahasiswa');
-    Route::get('printpreview','ManageKegiatanController@printpreview')->name('kegiatan.printpreview')->middleware('cekrole:mahasiswa');
 });
