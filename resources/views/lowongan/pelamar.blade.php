@@ -95,6 +95,8 @@
                         <option value="melamartlk" {{ ($filter->status=='melamartlk') ? 'selected' : '' }}>Melamar Ditolak</option>
                         <option value="diundang" {{ ($filter->status=='diundang') ? 'selected' : '' }}>Diundang</option>
                         <option value="siap test" {{ ($filter->status=='siap test') ? 'selected' : '' }}>Siap Test</option>
+                        <option value="tdklulus" {{ ($filter->status=='tdklulus') ? 'selected' : '' }}>Tidak Lulus</option>
+                        <option value="lulus" {{ ($filter->status=='lulus') ? 'selected' : '' }}>Magang Berjalan</option>
                     </select>
                 </div>
 
@@ -147,6 +149,9 @@
                     <td>
                         <a class="btn btn-outline-info p-1 edit-form" href="{{ url('perekrutan/detailpelamar/'.$rekrut->rekrut_id) }}" title="Detail">
                             <small><i class="fas fa-ellipsis-h"></i></small>
+                        </a>
+                        <a class="btn btn-outline-info px-1 py-0 mt-1 edit-form" href="{{ url('kegiatan/mentorview/'.$rekrut->rekrut_id) }}" title="Kegiatan">
+                            <small>Kegiatan</small>
                         </a>
                     </td>
                 </tr>

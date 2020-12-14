@@ -1,4 +1,4 @@
-@extends('layouts.front', ['title' => 'Kegiatan Magang - MagangHub'])
+@extends('layouts.front', ['title' => 'Kegiatan Magang Mahasiswa - MagangHub'])
 
 @section('head')
     
@@ -23,6 +23,8 @@
 @section('content')
     <ol class="breadcrumb p-1 ml-auto">
         <li class="breadcrumb-item ml-auto"><a href="{{ route('/') }}">MagangHub</a></li>
+        <li class="breadcrumb-item"><a href="{{ url('perusahaan/detail/'.$rekrut->lowongan_perusahaan_id) }}">Profil Perusahaan</a></li>
+        <li class="breadcrumb-item"><a href="{{ url('perekrutan/pelamar/'.$rekrut->lowongan_id) }}">Pelamar</a></li>
         <li class="breadcrumb-item active" aria-current="page">Kegiatan Magang</li>
     </ol>
 
@@ -51,17 +53,17 @@
 
     <!-- begin content -->
     <h5 class="mb-2 p-0">
-        Kegiatan Magang
+        Kegiatan Magang Mahasiswa
     </h5>
     <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-3">
     
         @php($firstDate = $filter->month.'-01')
         
         <div class="d-flex justify-content-between mb-2">
-            <a class="btn btn-outline-info p-1 float-right" href="{{ route('kegiatan.manage').'?filter_month='.date('Y-m', strtotime($firstDate.' -1 month')) }}">
+            <a class="btn btn-outline-info p-1 float-right" href="{{ url('kegiatan/mentorview/'.$rekrut->rekrut_id).'?filter_month='.date('Y-m', strtotime($firstDate.' -1 month')) }}">
                 <small>{{ date('F Y', strtotime($firstDate." -1 month")) }}</small>
             </a>
-            <a class="btn btn-outline-info p-1 float-right" href="{{ route('kegiatan.manage').'?filter_month='.date('Y-m', strtotime($firstDate.' +1 month')) }}">
+            <a class="btn btn-outline-info p-1 float-right" href="{{ url('kegiatan/mentorview/'.$rekrut->rekrut_id).'?filter_month='.date('Y-m', strtotime($firstDate.' +1 month')) }}">
                 <small>{{ date('F Y', strtotime($firstDate." +1 month")) }}</small>
             </a>
         </div>
@@ -104,18 +106,12 @@
                             <br />
                             @php($info = \App\Kegiatan::getInfo($rekrut->rekrut_id,$thisDate))
 
-                            @if(empty($info))
-                            <a class="btn btn-outline-info p-1 mt-1 btn-block" href="{{ url('kegiatan/add/'.$thisDate) }}">
-                                <small><i class="fas fa-plus"></i></small>
-                            </a>
-                            @else
+                            @if(!empty($info))
                                 @if($info->kegiatan_verify_mentor)
                                     <span class="badge badge-success w-100 mt-1">Terverifikasi</span>
-                                @else
-                                    <span class="badge badge-warning w-100 mt-1">terisi</span>
                                 @endif
-                                <a class="btn btn-outline-info p-1 mt-1 btn-block" href="{{ url('kegiatan/edit/'.$thisDate) }}">
-                                    <small><i class="fas fa-edit"></i></small>
+                                <a class="btn btn-outline-info p-0 mt-1 btn-block" href="{{ url('kegiatan/detail/'.$rekrut->rekrut_id.'/'.$thisDate) }}">
+                                    <small>Kegiatan</small>
                                 </a>
                             @endif
                         </td>
@@ -129,6 +125,90 @@
     </div>
     <!-- end content -->
     
+    <!-- info mahasiswa -->
+    <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-3">
+        <div class="py-1">Informasi Mahasiswa Pelamar</div>
+        <table class="table table-sm" cellspacing="0">
+            <tr>
+                <td class="greybox"><b>Kampus</b></td>
+                <td>
+                    <a href="{{ url('kampus/detail/'.$rekrut->univ_id) }}" class="text-dark">{{ $rekrut->univ_nama }}</a>
+                </td>
+            </tr>
+            <tr>
+                <td class="greybox"><b>NIM</b></td>
+                <td>
+                    {{ $rekrut->mahasiswa_nim }}
+                </td>
+            </tr>
+            <tr>
+                <td class="greybox"><b>Mahasiswa</b></td>
+                <td>
+                    {{ $rekrut->mahasiswa_nama }}
+                </td>
+            </tr>
+            <tr>
+                <td class="greybox"><b>TTL</b></td>
+                <td>
+                    {{ $rekrut->mahasiswa_tempat_lahir ? $rekrut->mahasiswa_tempat_lahir : '-' }}, {{ $rekrut->mahasiswa_tgl_lahir ? $rekrut->mahasiswa_tgl_lahir : '-' }}
+                </td>
+            </tr>
+            <tr>
+                <td class="greybox"><b>Telepon</b></td>
+                <td>
+                    {{ $rekrut->mahasiswa_no_tlp ? $rekrut->mahasiswa_no_tlp : '-' }}
+                </td>
+            </tr>
+            <tr>
+                <td class="greybox"><b>Domisili</b></td>
+                <td>
+                    {{ $rekrut->city_nama ? $rekrut->city_nama : '-' }}
+                </td>
+            </tr>
+            <tr>
+                <td class="greybox"><b>Alamat</b></td>
+                <td>
+                    {{ $rekrut->mahasiswa_alamat ? $rekrut->mahasiswa_alamat : '-' }}
+                </td>
+            </tr>
+            <tr>
+                <td class="greybox"><b>CV</b></td>
+                <td>
+                    @if($rekrut->mahasiswa_cv)
+                        <a class="btn btn-outline-success p-1" href="{{ url('storage/mahasiswa_cv/'.$rekrut->mahasiswa_cv) }}"> 
+                            <i class="fas fa-cloud-download-alt"></i>
+                            Download CV
+                        </a>
+                    @else
+                        <span class="badge badge-secondary p-1">Belum melengkapi CV</span>
+                    @endif
+                </td>
+            </tr>
+            <tr>
+                <td class="greybox"><b>KHS</b></td>
+                <td>
+                    @if($rekrut->mahasiswa_khs)
+                        <a class="btn btn-outline-success p-1" href="{{ url('storage/mahasiswa_khs/'.$rekrut->mahasiswa_khs) }}"> 
+                            <i class="fas fa-cloud-download-alt"></i>
+                            Download KHS
+                        </a>
+                    @else
+                        <span class="badge badge-secondary p-1">Belum melengkapi KHS</span>
+                    @endif
+                </td>
+            </tr>
+            <tr>
+                <td class="greybox"><b>Skills</b></td>
+                <td>
+                    @foreach($skills as $skill)
+                        <span class="badge badge-info p-1">{{ $skill->skill_nama }}</span>
+                    @endforeach
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!-- end info mahasiswa -->
+        
     <!-- info lowongan -->
     <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-5">
         <div class="py-1">Informasi Pekerjaan</div>
