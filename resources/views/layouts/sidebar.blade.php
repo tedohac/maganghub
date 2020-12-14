@@ -191,7 +191,7 @@
             <tr class="align-top">
                 <td>
                     <small>Kegiatan Magang</small><br />
-                    <div class="text-primary">0</div>
+                    <div class="text-primary">{{ \App\Kegiatan::getCountAll() }}</div>
                 </td>
                 <td class="text-right">
                     <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('kegiatan.manage') }}">
