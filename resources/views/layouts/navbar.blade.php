@@ -51,7 +51,7 @@
 
                         @endif
                         
-                        <a class="dropdown-item" href="{{ route('logout') }}">Ubah Password</a>
+                        <a class="dropdown-item" href="{{ route('changepass') }}">Ubah Password</a>
                         <a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
                     </div>
                 </li>

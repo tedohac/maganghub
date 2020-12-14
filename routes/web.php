@@ -33,8 +33,10 @@ Route::group(['namespace' => 'Auth', 'middleware' => 'web'], function () {
     Route::post('/registperusahaan','RegisterPerusahaanController@process');
 
     Route::get('/resetpass/{email}/{token}', 'ForgetpassController@resetpassform')->name('resetpass');
-
     Route::post('/resetpassprocess', 'ForgetpassController@resetpassprocess')->name('resetpassprocess');
+
+    Route::get('/changepass', 'ForgetpassController@changepassform')->name('changepass');
+    Route::post('/changepassprocess', 'ForgetpassController@changepassprocess')->name('changepassprocess');
 
     Route::get('/verify/{email}/{token}', 'VerifyController@verifyemail')->name('verify');
 
@@ -170,4 +172,6 @@ Route::group(['prefix' => 'kegiatan', 'middleware' => 'web'], function () {
     Route::get('detail/{id}/{date}','ManageKegiatanController@detail')->name('kegiatan.detail')->middleware('cekrole:perusahaan');
     
     Route::get('verify/{id}','ManageKegiatanController@verify')->name('kegiatan.verify')->middleware('cekrole:perusahaan');
+    
+    Route::get('print','ManageKegiatanController@print')->name('kegiatan.print')->middleware('cekrole:mahasiswa');
 });

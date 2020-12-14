@@ -7,6 +7,7 @@ use App\Mail\ForgetpassEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\User;
+use Auth;
 use Validator;
 use Session;
 use Hash;
@@ -82,7 +83,6 @@ class ForgetpassController extends Controller
             ]);
     }
 
-    
     public function resetpassprocess(Request $request)
     {
         $rules = [
@@ -108,10 +108,54 @@ class ForgetpassController extends Controller
                     'user_password' => Hash::make($request->user_password),
                 ]);
         } catch (\Illuminate\Database\QueryException $e) {
-            Session::flash('error', 'Proses gagal, mohon coba kembali beberapa saat lagi');
+            Session::flash('error', 'Proses gagal, mohon hubungi admin MagangHub');
             return redirect()->back();
         }
 
+        Session::flash('success', 'Ubah password berhasil! Silahkan login');
+        return redirect()->route('login');
+    }
+
+    // change pass
+    public function changepassform()
+    {
+    	return view('auth.changepass');
+    }
+
+    public function changepassprocess(Request $request)
+    {
+        $rules = [
+            'user_password_lama'     => 'required',
+            'user_password_baru'     => 'required'
+        ];
+ 
+        $messages = [
+            'user_password_lama.required'    => 'Masukan password lama',
+            'user_password_baru.required'    => 'Masukan password baru',
+        ];
+
+        $user = User::where('user_email', Auth::user()->user_email)->first();
+        if(empty($user)) return abort(404);
+
+        if (!Hash::check($request->user_password_lama, $user->user_password))
+        {
+            Session::flash('error', 'Password lama salah');
+            return redirect()->back();
+        }
+
+        try
+        {
+            User::where('user_email',$user->user_email)
+                ->update([
+                    'forgetpass_token' => null,
+                    'user_password' => Hash::make($request->user_password_baru),
+                ]);
+        } catch (\Illuminate\Database\QueryException $e) {
+            Session::flash('error', 'Proses gagal, mohon hubungi admin MagangHub');
+            return redirect()->back();
+        }
+
+        Auth::logout();
         Session::flash('success', 'Ubah password berhasil! Silahkan login');
         return redirect()->route('login');
     }
