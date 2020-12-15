@@ -22,6 +22,9 @@
         }
         .card-title {
         }
+        .font-15 {
+            font-size: 15px;
+        }
     </style>
 @endsection
 
@@ -121,13 +124,26 @@
                     <ul class="card-ul border p-0">
                         <li class="text-center p-2 border-bottom">
 
-                            <div class="text-center"><small>akreditasi</small></div>
+                            <div class="text-center"><small>Akreditasi</small></div>
                             <span class="font-20 fa fa-star {{ $univ->univ_akreditasi!='' && ord($univ->univ_akreditasi)-96<6 ? 'text-warning' : '' }}"></span>
                             <span class="font-20 fa fa-star {{ $univ->univ_akreditasi!='' && ord($univ->univ_akreditasi)-96<5 ? 'text-warning' : '' }}"></span>
                             <span class="font-20 fa fa-star {{ $univ->univ_akreditasi!='' && ord($univ->univ_akreditasi)-96<4 ? 'text-warning' : '' }}"></span>
                             <span class="font-20 fa fa-star {{ $univ->univ_akreditasi!='' && ord($univ->univ_akreditasi)-96<3 ? 'text-warning' : '' }}"></span>
                             <span class="font-20 fa fa-star {{ $univ->univ_akreditasi!='' && ord($univ->univ_akreditasi)-96<2 ? 'text-warning' : '' }}"></span>
                             <span class="font-20">({{ strtoupper($univ->univ_akreditasi) }})</span>
+
+                        </li>
+                        <li class="text-center p-2 border-bottom">
+
+                            <div class="text-center"><small>Score Ulasan Magang</small></div>
+                            @php($rating = \App\Rekrut::getRatingKampus($univ->univ_id))
+                            @php($rating = empty($rating) ? 0 : $rating->rating*10)
+                            
+                            @if($rating==0)
+                                <span class="badge badge-secondary font-15">-</span>
+                            @else
+                                <span class="badge badge-info font-15">{{ round($rating) }}</span>
+                            @endif
 
                         </li>
                         <li class="text-center p-2 border-bottom">

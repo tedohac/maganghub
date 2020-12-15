@@ -90,6 +90,8 @@
                         <option value="siap test" {{ ($filter->status=='siap test') ? 'selected' : '' }}>Siap Test</option>
                         <option value="tdklulus" {{ ($filter->status=='tdklulus') ? 'selected' : '' }}>Tidak Lulus</option>
                         <option value="lulus" {{ ($filter->status=='lulus') ? 'selected' : '' }}>Magang Berjalan</option>
+                        <option value="finishmhs" {{ ($filter->status=='finishmhs') ? 'selected' : '' }}>Menunggu Rating</option>
+                        <option value="finishprs" {{ ($filter->status=='finishmhs') ? 'selected' : '' }}>Selesai</option>
                     </select>
                 </div>
 
@@ -134,11 +136,15 @@
                     <td>{{ $rekrut->mahasiswa_nama }}</td>
                     <td>
                         @if($rekrut->rekrut_status=='magang')
-                            Sedang Magang
+                            Sudah Magang
                         @elseif($rekrut->rekrut_status=="melamartlk")
                             Ditolak
                         @elseif($rekrut->rekrut_status=="tlkundang")
                             Undangan ditolak mahasiswa
+                        @elseif($rekrut->rekrut_status=="finishmhs")
+                            Menunggu Rating
+                        @elseif($rekrut->rekrut_status=="finishprs")
+                            Selesai
                         @else
                             {{ $rekrut->rekrut_status }}
                         @endif

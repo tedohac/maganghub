@@ -133,7 +133,7 @@
             @endif
         </div>
     </div>
-    <div class="p-2">
+    <div class="sidebar-profile-bot w-100 p-2">
         <table class="w-100">
             <tr class="align-top">
                 <td>
@@ -142,6 +142,21 @@
                 </td>
                 <td class="text-right">
                     <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ url('mahasiswa/detail/'.$univsb->mahasiswa_id) }}">
+                        <small><i class="fas fa-ellipsis-h"></i></small>
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="p-2">
+        <table class="w-100">
+            <tr class="align-top">
+                <td>
+                    <small>Riwayat Lamaran</small><br />
+                    <div class="text-primary">{{ \App\Rekrut::getCountAll() }}</div>
+                </td>
+                <td class="text-right">
+                    <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('perekrutan.lamaranlist') }}">
                         <small><i class="fas fa-ellipsis-h"></i></small>
                     </a>
                 </td>
@@ -181,17 +196,6 @@
                 </td>
             </tr>
             @else
-            <tr class="align-top">
-                <td>
-                    <small>Riwayat Lamaran</small><br />
-                    <div class="text-primary">{{ \App\Rekrut::getCountAll() }}</div>
-                </td>
-                <td class="text-right">
-                    <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('perekrutan.lamaranlist') }}">
-                        <small><i class="fas fa-ellipsis-h"></i></small>
-                    </a>
-                </td>
-            </tr>
             <tr class="align-top">
                 <td>
                     <small>Kegiatan Magang</small><br />
