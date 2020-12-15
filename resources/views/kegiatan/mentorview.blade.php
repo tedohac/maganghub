@@ -55,6 +55,22 @@
     <h5 class="mb-2 p-0">
         Kegiatan Magang Mahasiswa
     </h5>
+    @if($rekrut->rekrut_status!='magang')
+    <div class="alert alert-info">
+        Mahasiswa telah menyelesaikan magang ini pada {{ date('d F Y H:i', strtotime($rekrut->rekrut_finish_mahasiswa)) }}. 
+        
+        @if($rekrut->rekrut_status=='finishmhs')
+            <input type="button" class="btn btn-primary p-1 text-small" value="Rating Mahasiswa" id="btnFinish">
+        @endif
+
+        @if($rekrut->rekrut_finish_perusahaan!="")
+            Rating anda untuk mahasiswa: {{ $rekrut->rekrut_rating_perusahaan }}<br />
+            Rating mahasiswa untuk perusahaan anda: {{ $rekrut->rekrut_rating_mahasiswa }}<br />
+            Feedback dari anda:<br />
+            {{ $rekrut->rekrut_feedback }}
+        @endif
+    </div>
+    @endif
     <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-3">
     
         @php($firstDate = $filter->month.'-01')
@@ -109,6 +125,8 @@
                             @if(!empty($info))
                                 @if($info->kegiatan_verify_mentor)
                                     <span class="badge badge-success w-100 mt-1">Terverifikasi</span>
+                                @else
+                                    <span class="badge badge-warning w-100 mt-1">Belum Verifikasi</span>
                                 @endif
                                 <a class="btn btn-outline-info p-0 mt-1 btn-block" href="{{ url('kegiatan/detail/'.$rekrut->rekrut_id.'/'.$thisDate) }}">
                                     <small>Kegiatan</small>
@@ -257,10 +275,74 @@
     </div>
     <!-- end info lowongan -->
 
+<form action="{{ route('kegiatan.finishperusahaan') }}" method="post" id="registform">
+@csrf
+<!-- Verify Modal -->
+<div class="modal fade" id="finishModal">
+    <div class="modal-dialog">
+    <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+        <h4 class="modal-title">Rating & Feedback</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+            Mohon berikan penilaian untuk {{ $rekrut->mahasiswa_nama }} dengan skala 1-10:<br />
+            
+            <div class="stars">
+                <input class="star star-5" id="star-10" type="radio" name="rekrut_rating_perusahaan" value="10"/>
+                <label class="star star-5" for="star-10">10</label>
+                <input class="star star-4" id="star-9" type="radio" name="rekrut_rating_perusahaan" value="9"/>
+                <label class="star star-4" for="star-9">9</label>
+                <input class="star star-4" id="star-8" type="radio" name="rekrut_rating_perusahaan" value="8"/>
+                <label class="star star-4" for="star-8">8</label>
+                <input class="star star-4" id="star-7" type="radio" name="rekrut_rating_perusahaan" value="7"/>
+                <label class="star star-4" for="star-7">7</label>
+                <input class="star star-4" id="star-6" type="radio" name="rekrut_rating_perusahaan" value="6"/>
+                <label class="star star-4" for="star-6">6</label>
+                <input class="star star-4" id="star-5" type="radio" name="rekrut_rating_perusahaan" value="5"/>
+                <label class="star star-4" for="star-5">5</label>
+                <input class="star star-4" id="star-4" type="radio" name="rekrut_rating_perusahaan" value="4"/>
+                <label class="star star-4" for="star-4">4</label>
+                <input class="star star-3" id="star-3" type="radio" name="rekrut_rating_perusahaan" value="3"/>
+                <label class="star star-3" for="star-3">3</label>
+                <input class="star star-2" id="star-2" type="radio" name="rekrut_rating_perusahaan" value="2"/>
+                <label class="star star-2" for="star-2">2</label>
+                <input class="star star-1" id="star-1" type="radio" name="rekrut_rating_perusahaan" value="1"/>
+                <label class="star star-1" for="star-1">1</label>
+            </div>
+
+            Feedback:<br />
+            <textarea class="form-control" placeholder="Feedback" name="rekrut_feedback" required="required"></textarea>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
+
+            <input  type="submit" class="btn btn-primary" id="sendsubmit" value="Selesaikan">
+        </div>
+
+    </div>
+    </div>
+</div>
+<!-- End Verify Modal -->
+</form>
 @endsection
 
 @section('bottom')
 <!-- SB-Admin-->
 <script src="{{ url('js/sb-admin.min.js') }}"></script>
 
+<script>
+    $(document).ready(function (){
+
+        $('#btnFinish').click(function(){
+            $('#finishModal').modal('show');
+        });
+    });
+</script>
 @endsection

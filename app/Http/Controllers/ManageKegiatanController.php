@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Kegiatan;
+use App\Mahasiswa;
 use App\Rekrut;
 use App\Skill;
 use Artisan;
@@ -28,7 +29,11 @@ class ManageKegiatanController extends Controller
                         ->join('perusahaans', 'perusahaans.perusahaan_id', '=', 'lowongans.lowongan_perusahaan_id')
                         ->join('cities', 'cities.city_id', '=', 'lowongans.lowongan_city_id')
                         ->join('fungsis', 'fungsis.fungsi_id', '=', 'lowongans.lowongan_fungsi_id')
-                        ->where('rekrut_status', "lulus")
+                        ->where(function ($query) {
+                            $query->orWhere('rekrut_status', "lulus");
+                            $query->orWhere('rekrut_status', "finishmhs");
+                            $query->orWhere('rekrut_status', "finishprs");
+                        })
                         ->where('mahasiswa_user_email', Auth::user()->user_email )->first();
         if(empty($rekrut)) abort(404);
 
@@ -57,7 +62,11 @@ class ManageKegiatanController extends Controller
                         ->join('prodis', 'prodis.prodi_id', '=', 'dospems.dospem_prodi_id')
                         ->join('univs', 'univs.univ_id', '=', 'prodis.prodi_univ_id')
                         ->where('rekrut_id', $rekrut_id)
-                        ->where('rekrut_status', "lulus")
+                        ->where(function ($query) {
+                            $query->orWhere('rekrut_status', "lulus");
+                            $query->orWhere('rekrut_status', "finishmhs");
+                            $query->orWhere('rekrut_status', "finishprs");
+                        })
                         ->where('perusahaan_user_email', Auth::user()->user_email )->first();
         if(empty($rekrut)) abort(404);
 
@@ -88,12 +97,53 @@ class ManageKegiatanController extends Controller
                         ->join('prodis', 'prodis.prodi_id', '=', 'dospems.dospem_prodi_id')
                         ->join('univs', 'univs.univ_id', '=', 'prodis.prodi_univ_id')
                         ->where('rekrut_id', $rekrut_id)
-                        ->where('rekrut_status', "lulus")
+                        ->where(function ($query) {
+                            $query->orWhere('rekrut_status', "lulus");
+                            $query->orWhere('rekrut_status', "finishmhs");
+                            $query->orWhere('rekrut_status', "finishprs");
+                        })
                         ->where('perusahaan_user_email', Auth::user()->user_email )->first();
         if(empty($rekrut)) abort(404);
 
         $skills = Skill::where('skill_mahasiswa_id', $rekrut->rekrut_mahasiswa_id)
                         ->get();
+
+        $rekrut->lowongan_jobdesk     = htmlspecialchars_decode($rekrut->lowongan_jobdesk);
+
+        return view('kegiatan.detail', [
+            'rekrut' => $rekrut,
+            'kegiatan' => $kegiatan,
+            'skills' => $skills
+        ]);
+    }
+
+    public function detailmhs($rekrut_id, $kegiatan_tgl)
+    {
+        $kegiatan = Kegiatan::where('kegiatan_rekrut_id', $rekrut_id)
+                            ->where('kegiatan_tgl', $kegiatan_tgl )->first();
+        if(empty($kegiatan)) abort(404);
+        
+        $rekrut = Rekrut::join('lowongans', 'lowongans.lowongan_id', '=', 'rekruts.rekrut_lowongan_id')
+                        ->join('perusahaans', 'perusahaans.perusahaan_id', '=', 'lowongans.lowongan_perusahaan_id')
+                        ->join('cities', 'cities.city_id', '=', 'lowongans.lowongan_city_id')
+                        ->join('fungsis', 'fungsis.fungsi_id', '=', 'lowongans.lowongan_fungsi_id')
+                        ->join('mahasiswas', 'mahasiswas.mahasiswa_id', '=', 'rekruts.rekrut_mahasiswa_id')
+                        ->join('dospems', 'dospems.dospem_id', '=', 'mahasiswas.mahasiswa_dospem_id')
+                        ->join('prodis', 'prodis.prodi_id', '=', 'dospems.dospem_prodi_id')
+                        ->join('univs', 'univs.univ_id', '=', 'prodis.prodi_univ_id')
+                        ->where('rekrut_id', $rekrut_id)
+                        ->where(function ($query) {
+                            $query->orWhere('rekrut_status', "lulus");
+                            $query->orWhere('rekrut_status', "finishmhs");
+                            $query->orWhere('rekrut_status', "finishprs");
+                        })
+                        ->where('mahasiswa_user_email', Auth::user()->user_email )->first();
+        if(empty($rekrut)) abort(404);
+
+        $skills = Skill::where('skill_mahasiswa_id', $rekrut->rekrut_mahasiswa_id)
+                        ->get();
+
+        $rekrut->lowongan_jobdesk     = htmlspecialchars_decode($rekrut->lowongan_jobdesk);
 
         return view('kegiatan.detail', [
             'rekrut' => $rekrut,
@@ -340,5 +390,85 @@ class ManageKegiatanController extends Controller
             'skills' => $skills
         ]);
         return $pdf->stream();
+    }
+    
+    public function finishmahasiswa(Request $request)
+    {
+        // if not exists
+        $rekrut = Rekrut::join('mahasiswas', 'mahasiswas.mahasiswa_id', '=', 'rekruts.rekrut_mahasiswa_id')
+                        ->where('rekrut_status', "lulus")
+                        ->where('mahasiswa_user_email', Auth::user()->user_email )->first();
+                if(empty($rekrut)) abort(404);
+
+        if($request->rekrut_rating_mahasiswa>10 || $request->rekrut_rating_mahasiswa<1)
+        {
+            Session::flash('error', 'Masukkan rating untuk perusahaan dengan skala 1-10.');
+            return redirect()->back();
+        }
+
+        try
+        {
+            date_default_timezone_set('Asia/Jakarta');
+                
+            Rekrut::where('rekrut_id',$rekrut->rekrut_id)
+                    ->update([
+                        'rekrut_status'           => 'finishmhs',
+                        'rekrut_rating_mahasiswa' => $request->rekrut_rating_mahasiswa,
+                        'rekrut_finish_mahasiswa' => date("Y-m-d H:i:s"),
+                    ]);
+                    
+            Mahasiswa::where('mahasiswa_id', $rekrut->rekrut_mahasiswa_id)
+                ->update([
+                    'mahasiswa_status' => 'selesai',
+                ]);
+
+        } catch (\Illuminate\Database\QueryException $e) {
+            Session::flash('error', 'Proses gagal, mohon hubungi admin MagangHub '.$e);
+            return redirect()->back();
+        }
+
+        Session::flash('success', 'Berhasil menyelesaikan magang, semoga pengalaman selama magang bermanfaat untuk masa depan anda!');
+        return redirect()->back();
+    }
+    
+    public function finishperusahaan(Request $request)
+    {
+        // if not exists
+        $rekrut = Rekrut::join('lowongans', 'lowongans.lowongan_id', '=', 'rekruts.rekrut_lowongan_id')
+                        ->join('perusahaans', 'perusahaans.perusahaan_id', '=', 'lowongans.lowongan_perusahaan_id')
+                        ->where('rekrut_status', "finishmhs")
+                        ->where('perusahaan_user_email', Auth::user()->user_email )->first();
+                if(empty($rekrut)) abort(404);
+
+        if($request->rekrut_rating_perusahaan>10 || $request->rekrut_rating_perusahaan<1 || $request->rekrut_feedback=="")
+        {
+            Session::flash('error', 'Masukkan feedback dan rating untuk mahasiswa dengan skala 1-10.');
+            return redirect()->back();
+        }
+
+        try
+        {
+            date_default_timezone_set('Asia/Jakarta');
+                
+            Rekrut::where('rekrut_id',$rekrut->rekrut_id)
+                    ->update([
+                        'rekrut_status'            => 'finishprs',
+                        'rekrut_rating_perusahaan'  => $request->rekrut_rating_mahasiswa,
+                        'rekrut_finish_perusahaan'  => date("Y-m-d H:i:s"),
+                        'rekrut_feedback'           => $request->rekrut_feedback,
+                    ]);
+                    
+            Mahasiswa::where('mahasiswa_id', $rekrut->rekrut_mahasiswa_id)
+                ->update([
+                    'mahasiswa_status' => 'selesai',
+                ]);
+
+        } catch (\Illuminate\Database\QueryException $e) {
+            Session::flash('error', 'Proses gagal, mohon hubungi admin MagangHub '.$e);
+            return redirect()->back();
+        }
+
+        Session::flash('success', 'Berhasil menyelesaikan magang, semoga pengalaman selama magang bermanfaat untuk masa depan anda!');
+        return redirect()->back();
     }
 }

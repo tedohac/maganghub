@@ -137,8 +137,8 @@
         <table class="w-100">
             <tr class="align-top">
                 <td>
-                    <small>Kelengkapan Profil</small><br />
-                    <small class="text-primary">mohon lengkapi profil</small>
+                    <small>Profil</small><br />
+                    <small class="text-primary">{{ $univsb->mahasiswa_nim }}</small>
                 </td>
                 <td class="text-right">
                     <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ url('mahasiswa/detail/'.$univsb->mahasiswa_id) }}">

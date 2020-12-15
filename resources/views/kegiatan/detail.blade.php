@@ -85,7 +85,13 @@
                     <td valign="center" width="50" class="greybox"></td>
                     <td>
                     @if(empty($kegiatan->kegiatan_verify_mentor))
-                        <input type="button" class="btn btn-danger btn-block" value="Verifikasi" id="btnVerify">
+                        @if(Auth::user()->user_role=='perusahaan')
+                            @if($rekrut->rekrut_status=='lulus')
+                                <input type="button" class="btn btn-danger btn-block" value="Verifikasi" id="btnVerify">
+                            @endif
+                        @else
+                            Belum diverifikasi
+                        @endif
                     @else
                         Sudah diverifikasi pada {{ date('d F Y', strtotime($kegiatan->kegiatan_verify_mentor)) }}
                     @endif

@@ -170,10 +170,14 @@ Route::group(['prefix' => 'kegiatan', 'middleware' => 'web'], function () {
     
     Route::get('mentorview/{id}','ManageKegiatanController@mentorview')->name('kegiatan.mentorview')->middleware('cekrole:perusahaan');
     Route::get('detail/{id}/{date}','ManageKegiatanController@detail')->name('kegiatan.detail')->middleware('cekrole:perusahaan');
+    Route::get('detailmhs/{id}/{date}','ManageKegiatanController@detailmhs')->name('kegiatan.detailmhs')->middleware('cekrole:mahasiswa');
     
     Route::get('verify/{id}','ManageKegiatanController@verify')->name('kegiatan.verify')->middleware('cekrole:perusahaan');
     
     Route::get('print','ManageKegiatanController@print')->name('kegiatan.print')->middleware('cekrole:mahasiswa');
+    
+    Route::post('finishmahasiswa','ManageKegiatanController@finishmahasiswa')->name('kegiatan.finishmahasiswa')->middleware('cekrole:mahasiswa');
+    Route::post('finishperusahaan','ManageKegiatanController@finishperusahaan')->name('kegiatan.finishperusahaan')->middleware('cekrole:perusahaan');
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => 'web'], function () {
