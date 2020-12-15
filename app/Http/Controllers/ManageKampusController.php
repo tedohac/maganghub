@@ -25,9 +25,6 @@ class ManageKampusController extends Controller
 
         if(!empty($request->filter_nama)) $filter->nama = $request->filter_nama;
         else $filter->nama = "";
-        
-        if(!empty($request->filter_city)) $filter->city = $request->filter_city;
-        else $filter->city = "";
 
         $univs = Univ::join('users', 'univs.univ_user_email', '=', 'users.user_email')
                     ->whereNotNull('user_email_verified_at');

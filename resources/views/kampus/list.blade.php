@@ -80,7 +80,7 @@
             @endif
         </div>
         <div class="card-body collapse p-1" id="collapseSearchCon">
-        <form method="get" id="formadd" action="{{ route('lowongan.list') }}">
+        <form method="get" id="formadd" action="{{ route('kampus.list') }}">
 
             <div class="row">
                 <div class="col-6 mb-2">
@@ -89,7 +89,7 @@
                 </div>
 
                 <div class="col-12">
-                    <input type="submit" formmethod="get" class="btn btn-primary btn-block h-100" value="Apply" formaction="#">
+                    <input type="submit" class="btn btn-primary btn-block h-100" value="Apply">
                 </div>
 
             </div>
