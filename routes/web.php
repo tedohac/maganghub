@@ -175,3 +175,14 @@ Route::group(['prefix' => 'kegiatan', 'middleware' => 'web'], function () {
     
     Route::get('print','ManageKegiatanController@print')->name('kegiatan.print')->middleware('cekrole:mahasiswa');
 });
+
+Route::group(['prefix' => 'admin', 'middleware' => 'web'], function () {
+    Route::get('dashboard','AdministratorController@dashboard')->name('admin.dashboard')->middleware('cekrole:superadmin');
+    Route::get('kampuslist','AdministratorController@kampuslist')->name('admin.kampuslist')->middleware('cekrole:superadmin');
+    Route::get('kampusdetail/{id}','AdministratorController@kampusdetail')->name('admin.kampusdetail')->middleware('cekrole:superadmin');
+    Route::get('kampusverify/{id}','AdministratorController@kampusverify')->name('admin.kampusverify')->middleware('cekrole:superadmin');
+    
+    Route::get('perusahaanlist','AdministratorController@perusahaanlist')->name('admin.perusahaanlist')->middleware('cekrole:superadmin');
+    Route::get('perusahaandetail/{id}','AdministratorController@perusahaandetail')->name('admin.perusahaandetail')->middleware('cekrole:superadmin');
+    Route::get('perusahaanverify/{id}','AdministratorController@perusahaanverify')->name('admin.perusahaanverify')->middleware('cekrole:superadmin');
+});

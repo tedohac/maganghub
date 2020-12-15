@@ -111,7 +111,13 @@
                 </div>
                 <div class="card-body p-3">
                     <h5 class="card-title text-center m-0"><a href="{{ url('kampus/detail/'.$univ->univ_id) }}">{{ $univ->univ_nama }}</a></h5>
-                    <div class="mb-3 text-center"><small><i>Menunggu verifikasi MagangHub</i></small></div>
+                    <div class="mb-3 text-center">
+                        @if(\App\Univ::getIsVerified($univ->univ_id))
+                            <small><i class="fas fa-check"></i> Terverifikasi</small>
+                        @else
+                            <small>Menunggu kelengkapan profil untuk verifikasi</small>
+                        @endif
+                    </div>
                     <ul class="card-ul border p-0">
                         <li class="text-center p-2 border-bottom">
 

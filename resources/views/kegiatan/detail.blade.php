@@ -7,9 +7,6 @@
 
     <!-- Profile -->
     <link href="{{ asset('styles/profile.css?v=').time() }}" rel="stylesheet">
-    
-    <!-- Jodit -->
-    <link href="{{ url('styles/jodit.min.css') }}" rel="stylesheet">
 
     <style>
         .font-20 {
@@ -231,7 +228,7 @@
     </div>
     <!-- end info lowongan -->
 
-<!-- Hapus Modal -->
+<!-- Verify Modal -->
 <div class="modal fade" id="verifyModal">
     <div class="modal-dialog">
     <div class="modal-content">
@@ -257,7 +254,7 @@
     </div>
     </div>
 </div>
-<!-- End Hapus Modal -->
+<!-- End Verify Modal -->
 @endsection
 
 @section('bottom')
@@ -285,33 +282,6 @@
         $('#btnVerify').click(function(){
             $('#verifyModal').modal('show');
         });
-
-
-        $('#formadd').parsley().on('form:validate', function (formInstance) {
-            var success = formInstance.isValid();
-            
-            if (!success) {
-                $('#confirmModal').modal('hide');
-            }
-        });
-    });
-</script>
-
-<!-- Jodit-->
-<script src="{{ url('js/jodit.min.js') }}"></script>
-<script>
-    $(document).ready(function(){
-        var editor = new Jodit("#descKegiatan", {
-            "spellcheck": false,
-            "buttons": "undo,redo,|,bold,underline,italic,|,superscript,subscript,|,ul,ol,|,outdent,indent,align,fontsize,|,image,link,|",
-        });
-    })
-</script>
-
-<script>
-    $(".custom-file-input").on("change", function() {
-        var fileName = $(this).val().split("\\").pop();
-        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
     });
 </script>
 @endsection

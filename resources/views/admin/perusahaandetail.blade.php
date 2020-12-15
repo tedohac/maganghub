@@ -42,6 +42,7 @@
 @section('content')
     <ol class="breadcrumb p-1 ml-auto">
         <li class="breadcrumb-item ml-auto"><a href="{{ route('/') }}">MagangHub</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('admin.perusahaanlist') }}">Daftar Perusahaan</a></li>
         <li class="breadcrumb-item active" aria-current="page">Detail Perusahaan</li>
     </ol>
 
@@ -114,13 +115,33 @@
                 <td class="greybox"><b>Berkas NIB</b></td>
                 <td>
                     @if($perusahaan->perusahaan_nib_path!="")
-                        <span class="badge badge-info p-1">Sudah Dilengkapi</span>
+                        <a class="btn btn-outline-success p-1" href="{{ url('storage/perusahaan_nib/'.$perusahaan->perusahaan_nib_path) }}"> 
+                            <i class="fas fa-cloud-download-alt"></i>
+                            Download NIB
+                        </a>
                     @else
                         <span class="badge badge-danger p-1">Belum Dilengkapi</span>
                     @endif
                 </td>
             </tr>
         </table>
+        <div class="row">
+            <div class="col-6">
+                @if(empty($perusahaan->perusahaan_verified))
+                    <input type="button" class="btn btn-primary btn-block py-1" value="Verifikasi" id="btnVerify">
+                @else
+                    Kampus sudah diverifikasi pada {{ date('d F Y', strtotime($perusahaan->perusahaan_verified)) }}
+                @endif
+            </div>
+            <div class="col-6">
+                <input type="button" class="btn btn-danger btn-block py-1" value="Awasi" id="btnAwasi">
+            </div>
+            @if(\App\Lowongan::getCountByPerusahaan($perusahaan->perusahaan_id)==0)
+            <div class="col-6 mt-2">
+                <input type="button" class="btn btn-danger btn-block py-1" value="Hapus" id="btnHapus">
+            </div>
+            @endif
+        </div>
     </div>
     <!-- end detail info -->
 
@@ -167,6 +188,34 @@
 
     </div>
     <!-- end loker list -->
+    
+<!-- Verify Modal -->
+<div class="modal fade" id="verifyModal">
+    <div class="modal-dialog">
+    <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+        <h4 class="modal-title">Verifikasi Perusahaan</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+            Apakah anda yakin untuk memverifikasi perusahaan ini ?
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Tidak</button>
+
+            <a class="btn btn-primary" href="{{ url('admin/perusahaanverify/'.$perusahaan->perusahaan_id) }}">Ya</a>
+        </div>
+
+    </div>
+    </div>
+</div>
+<!-- End Verify Modal -->
 @endsection
 
 @section('bottom')
@@ -180,6 +229,10 @@
 <script>
     $(document).ready(function (){
         var table = $('#dataTable').DataTable();
+        
+        $('#btnVerify').click(function(){
+            $('#verifyModal').modal('show');
+        });
     });
 </script>
 @endsection

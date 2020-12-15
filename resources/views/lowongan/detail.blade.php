@@ -26,7 +26,11 @@
     </div>
     <div class="profile-text col-lg-9 col-md-8 p-md-0 mb-2">
         <h3 class="m-0">{{ $lowongan->perusahaan_nama }}</h3>
-        <small>Menunggu kelengkapan profil untuk verifikasi</small>
+        @if(\App\Perusahaan::getIsVerified($lowongan->perusahaan_id))
+            <small><i class="fas fa-check"></i> Terverifikasi</small>
+        @else
+            <small>Menunggu kelengkapan profil untuk verifikasi</small>
+        @endif
     </div>
 </div>
 @endsection

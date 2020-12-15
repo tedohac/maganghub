@@ -42,7 +42,7 @@
 @section('content')
     <ol class="breadcrumb p-1 ml-auto">
         <li class="breadcrumb-item ml-auto"><a href="{{ route('/') }}">MagangHub</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('kampus.list') }}">Cari Kampus</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('admin.kampuslist') }}">Daftar Kampus</a></li>
         <li class="breadcrumb-item active" aria-current="page">Detail Kampus</li>
     </ol>
 
@@ -72,12 +72,6 @@
     <!-- detail info -->
     <h5 class="mb-2 p-0">
         Profil Kampus
-        
-        @if(Auth::check() && Auth::user()->user_email == $univ->univ_user_email)
-        <a class="btn btn-outline-info p-1 float-right" href="{{ route('kampus.edit') }}">
-            <small><i class="fas fa-edit"></i> Edit Detail Kampus</small>
-        </a>
-        @endif
     </h5>
     <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-5">
         <table class="table" cellspacing="0">
@@ -129,6 +123,23 @@
                 </td>
             </tr>
         </table>
+        <div class="row">
+            <div class="col-6">
+                @if(empty($univ->univ_verified))
+                    <input type="button" class="btn btn-primary btn-block py-1" value="Verifikasi" id="btnVerify">
+                @else
+                    Kampus sudah diverifikasi pada {{ date('d F Y', strtotime($univ->univ_verified)) }}
+                @endif
+            </div>
+            <div class="col-6">
+                <input type="button" class="btn btn-danger btn-block py-1" value="Awasi" id="btnAwasi">
+            </div>
+            @if(\App\Prodi::getCountByUniv($univ->univ_id)==0)
+            <div class="col-6 mt-2">
+                <input type="button" class="btn btn-danger btn-block py-1" value="Hapus" id="btnHapus">
+            </div>
+            @endif
+        </div>
     </div>
 
     <!-- prodi list -->
@@ -174,6 +185,34 @@
 
     </div>
     <!-- end prodi list -->
+    
+<!-- Verify Modal -->
+<div class="modal fade" id="verifyModal">
+    <div class="modal-dialog">
+    <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+        <h4 class="modal-title">Verifikasi Kampus</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+            Apakah anda yakin untuk memverifikasi kampus ini ?
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Tidak</button>
+
+            <a class="btn btn-primary" href="{{ url('admin/kampusverify/'.$univ->univ_id) }}">Ya</a>
+        </div>
+
+    </div>
+    </div>
+</div>
+<!-- End Verify Modal -->
 @endsection
 
 @section('bottom')
@@ -187,6 +226,10 @@
 <script>
     $(document).ready(function (){
         var table = $('#dataTable').DataTable();
+        
+        $('#btnVerify').click(function(){
+            $('#verifyModal').modal('show');
+        });
     });
 </script>
 @endsection

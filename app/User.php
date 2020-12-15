@@ -73,4 +73,10 @@ class User extends Authenticatable
         }
         else return false;
     }
+
+    public static function getCountAdmin($role)
+    {
+        $user = User::where('user_role', $role)->get();
+        return $user->count();
+    }
 }

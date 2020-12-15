@@ -15,4 +15,11 @@ class Lowongan extends Model
                       ->get();
         return $lowongan->count();
     }
+
+    public static function getCountByPerusahaan($perusahaan_id)
+    {
+        $lowongan = Lowongan::where('lowongan_perusahaan_id', $perusahaan_id)
+                                ->get();
+        return $lowongan->count();
+    }
 }
