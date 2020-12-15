@@ -19,14 +19,25 @@ class ManageKampusController extends Controller
     {
     }
 
-    public function list()
+    public function list(Request $request)
     {
-        $univs = Univ::join('users', 'univs.univ_user_email', '=', 'users.user_email')
-                    ->whereNotNull('user_email_verified_at')
-                    ->paginate(6);
+        $filter = new \stdClass();
 
+        if(!empty($request->filter_nama)) $filter->nama = $request->filter_nama;
+        else $filter->nama = "";
+        
+        if(!empty($request->filter_city)) $filter->city = $request->filter_city;
+        else $filter->city = "";
+
+        $univs = Univ::join('users', 'univs.univ_user_email', '=', 'users.user_email')
+                    ->whereNotNull('user_email_verified_at');
+
+        if(!empty($request->filter_nama)) $univs = $univs->where('univ_nama', 'like', '%'.$request->filter_nama.'%');
+
+        $univs = $univs->paginate(6);
         return view('kampus.list', [
             'univs' => $univs,
+            'filter' => $filter,
         ]);
     }
 

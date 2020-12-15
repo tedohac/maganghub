@@ -75,17 +75,17 @@
                 Filter
             </a>
 
-            <a href="#"><span class="badge badge-danger">Clear</span></a>
+            @if($filter->nama!="")
+                <a href="{{ route('lowongan.list') }}"><span class="badge badge-danger">Clear</span></a>
+            @endif
         </div>
         <div class="card-body collapse p-1" id="collapseSearchCon">
-        <form id="formsend">
+        <form method="get" id="formadd" action="{{ route('lowongan.list') }}">
 
             <div class="row">
-                <div class="col-lg-3 mb-3">
-                    <div class="form-label-group mb-3">
-                        <input id="namaKampus" class="form-control" placeholder="Nama Kampus" name="univ_nama" autofocus="autofocus">
-                        <label for="namaKampus">Nama Kampus</label>
-                    </div>
+                <div class="col-6 mb-2">
+                    <small>Nama</small><br>
+                    <input class="form-control" name="filter_nama" value="{{ $filter->nama }}">
                 </div>
 
                 <div class="col-12">
