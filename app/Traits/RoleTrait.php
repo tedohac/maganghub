@@ -38,6 +38,10 @@ trait RoleTrait {
             $perusahaan = Perusahaan::where('perusahaan_user_email', Auth::user()->user_email )->first();
             return redirect('perusahaan/detail/'.$perusahaan->perusahaan_id);
         }
+        elseif(Auth::user()->user_role == 'superadmin')
+        {
+            return redirect('admin/dashboard/');
+        }
         echo Auth::user()->role."asd";
         // abort(404);
     }

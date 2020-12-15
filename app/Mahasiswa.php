@@ -22,4 +22,12 @@ class Mahasiswa extends Model
         $mahasiswa = Mahasiswa::where('mahasiswa_user_email', Auth::User()->user_email)->first();
         return $mahasiswa->mahasiswa_status;
     }
+    
+    public static function getCountByProdi($prodi_id)
+    {
+        $mahasiswa = Mahasiswa::join('dospems', 'dospems.dospem_id', '=', 'mahasiswas.mahasiswa_dospem_id')
+                                ->where('dospem_prodi_id', $prodi_id)
+                                ->get();
+        return $mahasiswa->count();
+    }
 }

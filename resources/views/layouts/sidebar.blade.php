@@ -26,11 +26,15 @@
             <tr class="align-top">
                 <td>
                     <small>Verifikasi Kampus</small><br />
-                    <small class="text-primary">mohon lengkapi profil</small>
+                    @if(\App\Univ::getIsVerified($univ->univ_id))
+                        <small class="text-primary"><i class="fas fa-check"></i> Terverifikasi</small>
+                    @else
+                        <small class="text-primary">mohon lengkapi profil</small>
+                    @endif
                 </td>
                 <td class="text-right">
                     <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ url('kampus/detail/'.$univsb->univ_id) }}">
-                        <small>PROFIL</small>
+                        <small><i class="fas fa-ellipsis-h"></i></small>
                     </a>
                 </td>
             </tr>
@@ -41,7 +45,7 @@
                 </td>
                 <td class="text-right">
                     <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('prodi.manage') }}">
-                        <small>PRODI</small>
+                        <small><i class="fas fa-ellipsis-h"></i></small>
                     </a>
                 </td>
             </tr>
@@ -52,7 +56,7 @@
                 </td>
                 <td class="text-right">
                     <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('dospem.manage') }}">
-                        <small>DOSPEM</small>
+                        <small><i class="fas fa-ellipsis-h"></i></small>
                     </a>
                 </td>
             </tr>
@@ -63,7 +67,7 @@
                 </td>
                 <td class="text-right">
                     <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('mahasiswa.manage') }}">
-                        <small>Mahasiswa</small>
+                        <small><i class="fas fa-ellipsis-h"></i></small>
                     </a>
                 </td>
             </tr>
@@ -134,11 +138,11 @@
             <tr class="align-top">
                 <td>
                     <small>Kelengkapan Profil</small><br />
-                    <small class="text-primary">Profil belum lengkap</small>
+                    <small class="text-primary">mohon lengkapi profil</small>
                 </td>
                 <td class="text-right">
                     <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ url('mahasiswa/detail/'.$univsb->mahasiswa_id) }}">
-                        <small>PROFIL</small>
+                        <small><i class="fas fa-ellipsis-h"></i></small>
                     </a>
                 </td>
             </tr>
@@ -150,7 +154,7 @@
                 </td>
                 <td class="text-right">
                     <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('perekrutan.lamaranlist').'?filter_status=melamar' }}">
-                        <small>LAMARAN</small>
+                        <small><i class="fas fa-ellipsis-h"></i></small>
                     </a>
                 </td>
             </tr>
@@ -161,7 +165,7 @@
                 </td>
                 <td class="text-right">
                     <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('perekrutan.lamaranlist').'?filter_status=diundang' }}">
-                        <small>UNDANGAN TEST</small>
+                        <small><i class="fas fa-ellipsis-h"></i></small>
                     </a>
                 </td>
             </tr>
@@ -172,7 +176,7 @@
                 </td>
                 <td class="text-right">
                     <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('perekrutan.lamaranlist').'?filter_status=siap test' }}">
-                        <small>SIAP TEST</small>
+                        <small><i class="fas fa-ellipsis-h"></i></small>
                     </a>
                 </td>
             </tr>
@@ -184,7 +188,7 @@
                 </td>
                 <td class="text-right">
                     <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('perekrutan.lamaranlist') }}">
-                        <small>LAMARAN</small>
+                        <small><i class="fas fa-ellipsis-h"></i></small>
                     </a>
                 </td>
             </tr>
@@ -195,7 +199,7 @@
                 </td>
                 <td class="text-right">
                     <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('kegiatan.manage') }}">
-                        <small>KEGIATAN</small>
+                        <small><i class="fas fa-ellipsis-h"></i></small>
                     </a>
                 </td>
             </tr>
@@ -235,11 +239,15 @@
             <tr class="align-top">
                 <td>
                     <small>Verifikasi Perusahaan</small><br />
-                    <small class="text-primary">mohon lengkapi profil</small>
+                    @if(\App\Perusahaan::getIsVerified($univsb->perusahaan_id))
+                        <small class="text-primary"><i class="fas fa-check"></i> Terverifikasi</small>
+                    @else
+                        <small class="text-primary">mohon lengkapi profil</small>
+                    @endif
                 </td>
                 <td class="text-right">
                     <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ url('perusahaan/detail/'.$univsb->perusahaan_id) }}">
-                        <small>PROFIL</small>
+                        <small><i class="fas fa-ellipsis-h"></i></small>
                     </a>
                 </td>
             </tr>
@@ -254,7 +262,7 @@
                 </td>
                 <td class="text-right">
                     <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('lowongan.manage') }}">
-                        <small>LOWONGAN</small>
+                        <small><i class="fas fa-ellipsis-h"></i></small>
                     </a>
                 </td>
             </tr>
@@ -269,7 +277,7 @@
                 </td>
                 <td class="text-right">
                     <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('perekrutan.pelamar') }}">
-                        <small>PELAMAR</small>
+                        <small><i class="fas fa-ellipsis-h"></i></small>
                     </a>
                 </td>
             </tr>
@@ -280,7 +288,7 @@
                 </td>
                 <td class="text-right">
                     <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('perekrutan.pelamar').'?filter_status=melamar' }}">
-                        <small>BARU</small>
+                        <small><i class="fas fa-ellipsis-h"></i></small>
                     </a>
                 </td>
             </tr>
@@ -291,7 +299,7 @@
                 </td>
                 <td class="text-right">
                     <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('perekrutan.pelamar').'?filter_status=siap test' }}">
-                        <small>SIAP TEST</small>
+                        <small><i class="fas fa-ellipsis-h"></i></small>
                     </a>
                 </td>
             </tr>
@@ -302,7 +310,103 @@
                 </td>
                 <td class="text-right">
                     <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('perekrutan.pelamar').'?filter_status=lulus' }}">
-                        <small>BERJALAN</small>
+                        <small><i class="fas fa-ellipsis-h"></i></small>
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</div>
+
+@elseif(Auth::check() && Auth::user()->user_role=='superadmin')
+
+<div class="sidebar-maganghub bg-white shadow-sm p-0">
+    <div class="sidebar-profile-top w-100 p-2">
+        <div class="text-center text-dark">
+            <small>selamat datang</small>
+        </div>
+    </div>
+
+    <div class="sidebar-profile-bot w-100 p-2">
+        <div class="sidebar-profile-thumb text-center">
+            <i class="fas fa-user-lock bg-white border p-2 shadow-sm" style="font-size: 70px"></i>
+        </div>
+        <div class="sidebar-name text-center mx-2">
+            <small>Administrator</small><br>
+            <b>{{ Auth::user()->user_email }}</b><br>
+        </div>
+    </div>
+    <div class="sidebar-profile-bot w-100 p-2">
+        <table class="w-100">
+            <tr class="align-top">
+                <td>
+                    <small>Verifikasi Kampus</small><br />
+                    <small class="text-primary">{{ \App\Univ::getUnverified() }}</small>
+                </td>
+                <td class="text-right">
+                    <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('admin.kampuslist') }}">
+                        <small><i class="fas fa-ellipsis-h"></i></small>
+                    </a>
+                </td>
+            </tr>
+            <tr class="align-top">
+                <td>
+                    <small>Verifikasi Perusahaan</small><br />
+                    <small class="text-primary">{{ \App\Perusahaan::getUnverified() }}</small>
+                </td>
+                <td class="text-right">
+                    <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('admin.perusahaanlist') }}">
+                        <small><i class="fas fa-ellipsis-h"></i></small>
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="sidebar-profile-bot w-100 p-2">
+        <label class="border-bottom w-100">Data Pengguna</label>
+        <table class="w-100">
+            <tr class="align-top">
+                <td>
+                    <small>Admin Kampus</small><br />
+                    <small class="text-primary">{{ \App\User::getCountAdmin('admin kampus') }}</small>
+                </td>
+                <td class="text-right">
+                    <a class="btn btn-outline-info btn-block p-1 mb-3" href="#">
+                        <small><i class="fas fa-ellipsis-h"></i></small>
+                    </a>
+                </td>
+            </tr>
+            <tr class="align-top">
+                <td>
+                    <small>Admin Perusahaan</small><br />
+                    <small class="text-primary">{{ \App\User::getCountAdmin('perusahaan') }}</small>
+                </td>
+                <td class="text-right">
+                    <a class="btn btn-outline-info btn-block p-1 mb-3" href="#">
+                        <small><i class="fas fa-ellipsis-h"></i></small>
+                    </a>
+                </td>
+            </tr>
+            <tr class="align-top">
+                <td>
+                    <small>Dosen Pembimbing</small><br />
+                    <small class="text-primary">{{ \App\User::getCountAdmin('dospem') }}</small>
+                </td>
+                <td class="text-right">
+                    <a class="btn btn-outline-info btn-block p-1 mb-3" href="#">
+                        <small><i class="fas fa-ellipsis-h"></i></small>
+                    </a>
+                </td>
+            </tr>
+            <tr class="align-top">
+                <td>
+                    <small>Mahasiswa</small><br />
+                    <small class="text-primary">{{ \App\User::getCountAdmin('mahasiswa') }}</small>
+                </td>
+                <td class="text-right">
+                    <a class="btn btn-outline-info btn-block p-1 mb-3" href="#">
+                        <small><i class="fas fa-ellipsis-h"></i></small>
                     </a>
                 </td>
             </tr>

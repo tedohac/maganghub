@@ -35,6 +35,7 @@ class ManageKampusController extends Controller
         $univ = Univ::leftJoin('cities', 'univs.univ_city_id', '=', 'cities.city_id')
                     ->where('univs.univ_id', $id)
                     ->first();
+        if(empty($univ)) abort(404);
 
         $prodis = Prodi::where('prodi_univ_id', $id)->get();
 

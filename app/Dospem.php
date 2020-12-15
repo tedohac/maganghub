@@ -15,4 +15,11 @@ class Dospem extends Model
                       ->get();
         return $dospem->count();
     }
+
+    public static function getCountByProdi($prodi_id)
+    {
+        $dospem = Dospem::where('dospem_prodi_id', $prodi_id)
+                                ->get();
+        return $dospem->count();
+    }
 }

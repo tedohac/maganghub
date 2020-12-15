@@ -14,4 +14,11 @@ class Prodi extends Model
                       ->get();
         return $prodi->count();
     }
+    
+    public static function getCountByUniv($univ_id)
+    {
+        $prodi = Prodi::where('prodi_univ_id', $univ_id)
+                                ->get();
+        return $prodi->count();
+    }
 }
