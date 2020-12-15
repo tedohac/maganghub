@@ -55,7 +55,7 @@
     <h5 class="mb-2 p-0">
         Kegiatan Magang Mahasiswa
     </h5>
-    @if($rekrut->rekrut_status!='magang')
+    @if($rekrut->rekrut_status=='finishmhs' || $rekrut->rekrut_status=='finishprs')
     <div class="alert alert-info">
         Mahasiswa telah menyelesaikan magang ini pada {{ date('d F Y H:i', strtotime($rekrut->rekrut_finish_mahasiswa)) }}. <br />
         

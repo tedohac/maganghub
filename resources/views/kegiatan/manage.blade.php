@@ -60,7 +60,7 @@
             <i class="fas fa-file-pdf"></i> Cetak Laporan
         </a>
     </h5>
-    @if($rekrut->rekrut_status!='magang')
+    @if($rekrut->rekrut_status=='finishmhs' || $rekrut->rekrut_status=='finishprs')
     <div class="alert alert-info">
         Anda telah menyelesaikan magang ini pada {{ date('d F Y H:i', strtotime($rekrut->rekrut_finish_mahasiswa)) }}.<br />
         Rating anda untuk perusahaan: {{ $rekrut->rekrut_rating_mahasiswa }}<br />

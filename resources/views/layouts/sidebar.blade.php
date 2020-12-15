@@ -86,6 +86,8 @@
     </div>
 
     @php ($univsb = \App\Dospem::where('dospem_user_email', Auth::user()->user_email )->first())
+    @php ($prodi = \App\Prodi::where('prodi_id', $univsb->dospem_prodi_id )->first())
+    @php ($univ = \App\Univ::where('univ_id', $prodi->prodi_univ_id )->first())
 
     <div class="sidebar-profile-bot w-100 p-2">
         <div class="sidebar-profile-thumb text-center">
@@ -94,10 +96,25 @@
         <div class="sidebar-name text-center mx-2">
             <small>DOSPEM</small><br>
             <b>{{ $univsb->dospem_nik }}</b><br>
-            {{ $univsb->mahasiswa_nama }}
+            {{ $univsb->dospem_nama }}<br>
+            <small><i>{{ $prodi->prodi_nama }}</i></small><br>
+            <small><i>{{ $univ->univ_nama }}</i></small>
         </div>
     </div>
-    <div class="p-2">
+    <div class="sidebar-profile-bot w-100 p-2">
+        <table class="w-100">
+            <tr class="align-top">
+                <td>
+                    <small>Mahasiswa</small><br />
+                    <small class="text-primary">{{ \App\Mahasiswa::getCountByDospem($univsb->dospem_id) }}</small>
+                </td>
+                <td class="text-right">
+                    <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('mahasiswa.pantau') }}">
+                        <small><i class="fas fa-ellipsis-h"></i></small>
+                    </a>
+                </td>
+            </tr>
+        </table>
     </div>
 
 </div>
@@ -434,34 +451,3 @@
 </div>
 
 @endif
-
-<div class="sidebar-maganghub bg-white shadow-sm mt-2 p-0">
-    <div class="p-2">
-        <table class="w-100">
-            <tr class="align-top border-bottom">
-                <td class="p-2">
-                    <small>Mahasiswa Pencari Magang</small><br />
-                </td>
-                <td class="text-right p-2">
-                    <small class="text-primary">99</small>
-                </td>
-            </tr>
-            <tr class="align-top border-bottom">
-                <td class="p-2">
-                    <small>Lowongan Magang</small><br />
-                </td>
-                <td class="text-right p-2">
-                    <small class="text-primary">99</small>
-                </td>
-            </tr>
-            <tr class="align-top border-bottom">
-                <td class="p-2">
-                    <small>Mahasiswa Sedang Magang</small><br />
-                </td>
-                <td class="text-right p-2">
-                    <small class="text-primary">99</small>
-                </td>
-            </tr>
-        </table>
-    </div>
-</div>

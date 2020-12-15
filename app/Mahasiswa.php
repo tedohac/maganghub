@@ -30,4 +30,11 @@ class Mahasiswa extends Model
                                 ->get();
         return $mahasiswa->count();
     }
+    
+    public static function getCountByDospem($dospem_id)
+    {
+        $mahasiswa = Mahasiswa::where('mahasiswa_dospem_id', $dospem_id)
+                                ->get();
+        return $mahasiswa->count();
+    }
 }
