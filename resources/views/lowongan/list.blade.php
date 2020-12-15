@@ -111,7 +111,7 @@
                 </div>
 
                 <div class="col-12">
-                    <input type="submit" formmethod="get" class="btn btn-primary btn-block h-100" value="Apply" formaction="#">
+                    <input type="submit" class="btn btn-primary btn-block h-100" value="Apply">
                 </div>
 
             </div>
