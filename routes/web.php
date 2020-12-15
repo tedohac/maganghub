@@ -90,6 +90,8 @@ Route::group(['prefix' => 'dospem', 'middleware' => 'web'], function () {
 
 Route::group(['prefix' => 'mahasiswa', 'middleware' => 'web'], function () {
 
+    Route::get('pantau','ManageMahasiswaController@pantau')->name('mahasiswa.pantau')->middleware('cekrole:dospem');
+
     Route::get('manage','ManageMahasiswaController@manage')->name('mahasiswa.manage')->middleware('cekrole:admin kampus');
     Route::post('save','ManageMahasiswaController@save')->name('mahasiswa.save')->middleware('cekrole:admin kampus');
     Route::post('update','ManageMahasiswaController@update')->name('mahasiswa.update')->middleware('cekrole:admin kampus');

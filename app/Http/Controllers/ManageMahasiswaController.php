@@ -42,6 +42,22 @@ class ManageMahasiswaController extends Controller
         ]);
     }
     
+    public function pantau()
+    {
+        $dospem = Dospem::where('dospem_user_email', Auth::user()->user_email )->first();
+        if(empty($dospem)) abort(404);
+
+        $mahasiswas = Mahasiswa::join('dospems', 'dospems.dospem_id', '=', 'mahasiswas.mahasiswa_dospem_id')
+                                ->join('prodis', 'prodis.prodi_id', '=', 'dospems.dospem_prodi_id')
+                                ->join('users', 'users.user_email', '=', 'mahasiswas.mahasiswa_user_email')
+                                ->where('mahasiswa_dospem_id', $dospem->dospem_id)
+                                ->get();
+
+    	return view('dospem.manage_mahasiswa', [
+            'mahasiswas' => $mahasiswas
+        ]);
+    }
+    
     public function importform()
     {
         $univ = Univ::where('univ_user_email', Auth::user()->user_email )->first();
