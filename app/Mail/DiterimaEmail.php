@@ -30,7 +30,7 @@ class DiterimaEmail extends Mailable
     public function build()
     {
         $param = [
-            'url' => route('perekrutan.detailpelamar', [
+            'url' => route('perekrutan.detaillamaran', [
                 'id' => $this->rekrut->rekrut_id 
             ]),
             'rekrut' => $this->rekrut,

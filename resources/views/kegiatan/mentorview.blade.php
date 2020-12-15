@@ -57,13 +57,11 @@
     </h5>
     @if($rekrut->rekrut_status!='magang')
     <div class="alert alert-info">
-        Mahasiswa telah menyelesaikan magang ini pada {{ date('d F Y H:i', strtotime($rekrut->rekrut_finish_mahasiswa)) }}. 
+        Mahasiswa telah menyelesaikan magang ini pada {{ date('d F Y H:i', strtotime($rekrut->rekrut_finish_mahasiswa)) }}. <br />
         
         @if($rekrut->rekrut_status=='finishmhs')
             <input type="button" class="btn btn-primary p-1 text-small" value="Rating Mahasiswa" id="btnFinish">
-        @endif
-
-        @if($rekrut->rekrut_finish_perusahaan!="")
+        @elseif($rekrut->rekrut_status=="finishprs")
             Rating anda untuk mahasiswa: {{ $rekrut->rekrut_rating_perusahaan }}<br />
             Rating mahasiswa untuk perusahaan anda: {{ $rekrut->rekrut_rating_mahasiswa }}<br />
             Feedback dari anda:<br />

@@ -65,9 +65,9 @@
         Anda telah menyelesaikan magang ini pada {{ date('d F Y H:i', strtotime($rekrut->rekrut_finish_mahasiswa)) }}.<br />
         Rating anda untuk perusahaan: {{ $rekrut->rekrut_rating_mahasiswa }}<br />
 
-        @if($rekrut->rekrut_finish_perusahaan=="")
+        @if($rekrut->rekrut_status=="finishmhs")
             Menunggu admin perusahaan memberikan feedback dan rating untuk anda.
-        @else
+        @elseif($rekrut->rekrut_status=="finishprs")
             Rating perusahaan untuk anda: {{ $rekrut->rekrut_rating_perusahaan }}<br />
             Feedback dari perusahaan:<br />
             {{ $rekrut->rekrut_feedback }}

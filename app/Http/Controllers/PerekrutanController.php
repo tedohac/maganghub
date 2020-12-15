@@ -272,6 +272,29 @@ class PerekrutanController extends Controller
         return redirect()->back();
     }
     
+    public function kirimulangundangan($rekrut_id)
+    {
+        $rekrut = Rekrut::join('lowongans', 'lowongans.lowongan_id', '=', 'rekruts.rekrut_lowongan_id')
+                        ->join('cities', 'cities.city_id', '=', 'lowongans.lowongan_city_id')
+                        ->join('perusahaans', 'perusahaans.perusahaan_id', '=', 'lowongans.lowongan_perusahaan_id')
+                        ->join('mahasiswas', 'mahasiswas.mahasiswa_id', '=', 'rekruts.rekrut_mahasiswa_id')
+                        ->join('fungsis', 'fungsis.fungsi_id', '=', 'lowongans.lowongan_fungsi_id')
+                        ->where('perusahaan_user_email', Auth::user()->user_email )
+                        ->where('rekrut_id', $rekrut_id)->first();
+        if(empty($rekrut)) return abort(404);
+
+        $request = new \stdClass();
+        $request->undangan_tanggal  = $rekrut->rekrut_undangan_waktu;
+        $request->undangan_waktu    = $rekrut->rekrut_undangan_waktu;
+        $request->undangan_alamat   = $rekrut->rekrut_undangan_alamat;
+        $request->undangan_desc     = htmlspecialchars_decode($rekrut->rekrut_undangan_alamat);
+
+        Mail::to($rekrut->mahasiswa_user_email)->send(new UndanganEmail($rekrut, $request));
+        
+        Session::flash('success', 'Undangan test berhasil dikirim, menunggu mahasiswa konfirmasi kehadiran test.');
+        return redirect()->back();
+    }
+    
     public function tolakundangan(Request $request)
     {
         if(empty($request->rekrut_id)) abort(404);

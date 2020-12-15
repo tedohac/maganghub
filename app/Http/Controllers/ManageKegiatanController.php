@@ -453,7 +453,7 @@ class ManageKegiatanController extends Controller
             Rekrut::where('rekrut_id',$rekrut->rekrut_id)
                     ->update([
                         'rekrut_status'            => 'finishprs',
-                        'rekrut_rating_perusahaan'  => $request->rekrut_rating_mahasiswa,
+                        'rekrut_rating_perusahaan'  => $request->rekrut_rating_perusahaan,
                         'rekrut_finish_perusahaan'  => date("Y-m-d H:i:s"),
                         'rekrut_feedback'           => $request->rekrut_feedback,
                     ]);
