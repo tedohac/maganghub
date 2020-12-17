@@ -52,6 +52,75 @@
         Dashboard Admin
     </h5>
     <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-3">
+    
+        <div class="row">
+
+            <div class="col-xl-4 col-sm-6 mb-3">
+                <a class="text-white" href="#">
+                    <div class="card text-white bg-primary o-hidden h-100 shadow p-2">
+                        <div class="card-body">
+                            <div class="card-body-icon">
+                                <i class="fas fa-fw fa-university"></i>
+                            </div>
+                            <div>
+                                Admin Kampus<br />
+                                {{ \App\User::getCountAdmin('admin kampus') }} Pengguna
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+                
+            <div class="col-xl-4 col-sm-6 mb-3">
+                <a class="text-white" href="#">
+                    <div class="card text-white bg-info o-hidden h-100 shadow p-2">
+                        <div class="card-body">
+                            <div class="card-body-icon">
+                                <i class="fas fa-fw fa-briefcase"></i>
+                            </div>
+                            <div>
+                                Perusahaan<br />
+                                {{ \App\User::getCountAdmin('perusahaan') }} Pengguna
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+                
+            <div class="col-xl-4 col-sm-6 mb-3">
+                <a class="text-white" href="#">
+                    <div class="card text-white bg-primary o-hidden h-100 shadow p-2">
+                        <div class="card-body">
+                            <div class="card-body-icon">
+                                <i class="fas fa-fw fa-user"></i>
+                            </div>
+                            <div>
+                                Dosen Pembimbing<br />
+                                {{ \App\User::getCountAdmin('dospem') }} Pengguna
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-xl-4 col-sm-6 mb-3">
+                <a class="text-white" href="#">
+                    <div class="card text-white bg-info o-hidden h-100 shadow p-2">
+                        <div class="card-body">
+                            <div class="card-body-icon">
+                                <i class="fas fa-fw fa-user-graduate"></i>
+                            </div>
+                            <div>
+                                Mahasiswa<br />
+                                {{ \App\User::getCountAdmin('mahasiswa') }} Pengguna
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+
     </div>
     <!-- end content -->
     
