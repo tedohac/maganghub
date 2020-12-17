@@ -388,55 +388,6 @@
             </tr>
         </table>
     </div>
-    <div class="sidebar-profile-bot w-100 p-2">
-        <label class="border-bottom w-100">Data Pengguna</label>
-        <table class="w-100">
-            <tr class="align-top">
-                <td>
-                    <small>Admin Kampus</small><br />
-                    <small class="text-primary">{{ \App\User::getCountAdmin('admin kampus') }}</small>
-                </td>
-                <td class="text-right">
-                    <a class="btn btn-outline-info btn-block p-1 mb-3" href="#">
-                        <small><i class="fas fa-ellipsis-h"></i></small>
-                    </a>
-                </td>
-            </tr>
-            <tr class="align-top">
-                <td>
-                    <small>Admin Perusahaan</small><br />
-                    <small class="text-primary">{{ \App\User::getCountAdmin('perusahaan') }}</small>
-                </td>
-                <td class="text-right">
-                    <a class="btn btn-outline-info btn-block p-1 mb-3" href="#">
-                        <small><i class="fas fa-ellipsis-h"></i></small>
-                    </a>
-                </td>
-            </tr>
-            <tr class="align-top">
-                <td>
-                    <small>Dosen Pembimbing</small><br />
-                    <small class="text-primary">{{ \App\User::getCountAdmin('dospem') }}</small>
-                </td>
-                <td class="text-right">
-                    <a class="btn btn-outline-info btn-block p-1 mb-3" href="#">
-                        <small><i class="fas fa-ellipsis-h"></i></small>
-                    </a>
-                </td>
-            </tr>
-            <tr class="align-top">
-                <td>
-                    <small>Mahasiswa</small><br />
-                    <small class="text-primary">{{ \App\User::getCountAdmin('mahasiswa') }}</small>
-                </td>
-                <td class="text-right">
-                    <a class="btn btn-outline-info btn-block p-1 mb-3" href="#">
-                        <small><i class="fas fa-ellipsis-h"></i></small>
-                    </a>
-                </td>
-            </tr>
-        </table>
-    </div>
 
 </div>
 
