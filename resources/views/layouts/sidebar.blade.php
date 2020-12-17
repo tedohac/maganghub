@@ -365,6 +365,13 @@
     <div class="sidebar-profile-bot w-100 p-2">
         <table class="w-100">
             <tr class="align-top">
+                <td colspan="2">
+                    <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('admin.dashboard') }}">
+                        <small>Dashboard</small>
+                    </a>
+                </td>
+            </tr>
+            <tr class="align-top">
                 <td>
                     <small>Verifikasi Kampus</small><br />
                     <small class="text-primary">{{ \App\Univ::getUnverified() }}</small>
