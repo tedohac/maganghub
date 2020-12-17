@@ -132,6 +132,45 @@ class PerekrutanController extends Controller
         ]);
     }
     
+    public function lamaranlist_dospem($mahasiswa_id, Request $request)
+    {
+        $filter = new \stdClass();
+        
+        if(!empty($request->filter_status)) $filter->status = $request->filter_status;
+        else $filter->status = "";
+
+        // DB::enableQueryLog();
+        $mahasiswa = Mahasiswa::join('dospems', 'dospems.dospem_id', '=', 'mahasiswas.mahasiswa_dospem_id')
+                                ->join('prodis', 'prodis.prodi_id', '=', 'dospems.dospem_prodi_id')
+                                ->join('univs', 'univs.univ_id', '=', 'prodis.prodi_univ_id')
+                                ->where('mahasiswa_id', $mahasiswa_id )->first();
+        // dd(DB::getQueryLog());
+        if(empty($mahasiswa)) abort(404);
+
+        $skills = Skill::where('skill_mahasiswa_id', $mahasiswa->rekrut_mahasiswa_id)
+                        ->get();
+
+        $rekruts = Rekrut::join('lowongans', 'lowongans.lowongan_id', '=', 'rekruts.rekrut_lowongan_id')
+                        ->join('perusahaans', 'perusahaans.perusahaan_id', '=', 'lowongans.lowongan_perusahaan_id')
+                        ->join('cities', 'cities.city_id', '=', 'lowongans.lowongan_city_id')
+                        ->join('fungsis', 'fungsis.fungsi_id', '=', 'lowongans.lowongan_fungsi_id')
+                        ->join('mahasiswas', 'mahasiswas.mahasiswa_id', '=', 'rekruts.rekrut_mahasiswa_id')
+                        ->where('mahasiswa_id', $mahasiswa->mahasiswa_id);
+        
+        if(!empty($request->filter_status)) {
+            $rekruts = $rekruts->where('rekrut_status', "=", $request->filter_status);
+        }
+        
+        $rekruts = $rekruts->get();
+
+    	return view('dospem.list_lamaran', [
+            'filter' => $filter,
+            'rekruts' => $rekruts,
+            'mahasiswa' => $mahasiswa,
+            'skills' => $skills,
+        ]);
+    }
+    
     public function detailpelamar($id)
     {
 
@@ -157,6 +196,35 @@ class PerekrutanController extends Controller
         $rekrut->rekrut_undangan_desc = htmlspecialchars_decode($rekrut->rekrut_undangan_desc);
 
     	return view('lowongan.detail_pelamar', [
+            'rekrut' => $rekrut,
+            'skills' => $skills
+        ]);
+    }
+    
+    public function detailpelamar_dospem($id)
+    {
+
+                        // DB::enableQueryLog();
+        $rekrut = Rekrut::join('lowongans', 'lowongans.lowongan_id', '=', 'rekruts.rekrut_lowongan_id')
+                        ->join('perusahaans', 'perusahaans.perusahaan_id', '=', 'lowongans.lowongan_perusahaan_id')
+                        ->join('cities', 'cities.city_id', '=', 'lowongans.lowongan_city_id')
+                        ->join('fungsis', 'fungsis.fungsi_id', '=', 'lowongans.lowongan_fungsi_id')
+                        ->join('mahasiswas', 'mahasiswas.mahasiswa_id', '=', 'rekruts.rekrut_mahasiswa_id')
+                        ->join('dospems', 'dospems.dospem_id', '=', 'mahasiswas.mahasiswa_dospem_id')
+                        ->join('prodis', 'prodis.prodi_id', '=', 'dospems.dospem_prodi_id')
+                        ->join('univs', 'univs.univ_id', '=', 'prodis.prodi_univ_id')
+                        ->where('rekrut_id', $id)->first();
+                        // dd(DB::getQueryLog());
+        if(empty($rekrut)) return abort(404);
+
+        $skills = Skill::where('skill_mahasiswa_id', $rekrut->rekrut_mahasiswa_id)
+                        ->get();
+
+        $rekrut->lowongan_requirement = htmlspecialchars_decode($rekrut->lowongan_requirement);
+        $rekrut->lowongan_jobdesk     = htmlspecialchars_decode($rekrut->lowongan_jobdesk);
+        $rekrut->rekrut_undangan_desc = htmlspecialchars_decode($rekrut->rekrut_undangan_desc);
+
+    	return view('dospem.detail_pelamar', [
             'rekrut' => $rekrut,
             'skills' => $skills
         ]);

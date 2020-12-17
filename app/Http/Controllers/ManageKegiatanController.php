@@ -81,6 +81,42 @@ class ManageKegiatanController extends Controller
             'skills' => $skills
         ]);
     }
+    
+    public function dospemview($rekrut_id, Request $request)
+    {
+        $filter = new \stdClass();
+
+        date_default_timezone_set('Asia/Jakarta');
+        if(!empty($request->filter_month)) $filter->month = $request->filter_month;
+        else $filter->month = date('Y').'-'.date('m');
+        
+        $rekrut = Rekrut::join('lowongans', 'lowongans.lowongan_id', '=', 'rekruts.rekrut_lowongan_id')
+                        ->join('perusahaans', 'perusahaans.perusahaan_id', '=', 'lowongans.lowongan_perusahaan_id')
+                        ->join('cities', 'cities.city_id', '=', 'lowongans.lowongan_city_id')
+                        ->join('fungsis', 'fungsis.fungsi_id', '=', 'lowongans.lowongan_fungsi_id')
+                        ->join('mahasiswas', 'mahasiswas.mahasiswa_id', '=', 'rekruts.rekrut_mahasiswa_id')
+                        ->join('dospems', 'dospems.dospem_id', '=', 'mahasiswas.mahasiswa_dospem_id')
+                        ->join('prodis', 'prodis.prodi_id', '=', 'dospems.dospem_prodi_id')
+                        ->join('univs', 'univs.univ_id', '=', 'prodis.prodi_univ_id')
+                        ->where('rekrut_id', $rekrut_id)
+                        ->where(function ($query) {
+                            $query->orWhere('rekrut_status', "lulus");
+                            $query->orWhere('rekrut_status', "finishmhs");
+                            $query->orWhere('rekrut_status', "finishprs");
+                        })->first();
+        if(empty($rekrut)) abort(404);
+
+        $rekrut->lowongan_jobdesk     = htmlspecialchars_decode($rekrut->lowongan_jobdesk);
+
+        $skills = Skill::where('skill_mahasiswa_id', $rekrut->rekrut_mahasiswa_id)
+                        ->get();
+
+    	return view('dospem.kegiatan', [
+            'filter' => $filter,
+            'rekrut' => $rekrut,
+            'skills' => $skills
+        ]);
+    }
 
     public function detail($rekrut_id, $kegiatan_tgl)
     {
@@ -101,8 +137,7 @@ class ManageKegiatanController extends Controller
                             $query->orWhere('rekrut_status', "lulus");
                             $query->orWhere('rekrut_status', "finishmhs");
                             $query->orWhere('rekrut_status', "finishprs");
-                        })
-                        ->where('perusahaan_user_email', Auth::user()->user_email )->first();
+                        })->first();
         if(empty($rekrut)) abort(404);
 
         $skills = Skill::where('skill_mahasiswa_id', $rekrut->rekrut_mahasiswa_id)
