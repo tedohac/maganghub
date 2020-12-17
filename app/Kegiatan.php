@@ -25,4 +25,14 @@ class Kegiatan extends Model
                             ->get();
         return $kegiatan->count();
     }
+    
+    public static function getCountUnverif()
+    {
+        $kegiatan = Kegiatan::join('rekruts', 'rekruts.rekrut_id', '=', 'kegiatans.kegiatan_rekrut_id')
+                            ->join('mahasiswas', 'mahasiswas.mahasiswa_id', '=', 'rekruts.rekrut_mahasiswa_id')
+                            ->where('mahasiswa_user_email', Auth::user()->user_email )
+                            ->whereNull('kegiatan_verify_mentor')
+                            ->get();
+        return $kegiatan->count();
+    }
 }

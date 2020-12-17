@@ -53,41 +53,49 @@
     <h5 class="mb-2 p-0 pb-1">
         Kegiatan Magang
         
-        @if($rekrut->rekrut_status=='lulus')
-            <input type="button" class="btn btn-outline-primary p-1 float-right text-small" value="Selesaikan Magang" id="btnFinish">
-        @endif
         <a class="btn btn-outline-info p-1 mr-1 float-right" href="{{ route('kegiatan.print') }}">
             <i class="fas fa-file-pdf"></i> Cetak Laporan
         </a>
     </h5>
-    @if($rekrut->rekrut_status=='finishmhs' || $rekrut->rekrut_status=='finishprs')
-    <div class="alert alert-info">
-        Anda telah menyelesaikan magang ini pada {{ date('d F Y H:i', strtotime($rekrut->rekrut_finish_mahasiswa)) }}.<br />
-        Rating anda untuk perusahaan: {{ $rekrut->rekrut_rating_mahasiswa }}<br />
-
-        @if($rekrut->rekrut_status=="finishmhs")
-            Menunggu admin perusahaan memberikan feedback dan rating untuk anda.
-        @elseif($rekrut->rekrut_status=="finishprs")
-            Rating perusahaan untuk anda: {{ $rekrut->rekrut_rating_perusahaan }}<br />
-            Feedback dari perusahaan:<br />
-            {{ $rekrut->rekrut_feedback }}
-        @endif
-
-    </div>
-    @endif
     <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-3">
     
+        @if($rekrut->rekrut_status=='finishmhs' || $rekrut->rekrut_status=='finishprs')
+        <div class="alert alert-info">
+            Anda telah menyelesaikan magang ini pada {{ date('d F Y H:i', strtotime($rekrut->rekrut_finish_mahasiswa)) }}.<br />
+            Rating anda untuk perusahaan: {{ $rekrut->rekrut_rating_mahasiswa }}<br />
+
+            @if($rekrut->rekrut_status=="finishmhs")
+                Menunggu admin perusahaan memberikan feedback dan rating untuk anda.
+            @elseif($rekrut->rekrut_status=="finishprs")
+                Rating perusahaan untuk anda: {{ $rekrut->rekrut_rating_perusahaan }}<br />
+                Feedback dari perusahaan:<br />
+                {{ $rekrut->rekrut_feedback }}
+            @endif
+
+        </div>
+        @elseif(\App\Kegiatan::getCountAll()>0 && $rekrut->rekrut_status=='lulus')
+            @if(\App\Kegiatan::getCountUnverif()>0)
+            <div class="alert alert-info mb-2">
+                Menunggu admin perusahaan verifikasi semua kegiatan magang anda agar dapat menyeselaikan magang.
+            </div>
+            @else
+                <input type="button" class="btn btn-outline-primary p-1 text-small mb-2" value="Selesaikan Magang" id="btnFinish">
+            @endif
+        @endif
+        
         @php($firstDate = $filter->month.'-01')
         
         <div class="d-flex justify-content-between mb-2">
             <a class="btn btn-outline-info p-1 float-right" href="{{ route('kegiatan.manage').'?filter_month='.date('Y-m', strtotime($firstDate.' -1 month')) }}">
                 <small>{{ date('F Y', strtotime($firstDate." -1 month")) }}</small>
             </a>
+            <div>
+                <h5 class="text-center">{{ date('F Y', strtotime($firstDate)) }}</h5>
+            </div>
             <a class="btn btn-outline-info p-1 float-right" href="{{ route('kegiatan.manage').'?filter_month='.date('Y-m', strtotime($firstDate.' +1 month')) }}">
                 <small>{{ date('F Y', strtotime($firstDate." +1 month")) }}</small>
             </a>
         </div>
-        <h5 class="text-center">{{ date('F Y', strtotime($firstDate)) }}</h5>
         <table class="table table-bordered table-responsive-sm" cellspacing="0">
             <thead>
             <tr>

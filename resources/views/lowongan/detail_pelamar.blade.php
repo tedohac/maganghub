@@ -102,7 +102,7 @@
         </div>
         @elseif($rekrut->rekrut_status=="diundang")
         <div class="alert alert-warning">
-            Anda sudah mengirim undangan test, menunggu konfirmasi. 
+            Anda sudah mengirim undangan test, menunggu konfirmasi mahasiswa. 
             <a href="{{ url('perekrutan/kirimulangundangan/'.$rekrut->rekrut_id) }}" class="btn btn-primary p-1">Kirim Ulang Undangan</a>
         </div>
         @elseif($rekrut->rekrut_status=="siap test")
@@ -213,6 +213,12 @@
                 </td>
             </tr>
             <tr>
+                <td class="greybox"><b>Prodi</b></td>
+                <td>
+                    {{ ($rekrut->prodi_fakultas!="") ? $rekrut->prodi_fakultas."-" : "" }} {{ $rekrut->prodi_nama }}
+                </td>
+            </tr>
+            <tr>
                 <td class="greybox"><b>NIM</b></td>
                 <td>
                     {{ $rekrut->mahasiswa_nim }}
@@ -227,7 +233,7 @@
             <tr>
                 <td class="greybox"><b>TTL</b></td>
                 <td>
-                    {{ $rekrut->mahasiswa_tempat_lahir ? $rekrut->mahasiswa_tempat_lahir : '-' }}, {{ $rekrut->mahasiswa_tgl_lahir ? $rekrut->mahasiswa_tgl_lahir : '-' }}
+                    {{ $rekrut->mahasiswa_tempat_lahir ? $rekrut->mahasiswa_tempat_lahir : '-' }}, {{ $rekrut->mahasiswa_tgl_lahir ? date('d F Y', strtotime($rekrut->mahasiswa_tgl_lahir)) : '-' }}
                 </td>
             </tr>
             <tr>
@@ -528,7 +534,7 @@
     </div>
     <!-- End Confirm Lulus Modal -->
     
-    <!-- Confirm Lulus Modal -->
+    <!-- Confirm Tidak Lulus Modal -->
     <div class="modal fade" id="tdkLulusModal">
         <div class="modal-dialog">
         <div class="modal-content">
@@ -556,7 +562,7 @@
         </div>
         </div>
     </div>
-    <!-- End Confirm Lulus Modal -->
+    <!-- End Confirm Tidak Lulus Modal -->
 </form>
 @endsection
 

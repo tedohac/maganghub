@@ -139,7 +139,14 @@
                 </div>
                 <div class="col-md-6 col-12">
                     <small>{{ $lowongan->fungsi_nama }}</small><br />
-                    {{ $lowongan->perusahaan_nama }} - <small><i>Menunggu verifikasi MagangHub</i></small><br />
+                    {{ $lowongan->perusahaan_nama }}<br />
+                    
+                    @if(\App\Perusahaan::getIsVerified($lowongan->perusahaan_id))
+                        <small><i class="fas fa-check"></i> Terverifikasi</small>
+                    @else
+                        <small>Menunggu verifikasi MagangHub</small>
+                    @endif
+                    <br />
                     <small>Penempatan: {{ $lowongan->city_nama }}</small><br />
                 </div>
                 <div class="col-md-6 col-12 text-right">

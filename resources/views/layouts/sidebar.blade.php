@@ -154,8 +154,12 @@
         <table class="w-100">
             <tr class="align-top">
                 <td>
-                    <small>Profil</small><br />
-                    <small class="text-primary">{{ $univsb->mahasiswa_nim }}</small>
+                    <small>Kelengkapan Profil</small><br />
+                    @if(\App\Mahasiswa::isLengkap($univsb->mahasiswa_user_email))
+                        <small class="text-primary"><i class="fas fa-check"></i> Lengkap</small>
+                    @else
+                        <small class="text-primary">mohon lengkapi profil</small>
+                    @endif
                 </td>
                 <td class="text-right">
                     <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ url('mahasiswa/detail/'.$univsb->mahasiswa_id) }}">
