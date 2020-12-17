@@ -37,4 +37,22 @@ class Mahasiswa extends Model
                                 ->get();
         return $mahasiswa->count();
     }
+    
+    public static function isLengkap($mahasiswa_user_email)
+    {
+        $mahasiswa = Mahasiswa::where('mahasiswa_user_email', $mahasiswa_user_email)
+                                ->first();
+        if(empty($mahasiswa)) return false;
+
+        if($mahasiswa->mahasiswa_city_id!="" && 
+            $mahasiswa->mahasiswa_no_tlp!="" && 
+            $mahasiswa->mahasiswa_alamat!="" && 
+            $mahasiswa->mahasiswa_tempat_lahir!="" && 
+            $mahasiswa->mahasiswa_tgl_lahir!="" && 
+            $mahasiswa->mahasiswa_profile_pict!="" && 
+            $mahasiswa->mahasiswa_cv!="" && 
+            $mahasiswa->mahasiswa_khs!="")
+            return true;
+        else return false;
+    }
 }

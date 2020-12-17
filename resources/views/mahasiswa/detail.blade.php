@@ -83,6 +83,12 @@
                 </td>
             </tr>
             <tr>
+                <td class="greybox"><b>Prodi</b></td>
+                <td>
+                    {{ ($mahasiswa->prodi_fakultas!="") ? $mahasiswa->prodi_fakultas."-" : "" }} {{ $mahasiswa->prodi_nama }}
+                </td>
+            </tr>
+            <tr>
                 <td class="greybox"><b>NIM</b></td>
                 <td>
                     {{ $mahasiswa->mahasiswa_nim ? $mahasiswa->mahasiswa_nim : '-' }}
@@ -91,7 +97,7 @@
             <tr>
                 <td class="greybox"><b>TTL</b></td>
                 <td>
-                    {{ $mahasiswa->mahasiswa_tempat_lahir ? $mahasiswa->mahasiswa_tempat_lahir : '-' }}, {{ $mahasiswa->mahasiswa_tgl_lahir ? $mahasiswa->mahasiswa_tgl_lahir : '-' }}
+                    {{ $mahasiswa->mahasiswa_tempat_lahir ? $mahasiswa->mahasiswa_tempat_lahir : '-' }}, {{ $mahasiswa->mahasiswa_tgl_lahir ? date('d F Y', strtotime($mahasiswa->mahasiswa_tgl_lahir)) : '-' }}
                 </td>
             </tr>
             <tr>

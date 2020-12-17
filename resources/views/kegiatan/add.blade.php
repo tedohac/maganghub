@@ -89,7 +89,8 @@
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" id="kegiatanPath" name="kegiatan_path" required="required"
                             data-parsley-required
-                            data-parsley-required-message="Pilih berkas kegiatan">
+                            data-parsley-required-message="Pilih berkas kegiatan"
+                            data-parsley-errors-container="#errorkegiatanPath">
                             <label class="custom-file-label" for="kegiatanPath">Pilih berkas kegiatan</label>
                         </div>
                     </div>

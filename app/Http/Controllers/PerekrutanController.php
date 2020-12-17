@@ -410,7 +410,7 @@ class PerekrutanController extends Controller
 
             Rekrut::where('rekrut_id', $id)
                 ->update([
-                    'rekrut_status'          => 'tdklulus'
+                    'rekrut_status' => 'tdklulus'
                 ]);
 
         } catch (\Illuminate\Database\QueryException $e) {

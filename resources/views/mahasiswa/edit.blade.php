@@ -72,7 +72,7 @@
     <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-5">
         <table class="table table-sm" cellspacing="0">
             <tr>
-                <td valign="center" width="50" class="greybox"><b>Foto Profil</b></td>
+                <td valign="center" width="50" class="greybox"><b>Pas Foto</b></td>
                 <td>
                     <small>kosongkan jika tidak ingin merubah</small>
                     <div class="input-group w-50">

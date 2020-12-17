@@ -87,7 +87,7 @@
                     @if(empty($kegiatan->kegiatan_verify_mentor))
                         @if(Auth::user()->user_role=='perusahaan')
                             @if($rekrut->rekrut_status=='lulus')
-                                <input type="button" class="btn btn-danger btn-block" value="Verifikasi" id="btnVerify">
+                                <input type="button" class="btn btn-primary btn-block" value="Verifikasi" id="btnVerify">
                             @endif
                         @else
                             Belum diverifikasi

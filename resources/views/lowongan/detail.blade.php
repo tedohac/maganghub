@@ -72,9 +72,16 @@
     <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-3">
         
         @if(Auth::check() && Auth::user()->user_role == 'mahasiswa')
-        <a class="btn btn-block btn-outline-info p-1 mb-3" href="#" data-toggle="modal" data-target="#confirmModal">
-            <i class="fas fa-share-square"></i> Melamar Lowongan
-        </a>
+        
+            @if(\App\Mahasiswa::isLengkap(Auth::User()->user_email))
+                <a class="btn btn-block btn-outline-info p-1 mb-3" href="#" data-toggle="modal" data-target="#confirmModal">
+                    <i class="fas fa-share-square"></i> Melamar Lowongan
+                </a>
+            @else
+                <div class="alert alert-danger">
+                    Lengkapi profil anda agar dapat melamar pada lowongan ini.
+                </div>
+            @endif
         @endif
 
         <table class="table table-sm" cellspacing="0">

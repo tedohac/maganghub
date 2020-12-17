@@ -144,6 +144,8 @@
                             Ditolak
                         @elseif($rekrut->rekrut_status=="tlkundang")
                             Undangan ditolak mahasiswa
+                        @elseif($rekrut->rekrut_status=="tdklulus")
+                            Tidak Lulus
                         @elseif($rekrut->rekrut_status=="finishmhs")
                             Menunggu Rating
                         @elseif($rekrut->rekrut_status=="finishprs")
