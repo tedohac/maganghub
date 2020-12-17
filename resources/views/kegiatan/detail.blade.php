@@ -21,7 +21,7 @@
 @endsection
 
 @section('content')
-    @if(&& Auth::user()->user_role=='perusahaan')
+    @if(Auth::user()->user_role=='perusahaan')
     <ol class="breadcrumb p-1 ml-auto">
         <li class="breadcrumb-item ml-auto"><a href="{{ route('/') }}">MagangHub</a></li>
         <li class="breadcrumb-item"><a href="{{ url('perusahaan/detail/'.$rekrut->lowongan_perusahaan_id) }}">Profil Perusahaan</a></li>
@@ -29,12 +29,13 @@
         <li class="breadcrumb-item"><a href="{{ url('kegiatan/mentorview/'.$rekrut->rekrut_id) }}">Kegiatan Magang</a></li>
         <li class="breadcrumb-item active" aria-current="page">Detail Kegiatan</li>
     </ol>
-    @elseif(&& Auth::user()->user_role=='mahasiswa')
+    @elseif(Auth::user()->user_role=='mahasiswa')
     <ol class="breadcrumb p-1 ml-auto">
         <li class="breadcrumb-item ml-auto"><a href="{{ route('/') }}">MagangHub</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('kegiatan.manage) }}">Kegiatan Magang</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('kegiatan.manage') }}">Kegiatan Magang</a></li>
         <li class="breadcrumb-item active" aria-current="page">Detail Kegiatan</li>
     </ol>
+    @endif
 
     @if(session('errors'))
         <div class="alert alert-danger alert-dismissible fade show" role="alert">

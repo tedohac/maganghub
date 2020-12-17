@@ -153,7 +153,7 @@
                     <small>Mulai magang :</small> {{ $lowongan->lowongan_tgl_mulai }}<br />
                     <small>Durasi magang:</small> {{ $lowongan->lowongan_durasi }}<br />
                     <small>Jumlah dibutuhkan:</small> {{ $lowongan->lowongan_jlh_dibutuhkan }}<br />
-                    <small>23 orang telah melamar</small>
+                    <!-- <small>23 orang telah melamar</small> -->
                 </div>
             </div>
             <div class="col-12">
