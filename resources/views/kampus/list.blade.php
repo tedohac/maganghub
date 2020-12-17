@@ -147,10 +147,7 @@
 
                         </li>
                         <li class="text-center p-2 border-bottom">
-                            Jumlah PRODI : 6
-                        </li>
-                        <li class="text-center p-2 border-bottom">
-                            Jumlah Pencari Magang : 57
+                            Jumlah PRODI : {{ \App\Prodi::getCountByUniv($univ->univ_id) }}
                         </li>
                         <li class="text-center p-2 border-bottom">
                             <a href="{{ ($univ->univ_website!='') ? $univ->univ_website : '#' }}">{{ ($univ->univ_website!='') ? $univ->univ_website : '-' }}</a>
