@@ -110,6 +110,12 @@ Route::group(['prefix' => 'mahasiswa', 'middleware' => 'web'], function () {
     Route::post('updateprofile','ProfilMahasiswaController@update')->name('mahasiswa.updateprofile')->middleware('cekrole:mahasiswa');
 });
 
+Route::group(['prefix' => 'dospem', 'middleware' => 'web'], function () {
+    Route::get('lamaranlist-dospem/{id}','PerekrutanController@lamaranlist_dospem')->name('dospem.lamaranlist-dospem')->middleware('cekrole:dospem');
+    Route::get('detailpelamar-dospem/{id}','PerekrutanController@detailpelamar_dospem')->name('dospem.detailpelamar-dospem')->middleware('cekrole:dospem');
+    Route::get('kegiatan/{id}','ManageKegiatanController@dospemview')->name('dospem.kegiatan')->middleware('cekrole:dospem');
+});
+
 Route::group(['prefix' => 'skill', 'middleware' => 'web'], function () {
 
     Route::get('manage','ManageSkillController@manage')->name('skill.manage')->middleware('cekrole:mahasiswa');
@@ -172,7 +178,7 @@ Route::group(['prefix' => 'kegiatan', 'middleware' => 'web'], function () {
     Route::get('delete/{date}','ManageKegiatanController@delete')->name('kegiatan.delete')->middleware('cekrole:mahasiswa');
     
     Route::get('mentorview/{id}','ManageKegiatanController@mentorview')->name('kegiatan.mentorview')->middleware('cekrole:perusahaan');
-    Route::get('detail/{id}/{date}','ManageKegiatanController@detail')->name('kegiatan.detail')->middleware('cekrole:perusahaan');
+    Route::get('detail/{id}/{date}','ManageKegiatanController@detail')->name('kegiatan.detail')->middleware('cekrole:perusahaan|dospem');
     Route::get('detailmhs/{id}/{date}','ManageKegiatanController@detailmhs')->name('kegiatan.detailmhs')->middleware('cekrole:mahasiswa');
     
     Route::get('verify/{id}','ManageKegiatanController@verify')->name('kegiatan.verify')->middleware('cekrole:perusahaan');

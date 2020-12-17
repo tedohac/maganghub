@@ -24,7 +24,7 @@
 @section('content')
     <ol class="breadcrumb p-1 ml-auto">
         <li class="breadcrumb-item ml-auto"><a href="{{ route('/') }}">MagangHub</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Data Mahasiswa</li>
+        <li class="breadcrumb-item active" aria-current="page">Daftar Mahasiswa</li>
     </ol>
 
     @if(session('errors'))
@@ -89,8 +89,11 @@
                     </td>
                     <td>{{ $mahasiswa->mahasiswa_status }}</td>
                     <td>
-                        <a class="btn btn-outline-info p-1 verify-form mb-1" href="#" data-id="{{ $mahasiswa->mahasiswa_id }}" title="Verifikasi Ulang">
-                            <small><i class="fas fa-ellipsis-h"></i></small>
+                        <a class="btn btn-outline-info px-1 py-0 verify-form mb-1" href="{{ url('mahasiswa/detail/'.$mahasiswa->mahasiswa_id) }}">
+                            <small>detail</small>
+                        </a>
+                        <a class="btn btn-outline-info px-1 py-0 verify-form mb-1" href="{{ url('dospem/lamaranlist-dospem/'.$mahasiswa->mahasiswa_id) }}">
+                            <small>lamaran</small>
                         </a>
                     </td>
                 </tr>
