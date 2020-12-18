@@ -94,6 +94,10 @@
                     
                 <input class="btn btn-success btn-block" value="LOGIN" type="submit">
                 </form>
+                <ul class="list-inline text-center text-small mt-5">
+                    <li class="list-inline-item"><a href="{{ url('registkampus') }}">Registrasi Admin Kampus</a></li>
+                    <li class="list-inline-item"><a href="{{ route('registperusahaan') }}">Registrasi Admin Perusahaan</a></li>
+                </ul>
             </div>
         </div>
     </div>

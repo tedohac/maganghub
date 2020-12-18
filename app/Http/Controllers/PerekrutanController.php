@@ -49,6 +49,19 @@ class PerekrutanController extends Controller
                             
         if($simpanrekrut)
         {
+            $sisa_kuota = $lowongan->lowongan_jlh_dibutuhkan-1;
+            
+            try
+            {
+                Lowongan::where('lowongan_id', $lowongan->lowongan_id)
+                    ->update([
+                        'lowongan_jlh_dibutuhkan' => $sisa_kuota,
+                    ]);
+            } catch (\Illuminate\Database\QueryException $e) {
+                Session::flash('error', 'Proses gagal, mohon coba kembali beberapa saat lagi atau hubungi admin MagangHub');
+                return redirect()->back();
+            }
+
             Session::flash('success', 'Melamar lowongan berhasil, mohon tunggu perusahaan mengirim undangan test kepada anda.');
             return redirect()->back();
         } else {

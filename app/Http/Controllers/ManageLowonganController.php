@@ -50,7 +50,8 @@ class ManageLowonganController extends Controller
         $lowongans = $lowongans->join('perusahaans', 'perusahaans.perusahaan_id', '=', 'lowongans.lowongan_perusahaan_id')
                             ->join('cities', 'cities.city_id', '=', 'lowongans.lowongan_city_id')
                             ->join('fungsis', 'fungsis.fungsi_id', '=', 'lowongans.lowongan_fungsi_id')
-                            ->where('lowongan_status', 'post');
+                            ->where('lowongan_status', 'post')
+                            ->where('lowongan_jlh_dibutuhkan', '>', 0);
 
         if(!empty($request->filter_perusahaan)) $lowongans = $lowongans->where('perusahaan_nama', 'like', '%'.$request->filter_perusahaan.'%');
 
@@ -76,7 +77,7 @@ class ManageLowonganController extends Controller
             $lowongans = $lowongans->where('lowongan_tgl_mulai', "<=", $request->filter_mulaisampai);
         }
 
-        $lowongans = $lowongans->paginate(10);
+        $lowongans = $lowongans->paginate(5);
 
         $fungsis = Fungsi::get();
 
