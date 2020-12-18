@@ -54,6 +54,15 @@
         </div>
     </div>
     
+    <footer class="my-5 pt-5 text-muted text-center text-small">
+        <p class="mb-1">&copy; 2020 MagangHub</p>
+        <ul class="list-inline">
+            <li class="list-inline-item"><a href="https://www.instagram.com/n.iken/">Niken</a></li>
+            <li class="list-inline-item"><a href="https://www.instagram.com/tedroit/">Tedo</a></li>
+            <li class="list-inline-item"><a href="https://www.instagram.com/salsabilasol/">Sal Sabila</a></li>
+        </ul>
+    </footer>
+    
     <!-- Bootstrap core JavaScript -->
     <script src="{{ url('jquery/jquery.min.js') }}"></script>
     <script src="{{ url('bootstrap/js/bootstrap.bundle.min.js') }}"></script>
