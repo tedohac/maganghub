@@ -20,13 +20,7 @@
     </tr>
 <table><br>
 
-Mohon segera konfirmasi untuk dapat mulai magang pada halaman berikut:
-
-@component('mail::button', ['url' => $param['url']])
-Detail Undangan
-@endcomponent
-
-atau click: <a href="{{ $param['url'] }}">{{ $param['url'] }}</a><br><br>
+Selamat melaksanakan magang! Semoga sukses!
 
 Semoga sukses!<br>
 Terimakasih,<br>
