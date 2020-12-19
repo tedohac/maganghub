@@ -1,13 +1,30 @@
 <head>
 </head>
 <body>
-    <!-- begin content -->
-    <h2 style="text-align: center;padding: 0 0.5rem;">
-        Laporan Kegiatan Magang Mahasiswa
-    </h2>
+    <table border="0" cellspacing="0" style="width: 100%;">
+        <tr>
+            <td>
+                <center>
+                    <img src="{{ public_path('img/maganghub.png') }}" style="width: 50px">
+                </center>
+            </td>
+            <td>
+                <h2>
+                    <center>Laporan Kegiatan Magang Mahasiswa</center>
+                </h2>
+            </td>
+            <td>
+                <center>
+                    <img src="{{ public_path('storage/univ/'.$rekrut->univ_profile_pict) }}" style="width: 50px">
+                </center>
+            </td>
+        </tr>
+    </table>
+    <hr />
+    
     <!-- info mahasiswa -->
     <div>
-        <table border="1" cellspacing="0">
+        <table border="1" cellspacing="0" style-"width: 100%;margin-top:50px;">
             <tr>
                 <td colspan="2"><center>Informasi Mahasiswa Pelamar<center></td>
                 <td></td>
