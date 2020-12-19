@@ -410,7 +410,11 @@ class ManageKegiatanController extends Controller
                         ->join('dospems', 'dospems.dospem_id', '=', 'mahasiswas.mahasiswa_dospem_id')
                         ->join('prodis', 'prodis.prodi_id', '=', 'dospems.dospem_prodi_id')
                         ->join('univs', 'univs.univ_id', '=', 'prodis.prodi_univ_id')
-                        ->where('rekrut_status', "lulus")
+                        ->where(function ($query) {
+                            $query->orWhere('rekrut_status', "lulus");
+                            $query->orWhere('rekrut_status', "finishmhs");
+                            $query->orWhere('rekrut_status', "finishprs");
+                        })
                         ->where('mahasiswa_user_email', Auth::user()->user_email )->first();
         if(empty($rekrut)) abort(404);
 
