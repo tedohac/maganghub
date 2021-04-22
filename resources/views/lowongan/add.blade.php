@@ -311,16 +311,17 @@
     $('.lowonganCity').select2({
         placeholder: '-- Pilih Kota Penempatan --',
         ajax: {
-        url: '{{ url('cityautocom') }}',
-        dataType: 'json',
-        delay: 250,
-        processResults: function (data) {
-            return {
-                results: data
-            };
+            url: '{{ url('cityautocom') }}',
+            dataType: 'json',
+            delay: 250,
+            processResults: function (data) {
+                return {
+                    results: data
+                };
+            },
+            cache: true
         },
-        cache: true
-        }
+        minimumInputLength: 1
     });
 </script>
 

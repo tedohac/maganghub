@@ -151,8 +151,7 @@
                     <th>Fakultas</th>
                     <th>Jenjang</th>
                     <th>Akreditasi</th>
-                    <th>DOSPEM</th>
-                    <th>Mahasiswa</th>
+                    <th>Pencari Magang</th>
                 </tr>
             </thead>
             <tbody>
@@ -164,8 +163,15 @@
                     <td>{{ $prodi->prodi_fakultas!='' ? $prodi->prodi_fakultas : '-' }}</td>
                     <td>{{ $prodi->prodi_jenjang }}</td>
                     <td>{{ strtoupper($prodi->prodi_akreditasi) }}</td>
-                    <td>{{ \App\Dospem::getCountByProdi($prodi->prodi_id) }}</td>
-                    <td>{{ \App\Mahasiswa::getCountByProdi($prodi->prodi_id) }}</td>
+                    <td>
+                        {{ \App\Mahasiswa::getCountPencariMagang($prodi->prodi_id) }}
+
+                        @if(Auth::check() && Auth::user()->user_role=='perusahaan' && \App\Mahasiswa::getCountPencariMagang($prodi->prodi_id)>0)
+                        <a class="btn btn-outline-info p-0 px-1 float-right broadcast-form" href="#" data-id="{{ $prodi->prodi_id }}">
+                            <small>Broadcast Lowongan</small>
+                        </a>
+                        @endif
+                    </td>
                 </tr>
                 @php ($num++)
             @endforeach
@@ -174,6 +180,35 @@
 
     </div>
     <!-- end prodi list -->
+    
+    <!-- Broadcast Modal -->
+    <div class="modal fade" id="broadcastModal">
+        <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+            <h4 class="modal-title">Broadcast Lowongan</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <p id="modal-message"></p>
+                Silahkan pilih lowongan yang akan dilakukan broadcast:
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Tidak</button>
+
+            <input  type="submit" class="btn btn-primary" id="sendsubmit" value="Ya">
+            </div>
+
+        </div>
+        </div>
+    </div>
+    <!-- End Broadcast Modal -->
 @endsection
 
 @section('bottom')
@@ -187,6 +222,29 @@
 <script>
     $(document).ready(function (){
         var table = $('#dataTable').DataTable();
+        
+        $('#dataTable').on('click', '.broadcast-form', function(){
+            var id =  $(this).data('id');
+            console.log(id);
+            
+            $.ajax({
+                type: 'GET',
+                url: '{{ url("prodi/detailjson") }}?id='+id,
+                success: function(data)
+                {
+                    var result = JSON.parse(data);
+                    // console.log(result);
+
+                    $('#submitDelete').attr('href', '{{ route("lowongan.broadcast") }}?prodi_id='+id);
+                    $('#modal-message').html('Anda akan melakukan broadcast lowongan ke seluruh mahasiswa <b>'+ result.univ_nama +'</b> prodi <b>'+ result.prodi_nama +'</b> yang sedang melakukan pencarian magang.');
+                    $('#broadcastModal').modal('show');
+                },
+                error:function() {
+                    alert("Error!");
+                }
+            });
+        });
+
     });
 </script>
 @endsection
