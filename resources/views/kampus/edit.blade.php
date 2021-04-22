@@ -330,7 +330,6 @@
                 },
                 cache: true
             },
-            minimumInputLength: 1
         });
     </script>
 @endsection

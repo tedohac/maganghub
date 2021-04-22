@@ -416,7 +416,7 @@ class ManageDospemController extends Controller
     public function autocom(Request $request)
     {
         $json = [];
-        if(!empty($request->query('q')) && !empty($request->query('univid'))){
+        // if(!empty($request->query('q')) && !empty($request->query('univid'))){
             // DB::enableQueryLog();
             $json = Dospem::join('prodis', 'prodis.prodi_id', '=', 'dospems.dospem_prodi_id')
                         ->where('prodis.prodi_univ_id', $request->query('univid'))
@@ -424,7 +424,7 @@ class ManageDospemController extends Controller
                         ->select(DB::raw('CONCAT("[", prodis.prodi_nama, "] (", dospem_nik , ") ", dospem_nama) as text'), 'dospem_id as id')
                         ->get()->take(5);
             // dd(DB::getQueryLog());
-        }
+        // }
         echo json_encode($json);
     }
 }

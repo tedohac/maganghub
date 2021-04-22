@@ -254,7 +254,7 @@ class ManageLowonganController extends Controller
     {
         $json = [];
 
-        if(!empty($request->query('q'))){
+        // if(!empty($request->query('q'))){
             // DB::enableQueryLog();
             $json = Lowongan::join('perusahaans', 'perusahaans.perusahaan_id', '=', 'lowongans.lowongan_perusahaan_id')
                             ->where('perusahaan_user_email', Auth::user()->user_email )
@@ -262,7 +262,7 @@ class ManageLowonganController extends Controller
                             ->select('lowongan_id as id', 'lowongan_judul as text')
                             ->get()->take(5);
             // dd(DB::getQueryLog());
-        }
+        // }
         echo json_encode($json);
     }
 }

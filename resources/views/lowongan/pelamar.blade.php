@@ -205,7 +205,6 @@ $(document).ready(function() {
             },
             cache: true
         },
-        minimumInputLength: 1
     });
     
     $('.fungsiFilter').select2({
