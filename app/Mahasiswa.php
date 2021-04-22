@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Auth;
+use App\Skill;
 
 class Mahasiswa extends Model
 {
@@ -31,6 +32,15 @@ class Mahasiswa extends Model
         return $mahasiswa->count();
     }
     
+    public static function getCountPencariMagang($prodi_id)
+    {
+        $mahasiswa = Mahasiswa::join('dospems', 'dospems.dospem_id', '=', 'mahasiswas.mahasiswa_dospem_id')
+                                ->where('dospem_prodi_id', $prodi_id)
+                                ->where('mahasiswa_status', 'mencari')
+                                ->get();
+        return $mahasiswa->count();
+    }
+    
     public static function getCountByDospem($dospem_id)
     {
         $mahasiswa = Mahasiswa::where('mahasiswa_dospem_id', $dospem_id)
@@ -43,6 +53,10 @@ class Mahasiswa extends Model
         $mahasiswa = Mahasiswa::where('mahasiswa_user_email', $mahasiswa_user_email)
                                 ->first();
         if(empty($mahasiswa)) return false;
+        
+        $skillcount = Skill::join('mahasiswas', 'mahasiswas.mahasiswa_id', '=', 'skills.skill_mahasiswa_id')
+                            ->where('mahasiswa_user_email', Auth::user()->user_email)
+                            ->count();
 
         if($mahasiswa->mahasiswa_city_id!="" && 
             $mahasiswa->mahasiswa_no_tlp!="" && 
@@ -51,7 +65,8 @@ class Mahasiswa extends Model
             $mahasiswa->mahasiswa_tgl_lahir!="" && 
             $mahasiswa->mahasiswa_profile_pict!="" && 
             $mahasiswa->mahasiswa_cv!="" && 
-            $mahasiswa->mahasiswa_khs!="")
+            $mahasiswa->mahasiswa_khs!="" && 
+            $skillcount)
             return true;
         else return false;
     }

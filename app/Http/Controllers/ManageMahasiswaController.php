@@ -421,7 +421,7 @@ class ManageMahasiswaController extends Controller
             return redirect()->back();
         }
 
-        Session::flash('success', 'E-mail berhasil dikirim. Dosen harus klik verifikasi pada email untuk dapat menggunakan akunnya kembali.');
+        Session::flash('success', 'E-mail berhasil dikirim. Mahasiswa harus klik verifikasi pada email untuk dapat menggunakan akunnya kembali.');
         return redirect()->back();
     }
     

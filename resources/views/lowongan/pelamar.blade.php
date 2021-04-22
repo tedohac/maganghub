@@ -195,16 +195,17 @@ $(document).ready(function() {
         width: '100%',
         placeholder: '-- Pilih Lowongan --',
         ajax: {
-        url: '{{ url('lowonganautocom') }}',
-        dataType: 'json',
-        delay: 250,
-        processResults: function (data) {
-            return {
-                results: data
-            };
+            url: '{{ url('lowonganautocom') }}',
+            dataType: 'json',
+            delay: 250,
+            processResults: function (data) {
+                return {
+                    results: data
+                };
+            },
+            cache: true
         },
-        cache: true
-        }
+        minimumInputLength: 1
     });
     
     $('.fungsiFilter').select2({

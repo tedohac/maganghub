@@ -26,7 +26,7 @@
             <tr class="align-top">
                 <td>
                     <small>Verifikasi Kampus</small><br />
-                    @if(\App\Univ::getIsVerified($univ->univ_id))
+                    @if(\App\Univ::getIsVerified($univsb->univ_id))
                         <small class="text-primary"><i class="fas fa-check"></i> Terverifikasi</small>
                     @else
                         <small class="text-primary">mohon lengkapi profil</small>

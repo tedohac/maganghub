@@ -129,7 +129,8 @@ class ManageProdiController extends Controller
 
         if(!empty($request->query('id'))){
             // DB::enableQueryLog();
-            $json = Prodi::where('prodi_id', $request->query('id'))
+            $json = Prodi::join('univs', 'univs.univ_id', '=', 'prodis.prodi_univ_id')
+                        ->where('prodi_id', $request->query('id'))
                         ->first();
             // dd(DB::getQueryLog());
         }
