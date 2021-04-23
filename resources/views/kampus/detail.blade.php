@@ -11,6 +11,9 @@
     <!-- Profile -->
     <link href="{{ asset('styles/profile.css?v=').time() }}" rel="stylesheet">
 
+    <!-- Auto complete -->
+    <link href="{{ url('styles/select2.min.css') }}" rel="stylesheet" />
+
     <style>
         .font-20 {
             font-size: 20px;
@@ -181,6 +184,8 @@
     </div>
     <!-- end prodi list -->
     
+<form method="post" id="formbroadcast" action="{{ route('lowongan.broadcast') }}">
+@csrf
     <!-- Broadcast Modal -->
     <div class="modal fade" id="broadcastModal">
         <div class="modal-dialog">
@@ -196,19 +201,27 @@
             <div class="modal-body">
                 <p id="modal-message"></p>
                 Silahkan pilih lowongan yang akan dilakukan broadcast:
+                
+                <input type="hidden" name="prodi_id" id="idProdi">
+                <select id="selectLowongan" class="form-control selectLowongan" name="lowongan_id"
+                    data-parsley-required
+                    data-parsley-required-message="Pilih Lowongan">
+                </select>
             </div>
 
             <!-- Modal footer -->
             <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-dismiss="modal">Tidak</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
 
-            <input  type="submit" class="btn btn-primary" id="sendsubmit" value="Ya">
+            <input  type="submit" class="btn btn-primary" id="sendsubmit" value="Kirim">
             </div>
 
         </div>
         </div>
     </div>
     <!-- End Broadcast Modal -->
+
+</form>
 @endsection
 
 @section('bottom')
@@ -236,7 +249,8 @@
                     // console.log(result);
 
                     $('#submitDelete').attr('href', '{{ route("lowongan.broadcast") }}?prodi_id='+id);
-                    $('#modal-message').html('Anda akan melakukan broadcast lowongan ke seluruh mahasiswa <b>'+ result.univ_nama +'</b> prodi <b>'+ result.prodi_nama +'</b> yang sedang melakukan pencarian magang.');
+                    $('#idProdi').val(id);
+                    $('#modal-message').html('Anda akan mengirim broadcast lowongan ke seluruh mahasiswa <b>'+ result.univ_nama +'</b> prodi <b>'+ result.prodi_nama +'</b> yang sedang melakukan pencarian magang.');
                     $('#broadcastModal').modal('show');
                 },
                 error:function() {
@@ -246,5 +260,36 @@
         });
 
     });
+</script>
+
+<!-- Auto Complete-->
+<script src="{{ url('js/select2.min.js') }}"></script>
+<script type="text/javascript">
+    $('.selectLowongan').select2({
+        width: '100%',
+        placeholder: '-- Pilih Lowongan --',
+        ajax: {
+            url: '{{ url('lowonganautocom') }}',
+            dataType: 'json',
+            delay: 250,
+            processResults: function (data) {
+                return {
+                    results: data
+                };
+            },
+            cache: true
+        },
+    });
+</script>
+
+<!-- Parsley Form Validation -->
+<script src="{{ url('js/parsley.min.js') }}"></script>
+<script>
+    $("#formbroadcast").parsley({
+        errorClass: 'is-invalid text-danger',
+        errorsWrapper: '<span class="form-text text-danger"></span>',
+        errorTemplate: '<span></span>',
+        trigger: 'change'
+    })
 </script>
 @endsection

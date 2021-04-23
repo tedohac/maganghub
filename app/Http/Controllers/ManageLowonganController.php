@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Mail\BroadcastLowongan;
 use App\City;
 use App\Lowongan;
 use App\Fungsi;
+use App\Mahasiswa;
 use App\Perusahaan;
 use Auth;
 use DB;
+use Mail;
 use Session;
 use Validator;
 
@@ -247,6 +250,54 @@ class ManageLowonganController extends Controller
         }
 
         Session::flash('success', 'Hapus lowongan berhasil');
+        return redirect()->back();
+    }
+
+    public function broadcast(Request $request)
+    {
+        if(empty($request->prodi_id)) abort(404);
+
+        $rules = [
+            'lowongan_id'   => 'required',
+        ];
+
+        $messages = [
+            'lowongan_id.required'  => 'Silahkan pilih lowongan yang akan dilakukan broadcast',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+ 
+        if($validator->fails()){
+            return redirect()->back()->withErrors($validator)->withInput($request->all);
+        }
+
+        $lowongan = Lowongan::join('perusahaans', 'perusahaans.perusahaan_id', '=', 'lowongans.lowongan_perusahaan_id')
+                            ->join('fungsis', 'fungsis.fungsi_id', '=', 'lowongans.lowongan_fungsi_id')
+                            ->join('cities', 'cities.city_id', '=', 'lowongans.lowongan_city_id')
+                            ->where('perusahaan_user_email', Auth::user()->user_email )
+                            ->where('lowongan_id', $request->lowongan_id)
+                            ->first();
+
+        $mahasiswas = Mahasiswa::join('dospems', 'dospems.dospem_id', '=', 'mahasiswas.mahasiswa_dospem_id')
+                                ->where('dospem_prodi_id', $request->prodi_id)
+                                ->where('mahasiswa_status', 'mencari')
+                                ->get();
+        $count = 0;
+        foreach($mahasiswas as $mahasiswa)
+        {
+            try
+            {
+                Mail::to($mahasiswa->mahasiswa_user_email)->send(new BroadcastLowongan($lowongan, $mahasiswa));
+
+            } catch (\Illuminate\Database\QueryException $e) {
+                Session::flash('error', 'Proses gagal, mohon coba kembali beberapa saat lagi atau hubungi admin MagangHub');
+                return redirect()->back();
+            }
+            
+            $count++;
+        }
+
+        Session::flash('success', 'Broadcast berhasil dikirim ke '.$count.' mahasiswa');
         return redirect()->back();
     }
 

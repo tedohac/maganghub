@@ -26,26 +26,23 @@ class Mahasiswa extends Model
     
     public static function getCountByProdi($prodi_id)
     {
-        $mahasiswa = Mahasiswa::join('dospems', 'dospems.dospem_id', '=', 'mahasiswas.mahasiswa_dospem_id')
+        return Mahasiswa::join('dospems', 'dospems.dospem_id', '=', 'mahasiswas.mahasiswa_dospem_id')
                                 ->where('dospem_prodi_id', $prodi_id)
-                                ->get();
-        return $mahasiswa->count();
+                                ->count();
     }
     
     public static function getCountPencariMagang($prodi_id)
     {
-        $mahasiswa = Mahasiswa::join('dospems', 'dospems.dospem_id', '=', 'mahasiswas.mahasiswa_dospem_id')
+        return Mahasiswa::join('dospems', 'dospems.dospem_id', '=', 'mahasiswas.mahasiswa_dospem_id')
                                 ->where('dospem_prodi_id', $prodi_id)
                                 ->where('mahasiswa_status', 'mencari')
-                                ->get();
-        return $mahasiswa->count();
+                                ->count();
     }
     
     public static function getCountByDospem($dospem_id)
     {
-        $mahasiswa = Mahasiswa::where('mahasiswa_dospem_id', $dospem_id)
-                                ->get();
-        return $mahasiswa->count();
+        return Mahasiswa::where('mahasiswa_dospem_id', $dospem_id)
+                                ->count();
     }
     
     public static function isLengkap($mahasiswa_user_email)
