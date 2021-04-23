@@ -37,7 +37,7 @@ Undangan ini dikirim atas lowongan:
 <table><br>
 
 Beberapa hal yang perlu diperhatikan:<br />
-{!! $request->undangan_desc !!}<br /><br />
+{!!html_entity_decode($request->undangan_desc)!!}<br /><br />
 
 Mohon segera konfirmasi undangan test ini pada halaman berikut:
 

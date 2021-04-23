@@ -135,7 +135,16 @@
             <div class="row col-lg-10 col-8">
                 
                 <div class="col-12">
-                    <h5 class="m-0 text-primary">{{ $lowongan->lowongan_judul }}</h5>
+                    <h5 class="m-0 text-primary">
+                        
+                        @if(Auth::check() && (Auth::user()->user_role=='mahasiswa' || Auth::user()->user_role=='dospem'))
+                            <a href="{{ url('lowongan/detail/'.$lowongan->lowongan_id) }}">
+                                {{ $lowongan->lowongan_judul }}
+                            </a>
+                        @else
+                            {{ $lowongan->lowongan_judul }}
+                        @endif
+                    </h5>
                 </div>
                 <div class="col-md-6 col-12">
                     <small>{{ $lowongan->fungsi_nama }}</small><br />
@@ -158,7 +167,7 @@
             </div>
             <div class="col-12">
                 @if(Auth::check() && (Auth::user()->user_role=='mahasiswa' || Auth::user()->user_role=='dospem'))
-                    <a class="btn btn-outline-info p-1" href="{{ url('lowongan/detail/'.$lowongan->lowongan_id) }}">
+                    <a class="btn btn-outline-info p-1 float-right" href="{{ url('lowongan/detail/'.$lowongan->lowongan_id) }}">
                         <small>Lihat Detail</small>
                     </a>
                 @else

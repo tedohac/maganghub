@@ -126,10 +126,10 @@
         </table>
 
         <h5 class="mt-3 p-1 border-bottom">Syarat</h5>
-        {!! $lowongan->lowongan_requirement !!}
-        
+        {!!html_entity_decode($lowongan->lowongan_requirement)!!}
+
         <h5 class="mt-3 p-1 border-bottom">Job Desk</h5>
-        {!! $lowongan->lowongan_jobdesk !!}
+        {!!html_entity_decode($lowongan->lowongan_jobdesk)!!}
     </div>
     <!-- end detail lowongan -->
 

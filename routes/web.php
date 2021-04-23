@@ -144,7 +144,7 @@ Route::group(['prefix' => 'lowongan', 'middleware' => 'web'], function () {
     Route::post('update','ManageLowonganController@update')->name('lowongan.update')->middleware('cekrole:perusahaan');
     Route::get('delete','ManageLowonganController@delete')->name('lowongan.delete')->middleware('cekrole:perusahaan');
     
-    Route::get('broadcast','ManageLowonganController@detail')->name('lowongan.broadcast')->middleware('cekrole:perusahaan');
+    Route::post('broadcast','ManageLowonganController@broadcast')->name('lowongan.broadcast')->middleware('cekrole:perusahaan');
     
 });
 
