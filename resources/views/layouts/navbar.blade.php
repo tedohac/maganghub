@@ -21,6 +21,19 @@
                 @if(Auth::check())
 
                 <li class="nav-item ml-2 mb-1 dropdown">
+                    <a class="btn btn-light btn-block px-1 py-0 dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge badge-pill badge-danger" id="notifcount">{{ count(auth()->user()->unreadNotifications) }}</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" id="notif">
+                        @foreach(auth()->user()->notifications->sortBy(['read_at','created_at']) as $notification)
+                            <a href="{{ $notification->data['url'] }}"><div class="dropdown-item longtext" tabindex="-1"><small>{!! $notification->data['text'] !!}</small></div></a>
+                            <div class="dropdown-divider"></div>
+                        @endforeach
+                    </div>
+                </li>
+
+                <li class="nav-item ml-2 mb-1 dropdown">
                     <a class="btn btn-success btn-block px-1 py-0 dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-user"></i>
                     </a>
