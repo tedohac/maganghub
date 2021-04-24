@@ -105,7 +105,7 @@
             Anda sudah mengirim undangan test, menunggu konfirmasi mahasiswa. 
             <a href="{{ url('perekrutan/kirimulangundangan/'.$rekrut->rekrut_id) }}" class="btn btn-primary p-1">Kirim Ulang Undangan</a>
         </div>
-        @elseif($rekrut->rekrut_status=="siap test")
+        @elseif($rekrut->rekrut_status=="cnfrmtest")
         <div class="alert alert-warning">
             Mahasiswa mengkonfirmasi atas undangan test dari anda, sudah ada hasil test?
         </div>
@@ -154,7 +154,7 @@
                     <i class="fa fa-user pt-2"></i> 
                 </span> 
                 <span class="text">
-                    Undangan<br />
+                    Undangan Test<br />
                     <small>{{ ($rekrut->rekrut_waktu_diundang) ? date('d M Y H:i', strtotime($rekrut->rekrut_waktu_diundang)) : "" }}</small>
                 </span> 
             </div>
@@ -163,7 +163,7 @@
                     <i class="fa fa-file-alt pt-2"></i> 
                 </span> 
                 <span class="text">
-                    Siap Test<br />
+                    Konfirmasi Test<br />
                     <small>{{ ($rekrut->rekrut_waktu_konfirmundangan) ? date('d M Y H:i', strtotime($rekrut->rekrut_waktu_konfirmundangan)) : "" }}</small>
                 </span>
             </div>
@@ -177,6 +177,7 @@
                 </span>
             </div>
         </div>
+        <div class="pb-5"></div>
     </div>
     <!-- end lamaran status -->
 

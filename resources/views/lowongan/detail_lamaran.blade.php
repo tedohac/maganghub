@@ -103,7 +103,7 @@
                 </div>
             </div>
         </td>
-        @elseif($rekrut->rekrut_status=="siap test")
+        @elseif($rekrut->rekrut_status=="cnfrmtest")
         <div class="alert alert-warning">
             Anda sudah mengkonfirmasi untuk menghadiri test, semoga sukses!
         </div>
@@ -135,8 +135,8 @@
                 <span class="icon"> 
                     <i class="fa fa-user pt-2"></i> 
                 </span> 
-                <span class="text">
-                    Undangan<br />
+                <span class="text px-1">
+                    Undangan Test<br />
                     <small>{{ ($rekrut->rekrut_waktu_diundang) ? date('d M Y H:i', strtotime($rekrut->rekrut_waktu_diundang)) : "" }}</small>
                 </span> 
             </div>
@@ -144,8 +144,8 @@
                 <span class="icon"> 
                     <i class="fa fa-file-alt pt-2"></i> 
                 </span> 
-                <span class="text">
-                    Siap Test<br />
+                <span class="text px-1">
+                    Konfirmasi Test<br />
                     <small>{{ ($rekrut->rekrut_waktu_konfirmundangan) ? date('d M Y H:i', strtotime($rekrut->rekrut_waktu_konfirmundangan)) : "" }}</small>
                 </span>
             </div>
@@ -159,6 +159,7 @@
                 </span>
             </div>
         </div>
+        <div class="pb-5"></div>
     </div>
     <!-- end lamaran status -->
 

@@ -93,8 +93,8 @@
                         <option value="" {{ ($filter->status=='') ? 'selected' : '' }}>-- Pilih status pelamar --</option>
                         <option value="melamar" {{ ($filter->status=='melamar') ? 'selected' : '' }}>Melamar</option>
                         <option value="melamartlk" {{ ($filter->status=='melamartlk') ? 'selected' : '' }}>Melamar Ditolak</option>
-                        <option value="diundang" {{ ($filter->status=='diundang') ? 'selected' : '' }}>Diundang</option>
-                        <option value="siap test" {{ ($filter->status=='siap test') ? 'selected' : '' }}>Siap Test</option>
+                        <option value="diundang" {{ ($filter->status=='diundang') ? 'selected' : '' }}>Diundang Test</option>
+                        <option value="cnfrmtest" {{ ($filter->status=='cnfrmtest') ? 'selected' : '' }}>Konfirmasi Test</option>
                         <option value="tdklulus" {{ ($filter->status=='tdklulus') ? 'selected' : '' }}>Tidak Lulus</option>
                         <option value="lulus" {{ ($filter->status=='lulus') ? 'selected' : '' }}>Magang Berjalan</option>
                         <option value="finishmhs" {{ ($filter->status=='finishmhs') ? 'selected' : '' }}>Menunggu Rating</option>
@@ -143,7 +143,9 @@
                         @elseif($rekrut->rekrut_status=="melamartlk")
                             Ditolak
                         @elseif($rekrut->rekrut_status=="tlkundang")
-                            Undangan ditolak mahasiswa
+                            Undangan ditolak
+                        @elseif($rekrut->rekrut_status=="cnfrmtest")
+                            Undangan dikonfirmasi
                         @elseif($rekrut->rekrut_status=="tdklulus")
                             Tidak Lulus
                         @elseif($rekrut->rekrut_status=="finishmhs")
