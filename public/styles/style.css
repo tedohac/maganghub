@@ -22,7 +22,7 @@ body {
   color:#666;
 }
 .longtext {
-  white-space: nowrap; 
+  white-space: normal !important; 
   overflow: hidden;
   text-overflow: ellipsis; 
 }
@@ -59,6 +59,6 @@ body {
 }
 @media (min-width: 990px) {
   .dropdown-menu {
-    max-width: 250px;
+    width: 400px;
   }
 }

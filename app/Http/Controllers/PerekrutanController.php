@@ -5,14 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Mail\DiterimaEmail;
 use App\Mail\UndanganEmail;
+use App\Notifications\LamarLowonganNotif;
 use App\Lowongan;
 use App\Mahasiswa;
 use App\Perusahaan;
 use App\Rekrut;
 use App\Skill;
+use App\User;
 use Auth;
 use DB;
 use Mail;
+use Notification;
 use Session;
 use Validator;
 
@@ -20,10 +23,14 @@ class PerekrutanController extends Controller
 {
     public function apply($id)
     {
-        $lowongan = Lowongan::where('lowongan_id', $id)->first();
+        $lowongan = Lowongan::join('perusahaans', 'perusahaans.perusahaan_id', '=', 'lowongans.lowongan_perusahaan_id')
+                            ->where('lowongan_id', $id)->first();
         if(empty($lowongan)) return abort(404);
         
-        $mahasiswa = Mahasiswa::where('mahasiswa_user_email', Auth::user()->user_email)->first();
+        $mahasiswa = Mahasiswa::join('dospems', 'dospems.dospem_id', '=', 'mahasiswas.mahasiswa_dospem_id')
+                            ->join('prodis', 'prodis.prodi_id', '=', 'dospems.dospem_prodi_id')
+                            ->join('univs', 'univs.univ_id', '=', 'prodis.prodi_univ_id')
+                            ->where('mahasiswa_user_email', Auth::user()->user_email)->first();
         if(empty($lowongan)) return abort(404);
 
         if($mahasiswa->mahasiswa_status!='mencari') {
@@ -49,6 +56,8 @@ class PerekrutanController extends Controller
                             
         if($simpanrekrut)
         {
+            $receiver = User::where('user_email', $lowongan->perusahaan_user_email)->first();
+            Notification::send($receiver, new LamarLowonganNotif($lowongan->lowongan_judul, $mahasiswa->univ_nama));
 
             Session::flash('success', 'Melamar lowongan berhasil, mohon tunggu perusahaan mengirim undangan test kepada anda.');
             return redirect()->back();
