@@ -301,7 +301,7 @@ class ManageLowonganController extends Controller
             
             $receiver = User::where('user_email', $mahasiswa->mahasiswa_user_email)->first();
             Notification::send($receiver, new Notifikasi(
-                '<b>'.$lowongan->perusahaan_nama.'</b> mengundan anda untuk melamar pada lowongan '.$lowongan->lowongan_judul, 
+                '<b>'.$lowongan->perusahaan_nama.'</b> mengundang anda untuk melamar pada lowongan '.$lowongan->lowongan_judul, 
                 route('lowongan.detail', ['id' => $lowongan->lowongan_id])
             ));
         }
