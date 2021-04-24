@@ -352,7 +352,7 @@ class PerekrutanController extends Controller
         $receiver = User::where('user_email', $rekrut->mahasiswa_user_email)->first();
         Notification::send($receiver, new Notifikasi(
             '<b>'.$rekrut->perusahaan_nama.'</b> mengundang anda untuk test pada '.date('d F Y',strtotime($request->undangan_tanggal)).' pukul '.$request->undangan_waktu, 
-            route('perekrutan.lamaranlist').'?filter_status=diundang'
+            route('perekrutan.detaillamaran', ['id' => $request->rekrut_id])
         ));
 
         Session::flash('success', 'Undangan test berhasil dikirim, menunggu mahasiswa konfirmasi kehadiran test.');
@@ -387,6 +387,8 @@ class PerekrutanController extends Controller
         if(empty($request->rekrut_id)) abort(404);
 
         $rekrut = Rekrut::join('mahasiswas', 'mahasiswas.mahasiswa_id', '=', 'rekruts.rekrut_mahasiswa_id')
+                        ->join('lowongans', 'lowongans.lowongan_id', '=', 'rekruts.rekrut_lowongan_id')
+                        ->join('perusahaans', 'perusahaans.perusahaan_id', '=', 'lowongans.lowongan_perusahaan_id')
                         ->where('mahasiswa_user_email', Auth::user()->user_email )
                         ->where('rekrut_id', $request->rekrut_id)->first();
         if(empty($rekrut)) return abort(404);
@@ -422,6 +424,12 @@ class PerekrutanController extends Controller
             return redirect()->back();
         }
 
+        $receiver = User::where('user_email', $rekrut->perusahaan_user_email)->first();
+        Notification::send($receiver, new Notifikasi(
+            '<b>'.$rekrut->mahasiswa_nama.'</b> menolak undangan test anda dengan alasan: '.$request->alasan_penolakan, 
+            route('perekrutan.detailpelamar', ['id' => $request->rekrut_id])
+        ));
+        
         Session::flash('success', 'Penolakan undangan berhasil, mohon hubungi perusahaan untuk penawaran undangan kembali.');
         return redirect()->back();
     }
@@ -454,7 +462,9 @@ class PerekrutanController extends Controller
     {
         if(empty($id)) abort(404);
         
-        $rekrut = Rekrut::join('mahasiswas', 'mahasiswas.mahasiswa_id', '=', 'rekruts.rekrut_mahasiswa_id')
+        $rekrut = Rekrut::join('lowongans', 'lowongans.lowongan_id', '=', 'rekruts.rekrut_lowongan_id')
+                        ->join('perusahaans', 'perusahaans.perusahaan_id', '=', 'lowongans.lowongan_perusahaan_id')
+                        ->join('mahasiswas', 'mahasiswas.mahasiswa_id', '=', 'rekruts.rekrut_mahasiswa_id')
                         ->where('mahasiswa_user_email', Auth::user()->user_email )
                         ->where('rekrut_id', $id)->first();
         if(empty($rekrut)) return abort(404);
@@ -465,7 +475,7 @@ class PerekrutanController extends Controller
 
             Rekrut::where('rekrut_id', $id)
                 ->update([
-                    'rekrut_status'                 => 'siap test',
+                    'rekrut_status'                 => 'cnfrmtest',
                     'rekrut_waktu_konfirmundangan'  => date("Y-m-d H:i:s"),
                 ]);
 
@@ -474,6 +484,12 @@ class PerekrutanController extends Controller
             return redirect()->back();
         }
 
+        $receiver = User::where('user_email', $rekrut->perusahaan_user_email)->first();
+        Notification::send($receiver, new Notifikasi(
+            '<b>'.$rekrut->mahasiswa_nama.'</b> mengkonfirrmasi undangan test anda pada '.date('d F Y',strtotime($rekrut->undangan_tanggal)).' pukul '.$rekrut->undangan_waktu, 
+            route('perekrutan.detailpelamar', ['id' => $rekrut->rekrut_id])
+        ));
+        
         Session::flash('success', 'Undangan berhasil dikonfirmasi, semoga sukses!');
         return redirect()->back();
     }
@@ -504,6 +520,12 @@ class PerekrutanController extends Controller
             Session::flash('error', 'Proses gagal, mohon coba kembali beberapa saat lagi atau hubungi admin MagangHub ');
             return redirect()->back();
         }
+
+        $receiver = User::where('user_email', $rekrut->mahasiswa_user_email)->first();
+        Notification::send($receiver, new Notifikasi(
+            'Mohon maaf anda tidak lulus test pada lowongan '.$rekrut->lowongan_judul.' pada <b>'.$rekrut->perusahaan_nama.'</b>', 
+            route('perekrutan.detaillamaran', ['id' => $rekrut->rekrut_id])
+        ));
 
         Session::flash('success', 'Mahasiswa berhasil dinyatakan tidak lulus test');
         return redirect()->back();
@@ -572,6 +594,12 @@ class PerekrutanController extends Controller
             Session::flash('error', 'Proses gagal, mohon coba kembali beberapa saat lagi atau hubungi admin MagangHub ');
             return redirect()->back();
         }
+
+        $receiver = User::where('user_email', $rekrut->mahasiswa_user_email)->first();
+        Notification::send($receiver, new Notifikasi(
+            'Selamat! anda diterima magang pada <b>'.$rekrut->perusahaan_nama.'</b>. Semoga sukses!', 
+            route('perekrutan.detaillamaran', ['id' => $rekrut->rekrut_id])
+        ));
 
         Session::flash('success', 'Penerimaan mahasiswa magang berhasil. Mahasiswa dapat langsung melakukan pencatatan kegiatan magang');
         return redirect()->back();
