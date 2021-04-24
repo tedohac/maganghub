@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Mail\BroadcastLowongan;
-use App\Notifications\BroadcastLowonganNotif;
+use App\Notifications\Notifikasi;
 use App\City;
 use App\Lowongan;
 use App\Fungsi;
@@ -300,7 +300,10 @@ class ManageLowonganController extends Controller
             $count++;
             
             $receiver = User::where('user_email', $mahasiswa->mahasiswa_user_email)->first();
-            Notification::send($receiver, new BroadcastLowonganNotif($request->lowongan_id, $lowongan->lowongan_judul, $lowongan->perusahaan_nama));
+            Notification::send($receiver, new Notifikasi(
+                '<b>'.$lowongan->perusahaan_nama.'</b> mengundan anda untuk melamar pada lowongan '.$lowongan->lowongan_judul, 
+                route('lowongan.detail', ['id' => $lowongan->lowongan_id])
+            ));
         }
 
         Session::flash('success', 'Broadcast berhasil dikirim ke '.$count.' mahasiswa');

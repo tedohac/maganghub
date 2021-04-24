@@ -40,13 +40,15 @@
     <script>
         $(document).ready(function() {
 
+            checkScroll();
+
             $(window).scroll(function () {
                 checkScroll();
             });
 
             function checkScroll()
             {
-                var startY = $('.navbar').height() * 2; //The point where the navbar changes in px
+                var startY = $('.navbar').height(); //The point where the navbar changes in px
 
                 if($(window).scrollTop() > startY){
                     $('.navbar').removeClass('bg-transparent').addClass('bg-light border-bottom border-secondary shadow-sm');
@@ -54,6 +56,10 @@
                     $('.navbar').removeClass('bg-light border-bottom border-secondary shadow-sm').addClass('bg-transparent');
                 }
             }
+            
+            $('.navbar-collapse').on('show.bs.collapse', function() {
+                $('.navbar').removeClass('bg-transparent').addClass('bg-light border-bottom border-secondary shadow-sm');
+            });
         });
     </script>
 
