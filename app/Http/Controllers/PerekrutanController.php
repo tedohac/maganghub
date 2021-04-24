@@ -349,6 +349,12 @@ class PerekrutanController extends Controller
             return redirect()->back();
         }
 
+        $receiver = User::where('user_email', $rekrut->mahasiswa_user_email)->first();
+        Notification::send($receiver, new Notifikasi(
+            '<b>'.$rekrut->perusahaan_nama.'</b> mengundang anda untuk test pada '.date('d F Y',strtotime($request->undangan_tanggal)).' pukul '.$request->undangan_waktu, 
+            route('perekrutan.lamaranlist').'?filter_status=diundang'
+        ));
+
         Session::flash('success', 'Undangan test berhasil dikirim, menunggu mahasiswa konfirmasi kehadiran test.');
         return redirect()->back();
     }
