@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Mail\DiterimaEmail;
 use App\Mail\UndanganEmail;
-use App\Notifications\LamarLowonganNotif;
+use App\Notifications\Notifikasi;
 use App\Lowongan;
 use App\Mahasiswa;
 use App\Perusahaan;
@@ -57,7 +57,10 @@ class PerekrutanController extends Controller
         if($simpanrekrut)
         {
             $receiver = User::where('user_email', $lowongan->perusahaan_user_email)->first();
-            Notification::send($receiver, new LamarLowonganNotif($lowongan->lowongan_judul, $mahasiswa->univ_nama));
+            Notification::send($receiver, new Notifikasi(
+                'Lamaran baru dari <b>'.$mahasiswa->univ_nama.'</b> pada lowongan '.$lowongan->lowongan_judul, 
+                route('perekrutan.pelamar').'?filter_status=melamar'
+                ));
 
             Session::flash('success', 'Melamar lowongan berhasil, mohon tunggu perusahaan mengirim undangan test kepada anda.');
             return redirect()->back();

@@ -1,6 +1,6 @@
 
     <!-- Navigation -->
-    <nav class="navbar navbar-light navbar-expand-lg navbar-dark bg-transparent fixed-top">
+    <nav class="navbar navbar-light navbar-expand-lg fixed-top bg-light border-bottom border-secondary shadow-sm">
         <div class="container">
         <a class="navbar-brand p-0 m-0 text-align-center" href="{{ route('/') }}">
             <img src="{{ url('img/maganghub.png') }}">
@@ -23,13 +23,20 @@
                 <li class="nav-item ml-2 mb-1 dropdown">
                     <a class="btn btn-light btn-block px-1 py-0 dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-bell"></i>
-                        <span class="badge badge-pill badge-danger" id="notifcount">{{ count(auth()->user()->unreadNotifications) }}</span>
+                        @if(count(auth()->user()->unreadNotifications))
+                            <span class="badge badge-pill badge-danger" id="notifcount">{{ count(auth()->user()->unreadNotifications) }}</span>
+                        @endif
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" id="notif">
-                        @foreach(auth()->user()->notifications->sortBy(['read_at','created_at']) as $notification)
-                            <a href="{{ $notification->data['url'] }}"><div class="dropdown-item longtext" tabindex="-1"><small>{!! $notification->data['text'] !!}</small></div></a>
-                            <div class="dropdown-divider"></div>
-                        @endforeach
+                    <div class="dropdown-menu dropdown-menu-right shadow" aria-labelledby="navbarDropdown" id="notif">
+                    
+                        @if(count(auth()->user()->unreadNotifications))
+                            @foreach(auth()->user()->notifications->sortBy(['read_at','created_at']) as $notification)
+                                <a href="{{ $notification->data['url'] }}"><div class="dropdown-item longtext" tabindex="-1"><small>{!! $notification->data['text'] !!}</small></div></a>
+                                <div class="dropdown-divider"></div>
+                            @endforeach
+                        @else
+                            <div class="dropdown-item">Belum ada notifikasi</div>
+                        @endif
                     </div>
                 </li>
 
@@ -37,7 +44,7 @@
                     <a class="btn btn-success btn-block px-1 py-0 dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-user"></i>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                    <div class="dropdown-menu dropdown-menu-right shadow" aria-labelledby="navbarDropdown">
                         @if(Auth::user()->user_role=='admin kampus')
 
                             @php ($univnb = \App\Univ::where('univ_user_email', Auth::user()->user_email )->first())

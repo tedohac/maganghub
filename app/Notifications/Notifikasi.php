@@ -7,24 +7,22 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class BroadcastLowonganNotif extends Notification
+class Notifikasi extends Notification
 {
     use Queueable;
 
-    protected $lowongan_id;
-    protected $lowongan_judul;
-    protected $perusahaan_nama;
+    protected $text;
+    protected $url;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($lowongan_id, $lowongan_judul, $perusahaan_nama)
+    public function __construct($text, $url)
     {
-        $this->lowongan_id = $lowongan_id;
-        $this->lowongan_judul = $lowongan_judul;
-        $this->perusahaan_nama = $perusahaan_nama;
+        $this->text = $text;
+        $this->url = $url;
     }
 
     /**
@@ -37,7 +35,7 @@ class BroadcastLowonganNotif extends Notification
     {
         return ['database'];
     }
-    
+
     /**
      * Get the array representation of the notification.
      *
@@ -47,11 +45,8 @@ class BroadcastLowonganNotif extends Notification
     public function toArray($notifiable)
     {
         return [
-            'text' => '<b>'.$this->perusahaan_nama.'</b> mengundan anda untuk melamar pada lowongan '.$this->lowongan_judul,
-            'url' => route('lowongan.detail', [
-                'id' => $this->lowongan_id 
-            ]),
-            'lowongan_id' => $this->lowongan_id,
+            'text' => $this->text,
+            'url' => $this->url,
         ];
     }
 }
