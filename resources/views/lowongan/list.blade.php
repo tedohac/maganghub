@@ -68,7 +68,7 @@
                 Filter
             </a>
 
-            @if($filter->perusahaan!="" || !empty($filter->fungsi) || $filter->city!="")
+            @if($filter->perusahaan!="" || !empty($filter->fungsi) || $filter->city!="" || $filter->mulaidari!="" || $filter->mulaisampai!="")
                 <a href="{{ route('lowongan.list') }}"><span class="badge badge-danger">Clear</span></a>
             @endif
         </div>
@@ -93,12 +93,16 @@
                 
                 <div class="col-6 mb-2">
                     <small>Filter Mulai Magang - Dari</small><br>
-                    <input id="mulaidariFilter" class="form-control" placeholder="Dari" name="filter_mulaidari" type="text" value="{{ $filter->mulaidari }}">
+                    <div class="position-relative">
+                        <input id="mulaidariFilter" class="form-control" placeholder="Dari" name="filter_mulaidari" type="text" value="{{ $filter->mulaidari }}">
+                    </div>
                 </div>
                 
                 <div class="col-6 mb-2">
                     <small>Filter Mulai Magang - Sampai</small><br>
-                    <input id="mulaisampaiFilter" class="form-control" placeholder="Sampai" name="filter_mulaisampai" type="text" value="{{ $filter->mulaisampai }}">
+                    <div class="position-relative">
+                        <input id="mulaisampaiFilter" class="form-control" placeholder="Sampai" name="filter_mulaisampai" type="text" value="{{ $filter->mulaisampai }}">
+                    </div>
                 </div>
 
                 <div class="col-6 mb-2">
@@ -215,7 +219,7 @@ $(document).ready(function() {
 <script>
     $(document).ready(function(){
 
-        var uploaded=$('input[name="filter_mulaidari"]');
+        var uploaded=$('#mulaidariFilter');
         uploaded.datepicker({
             format: "yyyy-mm-dd",
             container: $('#mulaidariFilter').parent(),
@@ -224,7 +228,7 @@ $(document).ready(function() {
             orientation: "auto",
         });
         
-        var uploaded=$('input[name="filter_mulaisampai"]');
+        var uploaded=$('#mulaisampaiFilter');
         uploaded.datepicker({
             format: "yyyy-mm-dd",
             container: $('#mulaisampaiFilter').parent(),

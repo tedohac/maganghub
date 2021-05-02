@@ -59,6 +59,7 @@ Route::group(['prefix' => 'kampus', 'middleware' => 'web'], function () {
 
 Route::get('cityautocom','CityController@autocom')->name('cityautocom');
 Route::get('prodiautocom','ManageProdiController@autocom')->name('prodiautocom');
+Route::get('prodiautocomglobal','ManageProdiController@autocomglobal')->name('prodiautocomglobal');
 Route::get('dospemautocom','ManageDospemController@autocom')->name('dospemautocom');
 Route::get('lowonganautocom','ManageLowonganController@autocom')->name('lowonganautocom');
 

@@ -207,11 +207,11 @@
             </tr>
             <tr class="align-top">
                 <td>
-                    <small>Siap Test</small><br />
-                    <div class="text-primary">{{ \App\Rekrut::getCount('siap test') }}</div>
+                    <small>Konfirmasi Test</small><br />
+                    <div class="text-primary">{{ \App\Rekrut::getCount('cnfrmtest') }}</div>
                 </td>
                 <td class="text-right">
-                    <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('perekrutan.lamaranlist').'?filter_status=siap test' }}">
+                    <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('perekrutan.lamaranlist').'?filter_status=cnfrmtest' }}">
                         <small><i class="fas fa-ellipsis-h"></i></small>
                     </a>
                 </td>
@@ -319,11 +319,11 @@
             </tr>
             <tr class="align-top">
                 <td>
-                    <small>Siap Test</small><br />
-                    <div class="text-primary">{{ \App\Rekrut::getCountPerusahaan('siap test') }}</div>
+                    <small>Konfirmasi Test</small><br />
+                    <div class="text-primary">{{ \App\Rekrut::getCountPerusahaan('cnfrmtest') }}</div>
                 </td>
                 <td class="text-right">
-                    <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('perekrutan.pelamar').'?filter_status=siap test' }}">
+                    <a class="btn btn-outline-info btn-block p-1 mb-3" href="{{ route('perekrutan.pelamar').'?filter_status=cnfrmtest' }}">
                         <small><i class="fas fa-ellipsis-h"></i></small>
                     </a>
                 </td>

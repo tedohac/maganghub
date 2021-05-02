@@ -151,4 +151,23 @@ class ManageProdiController extends Controller
         // }
         echo json_encode($json);
     }
+    
+    public function autocomglobal(Request $request)
+    {
+        $json = [];
+
+        // if(!empty($request->query('q')) && !empty($request->query('univid'))){
+            // DB::enableQueryLog();
+            $json = Prodi::where('prodi_nama', 'LIKE', '%'.$request->query('q').'%')
+                        ->select('prodi_nama')
+                        ->get()->take(5);
+            // dd(DB::getQueryLog());
+        // }
+        $jsonarray = array();
+        foreach($json as $data)
+        {
+            array_push($jsonarray, ['id' => $data->prodi_nama, 'text' => $data->prodi_nama]);
+        }
+        echo json_encode($jsonarray);
+    }
 }

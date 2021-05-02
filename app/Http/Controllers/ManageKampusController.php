@@ -9,6 +9,7 @@ use App\Univ;
 use App\User;
 use Artisan;
 use Auth;
+use DB;
 use Session;
 use Storage;
 use Validator;
@@ -23,15 +24,34 @@ class ManageKampusController extends Controller
     {
         $filter = new \stdClass();
 
-        if(!empty($request->filter_nama)) $filter->nama = $request->filter_nama;
-        else $filter->nama = "";
+        if(!empty($request->filter_kampus)) $filter->kampus = $request->filter_kampus;
+        else $filter->kampus = "";
+        
+        if(!empty($request->filter_city)) $filter->city = $request->filter_city;
+        else $filter->city = "";
+        
+        if(!empty($request->filter_prodi)) $filter->prodi = $request->filter_prodi;
+        else $filter->prodi = "";
 
         $univs = Univ::join('users', 'univs.univ_user_email', '=', 'users.user_email')
+                    ->join('cities', 'cities.city_id', '=', 'univs.univ_city_id')
                     ->whereNotNull('user_email_verified_at');
 
-        if(!empty($request->filter_nama)) $univs = $univs->where('univ_nama', 'like', '%'.$request->filter_nama.'%');
+        if(!empty($request->filter_kampus)) $univs = $univs->where('univ_nama', 'like', '%'.$request->filter_kampus.'%');
 
+        if(!empty($request->filter_city)) {
+            $univs = $univs->where('city_id', $request->filter_city);
+            $city = City::where('city_id', $request->filter_city)->first();
+            $filter->city_nama = $city->city_nama;
+        }
+        
+        if(!empty($request->filter_prodi)) {
+            $univs = $univs->whereRaw("EXISTS(select prodi_id from prodis where prodi_nama like '%".$request->filter_prodi."%' and prodi_univ_id=univ_id)");
+        }
+
+        // DB::enableQueryLog();
         $univs = $univs->paginate(6);
+        // dd(DB::getQueryLog());
         return view('kampus.list', [
             'univs' => $univs,
             'filter' => $filter,

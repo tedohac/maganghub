@@ -258,12 +258,6 @@
                     @else
                         <span class="badge badge-danger p-1">Belum menambahkan skill</span>
                     @endif
-
-                    @if(Auth::check() && Auth::user()->user_email == $mahasiswa->mahasiswa_user_email)
-                    <a class="btn btn-outline-info p-1 float-right" href="{{ route('skill.manage') }}">
-                        <small><i class="fas fa-edit"></i> Kelola Skills</small>
-                    </a>
-                    @endif
                 </td>
             </tr>
         </table>
