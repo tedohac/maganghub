@@ -4,6 +4,9 @@
     
     <!-- SB Admin Template -->
     <link href="{{ asset('styles/sb-admin.css?v=').time() }}" rel="stylesheet">
+    
+    <!-- Auto complete -->
+    <link href="{{ url('styles/select2.min.css') }}" rel="stylesheet" />
 
     <style>
         .card-profile-thumb {
@@ -75,8 +78,8 @@
                 Filter
             </a>
 
-            @if($filter->nama!="")
-                <a href="{{ route('lowongan.list') }}"><span class="badge badge-danger">Clear</span></a>
+            @if($filter->kampus!="" || $filter->prodi!="" || $filter->city!="")
+                <a href="{{ route('kampus.list') }}"><span class="badge badge-danger">Clear</span></a>
             @endif
         </div>
         <div class="card-body collapse p-1" id="collapseSearchCon">
@@ -84,8 +87,26 @@
 
             <div class="row">
                 <div class="col-6 mb-2">
-                    <small>Nama</small><br>
-                    <input class="form-control" name="filter_nama" value="{{ $filter->nama }}">
+                    <small>Kampus</small><br>
+                    <input class="form-control" name="filter_kampus" value="{{ $filter->kampus }}">
+                </div>
+
+                <div class="col-6 mb-2">
+                    <small>Program Studi</small><br>
+                    <select class="form-control prodiFilter" name="filter_prodi">
+                    @if($filter->prodi!="")
+                        <option value="{{ $filter->prodi }}" selected>{{ $filter->prodi }}</option>
+                    @endif
+                    </select>
+                </div>
+
+                <div class="col-6 mb-2">
+                    <small>Kota Domisili</small><br>
+                    <select class="form-control cityFilter" name="filter_city">
+                    @if($filter->city!="")
+                        <option value="{{ $filter->city }}" selected>{{ $filter->city_nama }}</option>
+                    @endif
+                    </select>
                 </div>
 
                 <div class="col-12">
@@ -166,4 +187,43 @@
 @section('bottom')
 <!-- SB-Admin-->
 <script src="{{ url('js/sb-admin.min.js') }}"></script>
+
+<!-- Auto Complete-->
+<script src="{{ url('js/select2.min.js') }}"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $('.cityFilter').select2({
+        width: '100%',
+        placeholder: '-- Pilih Kota Domisili --',
+        ajax: {
+            url: '{{ url('cityautocom') }}',
+            dataType: 'json',
+            delay: 250,
+            processResults: function (data) {
+                return {
+                    results: data
+                };
+            },
+            cache: true
+        },
+    });
+    
+    $('.prodiFilter').select2({
+        width: '100%',
+        placeholder: '-- Cari Program Studi --',
+        ajax: {
+            url: '{{ url('prodiautocomglobal') }}',
+            dataType: 'json',
+            delay: 250,
+            processResults: function (data) {
+                return {
+                    results: data
+                };
+            },
+            cache: true
+        },
+    });
+    
+});
+</script>
 @endsection

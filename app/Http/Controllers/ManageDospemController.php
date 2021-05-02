@@ -100,10 +100,10 @@ class ManageDospemController extends Controller
             $prodi = Prodi::where('prodi_id', $request->dospem_prodi_id)->first();
             Mail::to($request->dospem_user_email)->send(new NewDospemEmail($request, $univ->univ_nama, $prodi->prodi_nama, $user->user_verify_token, $passwordTemp));
 
-            Session::flash('success', 'Tambah program studi berhasil');
+            Session::flash('success', 'Tambah dosen pembimbing berhasil');
             return redirect()->back();
         } else {
-            Session::flash('error', 'Tambah program studi gagal! Mohon hubungi admin MagangHub');
+            Session::flash('error', 'Tambah dosen pembimbing gagal! Mohon hubungi admin MagangHub');
             return redirect()->back();
         }
     }
@@ -313,7 +313,7 @@ class ManageDospemController extends Controller
             $simpandospem = $dospem->save();
 
             if(!$simpanuser || !$simpandospem){
-                Session::flash('error', 'Import data DOSPEM gagal! Mohon hubungi admin MagangHub');
+                Session::flash('error', 'Import data dosen pembimbing gagal! Mohon hubungi admin MagangHub');
                 return redirect()->back();
             }
             
@@ -331,12 +331,12 @@ class ManageDospemController extends Controller
 
         if(count($errorrow)>0)
         {
-            $successmessage = 'Import berhasil sebanyak '.$success.' DOSPEM, baris yang dilewati: ';
+            $successmessage = 'Import berhasil sebanyak '.$success.' dosen pembimbing, baris yang dilewati: ';
             for($i=0; $i<count($errorrow); $i++) $successmessage = $successmessage.$errorrow[$i].", ";
         }
         else
         {
-            $successmessage = 'Import berhasil sebanyak '.$success.' DOSPEM tanpa ada baris yang dilewati.';
+            $successmessage = 'Import berhasil sebanyak '.$success.' dosen pembimbing tanpa ada baris yang dilewati.';
         }
 
         Session::flash('success', $successmessage);

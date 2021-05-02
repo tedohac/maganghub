@@ -160,7 +160,7 @@ class PerekrutanController extends Controller
         // dd(DB::getQueryLog());
         if(empty($mahasiswa)) abort(404);
 
-        $skills = Skill::where('skill_mahasiswa_id', $mahasiswa->rekrut_mahasiswa_id)
+        $skills = Skill::where('skill_mahasiswa_id', $mahasiswa_id)
                         ->get();
 
         $rekruts = Rekrut::join('lowongans', 'lowongans.lowongan_id', '=', 'rekruts.rekrut_lowongan_id')

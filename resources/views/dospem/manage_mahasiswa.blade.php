@@ -67,7 +67,7 @@
                     <th>E-Mail</th>
                     <th>Verifikasi</th>
                     <th><small>Status<br />Magang</small></th>
-                    <th width="70">Opsi</th>
+                    <th width="70">Detail</th>
                 </tr>
             </thead>
             <tbody>
@@ -89,11 +89,8 @@
                     </td>
                     <td>{{ $mahasiswa->mahasiswa_status }}</td>
                     <td>
-                        <a class="btn btn-outline-info px-1 py-0 verify-form mb-1" href="{{ url('mahasiswa/detail/'.$mahasiswa->mahasiswa_id) }}">
-                            <small>detail</small>
-                        </a>
                         <a class="btn btn-outline-info px-1 py-0 verify-form mb-1" href="{{ url('dospem/lamaranlist-dospem/'.$mahasiswa->mahasiswa_id) }}">
-                            <small>lamaran</small>
+                            <small><i class="fas fa-ellipsis-h"></i></small>
                         </a>
                     </td>
                 </tr>

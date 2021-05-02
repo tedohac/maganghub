@@ -24,7 +24,18 @@
 @endsection
 
 @section('banner-front')
-<div class="row m-0 mt-5 py-4 panel">
+<div class="row m-0 mt-5 panel">
+    <div class="profile-thumb col-lg-3 col-md-4 pr-md-0 text-center text-dark">
+        @if(empty($mahasiswa->mahasiswa_profile_pict))
+        <i class="fas fa-user-graduate bg-white border p-2 shadow-sm" style="font-size: 130px"></i>
+        @else
+        <img src="{{ url('storage/mahasiswa_profile/'.$mahasiswa->mahasiswa_profile_pict) }}" class="bg-white border p-2 shadow">
+        @endif
+    </div>
+    <div class="profile-text col-lg-9 col-md-8 p-md-0 mb-2">
+        <h3 class="m-0">{{ $mahasiswa->mahasiswa_nama }}</h3>
+        {{ $mahasiswa->mahasiswa_nim }} - <a href="{{ url('kampus/detail/'.$mahasiswa->univ_id) }}" class="text-white">{{ $mahasiswa->univ_nama }}</a>
+    </div>
 </div>
 @endsection
 
@@ -60,13 +71,13 @@
 
     <!-- detail lowongan -->
     <h5 class="mb-2 p-0">
-        Daftar Lamaran Mahasiswa
+        Detail Mahasiswa
     </h5>
     
     <!-- info mahasiswa -->
     <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-3">
         <div class="py-1">Informasi Mahasiswa Pelamar</div>
-        <table class="table table-sm" cellspacing="0">
+        <table class="table" cellspacing="0">
             <tr>
                 <td class="greybox"><b>Kampus</b></td>
                 <td>
@@ -83,12 +94,6 @@
                 <td class="greybox"><b>NIM</b></td>
                 <td>
                     {{ $mahasiswa->mahasiswa_nim }}
-                </td>
-            </tr>
-            <tr>
-                <td class="greybox"><b>Mahasiswa</b></td>
-                <td>
-                    {{ $mahasiswa->mahasiswa_nama }}
                 </td>
             </tr>
             <tr>
@@ -144,9 +149,13 @@
             <tr>
                 <td class="greybox"><b>Skills</b></td>
                 <td>
-                    @foreach($skills as $skill)
-                        <span class="badge badge-info p-1">{{ $skill->skill_nama }}</span>
-                    @endforeach
+                    @if(count($skills))
+                        @foreach($skills as $skill)
+                            <span class="badge badge-info p-1">{{ $skill->skill_nama }}</span>
+                        @endforeach
+                    @else
+                        <span class="badge badge-danger p-1">Belum menambahkan skill</span>
+                    @endif
                 </td>
             </tr>
         </table>
@@ -154,6 +163,9 @@
     <!-- end info mahasiswa -->
         
     <!-- filter -->
+    <h5 class="mb-2 p-0">
+        Daftar Lamaran Mahasiswa
+    </h5>
     <div class="card mb-3 p-1">
         <div class="card-header p-1">
             
@@ -243,8 +255,8 @@
                         @endif
                     </td>
                     <td>
-                        <a class="btn btn-outline-info p-1 edit-form" href="{{ url('dospem/detailpelamar-dospem/'.$rekrut->rekrut_id) }}" title="Undangan">
-                            <small><i class="fas fa-ellipsis-h"></i></small>
+                        <a class="btn btn-outline-info px-1 py-0 mt-1  edit-form" href="{{ url('dospem/detailpelamar-dospem/'.$rekrut->rekrut_id) }}" title="Undangan">
+                            <small>Perekrutan</small>
                         </a>
                         @if($rekrut->rekrut_status=='lulus' || $rekrut->rekrut_status=='finishmhs' || $rekrut->rekrut_status=='finishprs')
                         <a class="btn btn-outline-info px-1 py-0 mt-1 edit-form" href="{{ url('dospem/kegiatan/'.$rekrut->rekrut_id) }}" title="Kegiatan">
