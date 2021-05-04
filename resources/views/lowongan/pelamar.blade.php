@@ -62,7 +62,7 @@
     </h5>
     
 <form method="get" id="formadd">
-@clrf
+@csrf
     <!-- filter -->
     <div class="card mb-3 p-1">
         <div class="card-header p-1">
