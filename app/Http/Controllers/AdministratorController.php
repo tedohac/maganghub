@@ -3,18 +3,30 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Dospem;
 use App\Lowongan;
+use App\Mahasiswa;
 use App\Prodi;
 use App\Perusahaan;
 use App\Univ;
 use Auth;
+use DB;
 use Session;
 
 class AdministratorController extends Controller
 {
     public function dashboard()
     {
-        return view('admin.dashboard');
+        $data = array();
+        $data['kampusverified']     = Univ::whereNotNull('univ_verified')->count();
+        $data['kampusnotverified']  = Univ::whereNull('univ_verified')->count();
+        
+        $data['perusahaanverified']     = Perusahaan::whereNotNull('perusahaan_verified')->count();
+        $data['perusahaannotverified']  = Perusahaan::whereNull('perusahaan_verified')->count();
+
+        return view('admin.dashboard', [
+            'data' => $data,
+        ]);
     }
     
     public function kampuslist(Request $request)
@@ -137,5 +149,31 @@ class AdministratorController extends Controller
 
         Session::flash('success', 'Verifikasi perusahaan berhasil');
         return redirect()->route('admin.perusahaanlist');
+    }
+    
+    public function dospemlist(Request $request)
+    {
+        $dospems = Dospem::join('prodis', 'prodis.prodi_id', '=', 'dospems.dospem_prodi_id')
+                        ->join('univs', 'univs.univ_id', '=', 'prodis.prodi_univ_id')
+                        ->join('users', 'users.user_email', '=', 'dospems.dospem_user_email')
+                        ->select('*', DB::raw('(select count(mahasiswa_id) from mahasiswas where mahasiswa_dospem_id=dospem_id) as total_mahasiswa'))
+                        ->get();
+
+    	return view('admin.dospemlist', [
+            'dospems' => $dospems
+        ]);
+    }
+    
+    public function mahasiswalist(Request $request)
+    {
+        $mahasiswas = Mahasiswa::join('dospems', 'dospems.dospem_id', '=', 'mahasiswas.mahasiswa_dospem_id')
+                        ->join('prodis', 'prodis.prodi_id', '=', 'dospems.dospem_prodi_id')
+                        ->join('univs', 'univs.univ_id', '=', 'prodis.prodi_univ_id')
+                        ->join('users', 'users.user_email', '=', 'mahasiswas.mahasiswa_user_email')
+                        ->get();
+
+    	return view('admin.mahasiswalist', [
+            'mahasiswas' => $mahasiswas
+        ]);
     }
 }

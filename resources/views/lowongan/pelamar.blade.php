@@ -61,6 +61,8 @@
         Daftar Pelamar
     </h5>
     
+<form method="get" id="formadd">
+@clrf
     <!-- filter -->
     <div class="card mb-3 p-1">
         <div class="card-header p-1">
@@ -73,9 +75,10 @@
             @if($filter->lowongan!="" || $filter->status!="")
                 <a href="{{ route('perekrutan.pelamar') }}"><span class="badge badge-danger">Clear</span></a>
             @endif
+            
+            <input type="submit" formmethod="get" class="btn btn-outline-success float-right" value="Download" formaction="{{ route('perekrutan.pelamardownload') }}">
         </div>
         <div class="card-body collapse p-1" id="collapseSearchCon">
-        <form method="get" id="formadd" action="{{ route('perekrutan.pelamar') }}">
 
             <div class="row">
                 <div class="col-6 mb-2">
@@ -103,15 +106,15 @@
                 </div>
 
                 <div class="col-12">
-                    <input type="submit" formmethod="get" class="btn btn-primary btn-block h-100" value="Apply" formaction="#">
+                    <input type="submit" formmethod="get" class="btn btn-primary btn-block h-100" value="Apply" formaction="{{ route('perekrutan.pelamar') }}">
                 </div>
 
             </div>
 
-        </form>
         </div>
     </div>
     <!-- end filter -->
+</form>
 
     <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-3">
         <table class="table table-sm table-striped table-hover" id="dataTable" width="100%" cellspacing="0">
