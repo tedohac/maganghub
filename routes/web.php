@@ -152,6 +152,7 @@ Route::group(['prefix' => 'lowongan', 'middleware' => 'web'], function () {
 Route::group(['prefix' => 'perekrutan', 'middleware' => 'web'], function () {
     Route::get('apply/{id}','PerekrutanController@apply')->name('perekrutan.apply')->middleware('cekrole:mahasiswa');
     Route::get('pelamar','PerekrutanController@pelamar')->name('perekrutan.pelamar')->middleware('cekrole:perusahaan');
+    Route::get('pelamardownload','PerekrutanController@pelamardownload')->name('perekrutan.pelamardownload')->middleware('cekrole:perusahaan');
     Route::get('detailpelamar/{id}','PerekrutanController@detailpelamar')->name('perekrutan.detailpelamar')->middleware('cekrole:perusahaan');
     
     Route::post('undang','PerekrutanController@undang')->name('perekrutan.undang')->middleware('cekrole:perusahaan');
@@ -201,4 +202,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'web'], function () {
     Route::get('perusahaanlist','AdministratorController@perusahaanlist')->name('admin.perusahaanlist')->middleware('cekrole:superadmin');
     Route::get('perusahaandetail/{id}','AdministratorController@perusahaandetail')->name('admin.perusahaandetail')->middleware('cekrole:superadmin');
     Route::get('perusahaanverify/{id}','AdministratorController@perusahaanverify')->name('admin.perusahaanverify')->middleware('cekrole:superadmin');
+
+    Route::get('dospemlist','AdministratorController@dospemlist')->name('admin.dospemlist')->middleware('cekrole:superadmin');
+    Route::get('mahasiswalist','AdministratorController@mahasiswalist')->name('admin.mahasiswalist')->middleware('cekrole:superadmin');
 });

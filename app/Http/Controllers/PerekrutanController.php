@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Exports\PelamarExport;
 use App\Mail\DiterimaEmail;
 use App\Mail\UndanganEmail;
 use App\Notifications\Notifikasi;
@@ -18,6 +19,7 @@ use Mail;
 use Notification;
 use Session;
 use Validator;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PerekrutanController extends Controller
 {
@@ -109,6 +111,17 @@ class PerekrutanController extends Controller
             'filter' => $filter,
             'rekruts' => $rekruts,
         ]);
+    }
+
+    public function pelamardownload(Request $request)
+    {
+        // // DB::enableQueryLog();
+        $perusahaan = Perusahaan::where('perusahaan_user_email', Auth::user()->user_email )->first();
+        // // dd(DB::getQueryLog());
+        if(empty($perusahaan)) return abort(404);
+
+        $request->request->add(['auth_user_email' => Auth::user()->user_email]);
+		return Excel::download(new PelamarExport($request), 'pelamar-'.date("Y-m-d_His").'.xlsx');
     }
     
     public function lamaranlist(Request $request)

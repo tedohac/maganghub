@@ -58,7 +58,7 @@ body {
   font-size: 13px;
 }
 @media (min-width: 990px) {
-  .dropdown-menu {
+  #notif {
     width: 400px;
   }
 }
