@@ -5,7 +5,7 @@
         <tr>
             <td>
                 <center>
-                    <img src="{{ public_path('storage/univ/'.$rekrut->univ_profile_pict) }}" style="width: 50px">
+                    <img src="{{ url('storage/univ/'.$rekrut->univ_profile_pict) }}" style="width: 50px">
                 </center>
             </td>
             <td>
@@ -15,7 +15,7 @@
             </td>
             <td>
                 <center>
-                    <img src="{{ public_path('storage/perusahaan_profile/'.$rekrut->perusahaan_profile_pict) }}" style="width: 50px">
+                    <img src="{{ url('storage/perusahaan_profile/'.$rekrut->perusahaan_profile_pict) }}" style="width: 50px">
                 </center>
             </td>
         </tr>
@@ -143,7 +143,6 @@
                     <td>{{ $kegiatan->kegiatan_tgl }}</td>
                     <td>{!! htmlspecialchars_decode($kegiatan->kegiatan_desc) !!}</td>
                     <td>
-                        {{ date('d F Y', strtotime($kegiatan->kegiatan_verify_mentor)) }}
                         {{ $kegiatan->kegiatan_verify_mentor ? date('d F Y', strtotime($kegiatan->kegiatan_verify_mentor)) : '-' }}
                     </td>
                 </tr>
