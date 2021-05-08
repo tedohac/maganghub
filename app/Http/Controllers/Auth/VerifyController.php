@@ -33,21 +33,17 @@ class VerifyController extends Controller
             return redirect()->route('login');
         }
 
-        if($user->user_status == 1)
+        try
         {
-            try
-            {
-                User::where('user_email',$email)
-                    ->where('user_verify_token',$token)
-                    ->update([
-                        'user_status' => '2',
-                        'user_email_verified_at' => Carbon::now(),
-                        'user_verify_token' => null,
-                    ]);
-            } catch (\Illuminate\Database\QueryException $e) {
-                Session::flash('error', 'Proses gagal, mohon coba kembali beberapa saat lagi');
-                return redirect()->route('login');
-            }
+            User::where('user_email',$email)
+                ->where('user_verify_token',$token)
+                ->update([
+                    'user_email_verified_at' => Carbon::now(),
+                    'user_verify_token' => null,
+                ]);
+        } catch (\Illuminate\Database\QueryException $e) {
+            Session::flash('error', 'Proses gagal, mohon coba kembali beberapa saat lagi');
+            return redirect()->route('login');
         }
 
         Session::flash('success', 'Verifikasi e-mail berhasil, silahkan Login');

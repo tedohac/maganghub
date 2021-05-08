@@ -30,13 +30,19 @@
                     <div class="dropdown-menu dropdown-menu-right shadow" aria-labelledby="navbarDropdown" id="notif">
                     
                         @if(count(auth()->user()->unreadNotifications))
-                            @foreach(auth()->user()->notifications->sortBy(['read_at','created_at']) as $notification)
-                                <a href="{{ $notification->data['url'] }}"><div class="dropdown-item longtext" tabindex="-1"><small>{!! $notification->data['text'] !!}</small></div></a>
+                            @foreach(auth()->user()->unreadNotifications->take(5) as $notification)
+                                <a href="{{ url('notification/show/'.$notification->id) }}">
+                                    <div class="dropdown-item longtext" tabindex="-1">
+                                        <div class="text-right"><small><i>{{ date('d F Y H:i', strtotime($notification->created_at)) }}</i></small></div>
+                                        <small>{!! $notification->data['text'] !!}</small>
+                                    </div>
+                                </a>
                                 <div class="dropdown-divider"></div>
                             @endforeach
                         @else
-                            <div class="dropdown-item">Belum ada notifikasi</div>
+                            <div class="dropdown-item"><small>Belum ada notifikasi baru</small></div>
                         @endif
+                        <a href="{{ route('notification.list') }}" class="dropdown-item text-right"><small>Lihat Semua</small></a>
                     </div>
                 </li>
 
