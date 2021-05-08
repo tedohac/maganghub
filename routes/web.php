@@ -198,6 +198,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'web'], function () {
     Route::get('kampuslist','AdministratorController@kampuslist')->name('admin.kampuslist')->middleware('cekrole:superadmin');
     Route::get('kampusdetail/{id}','AdministratorController@kampusdetail')->name('admin.kampusdetail')->middleware('cekrole:superadmin');
     Route::get('kampusverify/{id}','AdministratorController@kampusverify')->name('admin.kampusverify')->middleware('cekrole:superadmin');
+    Route::get('kampusawasi/{id}','AdministratorController@kampusawasi')->name('admin.kampusawasi')->middleware('cekrole:superadmin');
     
     Route::get('perusahaanlist','AdministratorController@perusahaanlist')->name('admin.perusahaanlist')->middleware('cekrole:superadmin');
     Route::get('perusahaandetail/{id}','AdministratorController@perusahaandetail')->name('admin.perusahaandetail')->middleware('cekrole:superadmin');
@@ -205,4 +206,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'web'], function () {
 
     Route::get('dospemlist','AdministratorController@dospemlist')->name('admin.dospemlist')->middleware('cekrole:superadmin');
     Route::get('mahasiswalist','AdministratorController@mahasiswalist')->name('admin.mahasiswalist')->middleware('cekrole:superadmin');
+});
+
+Route::group(['prefix' => 'notification', 'middleware' => 'web'], function () {
+    
+    Route::get('show/{id}','NotificationController@show')->name('notification.show');
+    Route::get('list','NotificationController@list')->name('notification.list')->middleware('cekrole:mahasiswa|dospem|perusahaan|superadmin');
+    
 });

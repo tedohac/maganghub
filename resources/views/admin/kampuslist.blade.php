@@ -106,7 +106,9 @@
                     <th>E-mail</th>
                     <th>NPSN</th>
                     <th>Website</th>
-                    <th>Verifikasi</th>
+                    <th>Verifikasi Email</th>
+                    <th>Verifikasi MagangHub</th>
+                    <th>Status</th>
                     <th>Opsi</th>
                 </tr>
             </thead>
@@ -120,10 +122,24 @@
                     <td>{{ $univ->univ_npsn }}</td>
                     <td><a href="{{ $univ->univ_website }}">{{ $univ->univ_website }}</a></td>
                     <td>
+                        @if($univ->user_email_verified_at=='')
+                            Belum
+                        @else
+                            {{ $univ->user_email_verified_at }}
+                        @endif
+                    </td>
+                    <td>
                         @if($univ->univ_verified=='')
                             Belum
                         @else
                             {{ $univ->univ_verified }}
+                        @endif
+                    </td>
+                    <td>
+                        @if($univ->user_status=='1')
+                            Aktif
+                        @elseif($univ->user_status=='0')
+                            Diawasi
                         @endif
                     </td>
                     <td>

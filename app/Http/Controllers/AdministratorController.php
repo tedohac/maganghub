@@ -9,6 +9,7 @@ use App\Mahasiswa;
 use App\Prodi;
 use App\Perusahaan;
 use App\Univ;
+use App\User;
 use Auth;
 use DB;
 use Session;
@@ -77,7 +78,8 @@ class AdministratorController extends Controller
         {
             Univ::where('univ_id',$univ_id)
                 ->update([
-                    'univ_verified'      => date("Y-m-d H:i:s"),
+                    'user_status' => 1,
+                    'univ_verified' => date("Y-m-d H:i:s"),
                 ]);
         } catch (\Illuminate\Database\QueryException $e) {
             Session::flash('error', 'Proses gagal, mohon coba kembali beberapa saat lagi ');
@@ -85,6 +87,31 @@ class AdministratorController extends Controller
         }
 
         Session::flash('success', 'Verifikasi kampus berhasil');
+        return redirect()->route('admin.kampuslist');
+    }
+
+    public function kampusawasi($univ_id)
+    {
+        $univ = Univ::where('univ_id', $univ_id )->first();
+        if(empty($univ)) abort(404);
+
+        try
+        {
+            Univ::where('univ_id',$univ_id)
+                ->update([
+                    'univ_verified' => null,
+                ]);
+
+            User::where('user_email',$univ->univ_user_email)
+                ->update([
+                    'user_status' => 0,
+                ]);
+        } catch (\Illuminate\Database\QueryException $e) {
+            Session::flash('error', 'Proses gagal, mohon coba kembali beberapa saat lagi ');
+            return redirect()->back();
+        }
+
+        Session::flash('success', 'Mengawasi kampus berhasil');
         return redirect()->route('admin.kampuslist');
     }
     

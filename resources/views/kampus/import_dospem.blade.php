@@ -28,6 +28,8 @@
         <h3 class="m-0">{{ $univ->univ_nama }}</h3>
         @if(\App\Univ::getIsVerified($univ->univ_id))
             <small><i class="fas fa-check"></i> Terverifikasi</small>
+        @elseif(\App\Univ::getIsBanned($univ->univ_id))
+            <span class="badge badge-danger"><i class="fas fa-exclamation-triangle"></i> Kampus ini sedang dalam pengawasan</span>
         @else
             <small>Menunggu kelengkapan profil untuk verifikasi</small>
         @endif

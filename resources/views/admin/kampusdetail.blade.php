@@ -31,6 +31,8 @@
         <h3 class="m-0">{{ $univ->univ_nama }}</h3>
         @if(\App\Univ::getIsVerified($univ->univ_id))
             <small><i class="fas fa-check"></i> Terverifikasi</small>
+        @elseif(\App\Univ::getIsBanned($univ->univ_id))
+            <span class="badge badge-danger"><i class="fas fa-exclamation-triangle"></i> Kampus ini sedang dalam pengawasan</span>
         @else
             <small>Menunggu kelengkapan profil untuk verifikasi</small>
         @endif
@@ -124,18 +126,22 @@
             </tr>
         </table>
         <div class="row">
-            <div class="col-6">
+            <div class="col-6 mb-2">
                 @if(empty($univ->univ_verified))
                     <input type="button" class="btn btn-primary btn-block py-1" value="Verifikasi" id="btnVerify">
                 @else
                     Kampus sudah diverifikasi pada {{ date('d F Y', strtotime($univ->univ_verified)) }}
                 @endif
             </div>
-            <div class="col-6">
+
+            @if($univ->user_status==1)
+            <div class="col-6 mb-2">
                 <input type="button" class="btn btn-danger btn-block py-1" value="Awasi" id="btnAwasi">
             </div>
+            @endif
+
             @if(\App\Prodi::getCountByUniv($univ->univ_id)==0)
-            <div class="col-6 mt-2">
+            <div class="col-6 mb-2">
                 <input type="button" class="btn btn-danger btn-block py-1" value="Hapus" id="btnHapus">
             </div>
             @endif
@@ -213,6 +219,35 @@
     </div>
 </div>
 <!-- End Verify Modal -->
+
+<!-- Awasi Modal -->
+<div class="modal fade" id="awasiModal">
+    <div class="modal-dialog">
+    <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+        <h4 class="modal-title">Awasi Kampus</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+            Apakah anda yakin untuk mengawasi kampus ini ?<br />
+            Saat diawasi, kampus tidak dapat dicari oleh public, memiliki label khusus, dan tidak dapat login ke MagangHub.
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Tidak</button>
+
+            <a class="btn btn-primary" href="{{ url('admin/kampusawasi/'.$univ->univ_id) }}">Ya</a>
+        </div>
+
+    </div>
+    </div>
+</div>
+<!-- End Awasi Modal -->
 @endsection
 
 @section('bottom')
@@ -229,6 +264,10 @@
         
         $('#btnVerify').click(function(){
             $('#verifyModal').modal('show');
+        });
+        
+        $('#btnAwasi').click(function(){
+            $('#awasiModal').modal('show');
         });
     });
 </script>

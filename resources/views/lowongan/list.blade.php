@@ -34,7 +34,7 @@
 @section('content')
     <ol class="breadcrumb p-1 ml-auto">
         <li class="breadcrumb-item ml-auto"><a href="{{ route('/') }}">MagangHub</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Cari Kampus</li>
+        <li class="breadcrumb-item active" aria-current="page">Cari Lowongan</li>
     </ol>
     @if(session('errors'))
         <div class="alert alert-danger alert-dismissible fade show" role="alert">

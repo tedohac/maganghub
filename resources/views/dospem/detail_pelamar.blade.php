@@ -178,6 +178,9 @@
                 <td class="greybox"><b>Kampus</b></td>
                 <td>
                     <a href="{{ url('kampus/detail/'.$rekrut->univ_id) }}" class="text-dark">{{ $rekrut->univ_nama }}</a>
+                    @if(\App\Univ::getIsBanned($rekrut->univ_id))
+                        <span class="badge badge-danger"><i class="fas fa-exclamation-triangle"></i> Kampus ini sedang dalam pengawasan</span>
+                    @endif
                 </td>
             </tr>
             <tr>

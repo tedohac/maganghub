@@ -35,7 +35,8 @@ class ManageKampusController extends Controller
 
         $univs = Univ::join('users', 'univs.univ_user_email', '=', 'users.user_email')
                     ->join('cities', 'cities.city_id', '=', 'univs.univ_city_id')
-                    ->whereNotNull('user_email_verified_at');
+                    ->whereNotNull('user_email_verified_at')
+                    ->whereNotNull('univ_verified');
 
         if(!empty($request->filter_kampus)) $univs = $univs->where('univ_nama', 'like', '%'.$request->filter_kampus.'%');
 

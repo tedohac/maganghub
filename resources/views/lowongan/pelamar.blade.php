@@ -137,7 +137,12 @@
                     <td>{{ $num }}</td>
                     <td>{{ $rekrut->lowongan_judul }}</td>
                     <td>{{ date('Y-m-d', strtotime($rekrut->rekrut_waktu_melamar)) }}</td>
-                    <td>{{ $rekrut->univ_nama }}</td>
+                    <td>
+                        {{ $rekrut->univ_nama }}
+                        @if(\App\Univ::getIsBanned($rekrut->univ_id))
+                            <span class="badge badge-danger"><i class="fas fa-exclamation-triangle"></i> Kampus ini sedang dalam pengawasan</span>
+                        @endif
+                    </td>
                     <td>{{ $rekrut->prodi_nama }}</td>
                     <td>{{ $rekrut->mahasiswa_nama }}</td>
                     <td>

@@ -30,6 +30,9 @@
     <div class="profile-text col-lg-9 col-md-8 p-md-0 mb-2">
         <h3 class="m-0">{{ $mahasiswa->mahasiswa_nama }}</h3>
         {{ $mahasiswa->mahasiswa_nim }} - <a href="{{ url('kampus/detail/'.$mahasiswa->univ_id) }}" class="text-white">{{ $mahasiswa->univ_nama }}</a>
+        @if(\App\Univ::getIsBanned($mahasiswa->univ_id))
+            <span class="badge badge-danger"><i class="fas fa-exclamation-triangle"></i> Kampus ini sedang dalam pengawasan</span>
+        @endif
     </div>
 </div>
 @endsection
@@ -80,6 +83,9 @@
                 <td class="greybox"><b>Kampus</b></td>
                 <td>
                     <a href="{{ url('kampus/detail/'.$mahasiswa->univ_id) }}" class="text-dark">{{ $mahasiswa->univ_nama }}</a>
+                    @if(\App\Univ::getIsBanned($mahasiswa->univ_id))
+                        <span class="badge badge-danger"><i class="fas fa-exclamation-triangle"></i> Kampus ini sedang dalam pengawasan</span>
+                    @endif
                 </td>
             </tr>
             <tr>
