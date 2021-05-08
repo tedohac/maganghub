@@ -79,9 +79,13 @@ class AdministratorController extends Controller
         {
             Univ::where('univ_id',$univ_id)
                 ->update([
-                    'user_status' => 1,
                     'univ_verified' => date("Y-m-d H:i:s"),
                 ]);
+                
+            User::where('user_email',$univ->univ_user_email)
+            ->update([
+                'user_status' => 1,
+            ]);
         } catch (\Illuminate\Database\QueryException $e) {
             Session::flash('error', 'Proses gagal, mohon coba kembali beberapa saat lagi ');
             return redirect()->back();
