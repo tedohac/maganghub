@@ -57,6 +57,7 @@ class AdministratorController extends Controller
     public function kampusdetail($id)
     {
         $univ = Univ::leftJoin('cities', 'univs.univ_city_id', '=', 'cities.city_id')
+                    ->join('users', 'univs.univ_user_email', '=', 'users.user_email')
                     ->where('univs.univ_id', $id)
                     ->first();
         if(empty($univ)) abort(404);
