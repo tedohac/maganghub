@@ -18,7 +18,7 @@ trait RoleTrait {
 
     public function redirectRole()
     {
-        if(Auth::user()->user_status == 1) return redirect()->route('verifyneeded');
+        if(Auth::user()->user_email_verified_at == "") return redirect()->route('verifyneeded');
         elseif(Auth::user()->user_role == 'admin kampus')
         {
             $univ = Univ::where('univ_user_email', Auth::user()->user_email )->first();

@@ -82,7 +82,7 @@
             </a>
         </div>
         <h5 class="text-center">{{ date('F Y', strtotime($firstDate)) }}</h5>
-        <table class="table table-bordered table-responsive-sm" cellspacing="0">
+        <table class="table table-bordered table-responsive" cellspacing="0">
             <thead>
             <tr>
                 <th class="bg-info text-white" width="114">Sun</th>
