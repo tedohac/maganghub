@@ -369,8 +369,8 @@ class ManageKegiatanController extends Controller
             return redirect()->back();
         }
 
-        Session::flash('success', 'Hapus program studi berhasil');
-        return redirect()->back();
+        Session::flash('success', 'Hapus kegiatan berhasil untuk tanggal '.date('d F Y', strtotime($kegiatan_tgl)));
+        return redirect()->route('kegiatan.manage');
     }
     
     public function verify($kegiatan_id)

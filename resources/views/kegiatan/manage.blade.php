@@ -96,7 +96,7 @@
                 <small>{{ date('F Y', strtotime($firstDate." +1 month")) }}</small>
             </a>
         </div>
-        <table class="table table-bordered table-responsive-sm" cellspacing="0">
+        <table class="table table-bordered table-responsive" cellspacing="0">
             <thead>
             <tr>
                 <th class="bg-info text-white" width="114">Sun</th>

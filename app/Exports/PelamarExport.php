@@ -75,8 +75,8 @@ class PelamarExport implements FromCollection, WithHeadings, ShouldAutoSize
             elseif($rekrut->rekrut_status=="finishprs") $rekrut->rekrut_status='Selesai';
             
             $output[] = [
-                $rekrut->lowongan_judul,
                 date('Y-m-d', strtotime($rekrut->rekrut_waktu_melamar)),
+                $rekrut->lowongan_judul,
                 $rekrut->univ_nama,
                 $rekrut->prodi_nama,
                 $rekrut->mahasiswa_nama,
