@@ -262,6 +262,7 @@ class PerekrutanController extends Controller
 
         $rekrut = Rekrut::join('lowongans', 'lowongans.lowongan_id', '=', 'rekruts.rekrut_lowongan_id')
                         ->join('perusahaans', 'perusahaans.perusahaan_id', '=', 'lowongans.lowongan_perusahaan_id')
+                        ->join('mahasiswas', 'mahasiswas.mahasiswa_id', '=', 'rekruts.rekrut_mahasiswa_id')
                         ->where('perusahaan_user_email', Auth::user()->user_email )
                         ->where('rekrut_id', $id)->first();
         if(empty($rekrut)) return abort(404);
@@ -276,6 +277,12 @@ class PerekrutanController extends Controller
             Session::flash('error', 'Proses gagal, mohon coba kembali beberapa saat lagi atau hubungi admin MagangHub');
             return redirect()->back();
         }
+
+        $receiver = User::where('user_email', $rekrut->mahasiswa_user_email)->first();
+        Notification::send($receiver, new Notifikasi(
+            'Mohon maaf, <b>'.$rekrut->perusahaan_nama.'</b> menolak lamaran anda pada lowongan '.$rekrut->lowongan_judul, 
+            route('perekrutan.detaillamaran', ['id' => $request->rekrut_id])
+        ));
 
         Session::flash('success', 'Tolak lamaran berhasil.');
         return redirect()->back();
