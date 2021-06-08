@@ -20,6 +20,7 @@ class CreateNotificationsTable extends Migration
             $table->text('data');
             $table->timestamp('read_at')->nullable();
             $table->timestamps();
+            $table->foreign('notifiable_id')->references('user_email')->on('users');
         });
     }
 
