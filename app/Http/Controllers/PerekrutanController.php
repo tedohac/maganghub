@@ -281,7 +281,7 @@ class PerekrutanController extends Controller
         $receiver = User::where('user_email', $rekrut->mahasiswa_user_email)->first();
         Notification::send($receiver, new Notifikasi(
             'Mohon maaf, <b>'.$rekrut->perusahaan_nama.'</b> menolak lamaran anda pada lowongan '.$rekrut->lowongan_judul, 
-            route('perekrutan.detaillamaran', ['id' => $request->rekrut_id])
+            route('perekrutan.detaillamaran', ['id' => $rekrut->rekrut_id])
         ));
 
         Session::flash('success', 'Tolak lamaran berhasil.');
