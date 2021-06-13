@@ -52,8 +52,12 @@
     @endif
 
     <!-- begin content -->
-    <h5 class="mb-2 p-0">
+    <h5 class="mb-2 p-0 pb-1">
         Kegiatan Magang Mahasiswa
+        
+        <a class="btn btn-outline-info p-1 mr-1 float-right" href="{{ route('kegiatan.printdospem', ['id' => $rekrut->rekrut_id]) }}">
+            <i class="fas fa-file-pdf"></i> Cetak Laporan
+        </a>
     </h5>
     @if($rekrut->rekrut_status=='finishmhs' || $rekrut->rekrut_status=='finishprs')
     <div class="alert alert-info">

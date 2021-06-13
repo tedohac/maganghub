@@ -157,7 +157,9 @@
                     <td>
                         <input id="nimMahasiswa" class="form-control" placeholder="" name="mahasiswa_nim" required="required" autofocus="autofocus" type="text" value="{{ old('mahasiswa_nim') }}"
                             data-parsley-required
-                            data-parsley-required-message="Masukan NIM Mahasiswa">
+                            data-parsley-required-message="Masukan NIM Mahasiswa"
+                            data-parsley-type="digits"
+                            data-parsley-type-message="NIM hanya berupa angka">
                         @error('mahasiswa_nim')
                             <span class="form-text text-danger">
                                 {{ $message }}
