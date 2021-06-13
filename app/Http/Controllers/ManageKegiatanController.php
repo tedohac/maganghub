@@ -431,6 +431,38 @@ class ManageKegiatanController extends Controller
         return $pdf->stream();
     }
     
+    
+    public function printdospem($rekrut_id)
+    {        
+        $rekrut = Rekrut::join('lowongans', 'lowongans.lowongan_id', '=', 'rekruts.rekrut_lowongan_id')
+                        ->join('perusahaans', 'perusahaans.perusahaan_id', '=', 'lowongans.lowongan_perusahaan_id')
+                        ->join('cities', 'cities.city_id', '=', 'lowongans.lowongan_city_id')
+                        ->join('fungsis', 'fungsis.fungsi_id', '=', 'lowongans.lowongan_fungsi_id')
+                        ->join('mahasiswas', 'mahasiswas.mahasiswa_id', '=', 'rekruts.rekrut_mahasiswa_id')
+                        ->join('dospems', 'dospems.dospem_id', '=', 'mahasiswas.mahasiswa_dospem_id')
+                        ->join('prodis', 'prodis.prodi_id', '=', 'dospems.dospem_prodi_id')
+                        ->join('univs', 'univs.univ_id', '=', 'prodis.prodi_univ_id')
+                        ->where('rekrut_id', $rekrut_id)
+                        ->where(function ($query) {
+                            $query->orWhere('rekrut_status', "lulus");
+                            $query->orWhere('rekrut_status', "finishmhs");
+                            $query->orWhere('rekrut_status', "finishprs");
+                        })->first();
+        if(empty($rekrut)) abort(404);
+
+        $kegiatans = Kegiatan::where('kegiatan_rekrut_id', $rekrut->rekrut_id)->get();
+
+        $skills = Skill::where('skill_mahasiswa_id', $rekrut->rekrut_mahasiswa_id)
+                        ->get();
+
+        $pdf = PDF::loadview('kegiatan.printpreview',[
+            'rekrut' => $rekrut,
+            'kegiatans' => $kegiatans,
+            'skills' => $skills
+        ]);
+        return $pdf->stream();
+    }
+    
     public function finishmahasiswa(Request $request)
     {
         // if not exists

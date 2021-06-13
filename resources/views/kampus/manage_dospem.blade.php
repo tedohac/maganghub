@@ -157,7 +157,9 @@
                     <td>
                         <input id="nikDospem" class="form-control" placeholder="" name="dospem_nik" required="required" autofocus="autofocus" type="text" value="{{ old('dospem_nik') }}"
                             data-parsley-required
-                            data-parsley-required-message="Masukan NIK Dosen Pembimbing">
+                            data-parsley-required-message="Masukan NIK Dosen Pembimbing"
+                            data-parsley-type="digits"
+                            data-parsley-type-message="NIK hanya berupa angka">
                         @error('dospem_nik')
                             <span class="form-text text-danger">
                                 {{ $message }}

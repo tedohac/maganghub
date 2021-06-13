@@ -188,6 +188,7 @@ Route::group(['prefix' => 'kegiatan', 'middleware' => 'web'], function () {
     Route::get('verify/{id}','ManageKegiatanController@verify')->name('kegiatan.verify')->middleware('cekrole:perusahaan');
     
     Route::get('print','ManageKegiatanController@print')->name('kegiatan.print')->middleware('cekrole:mahasiswa');
+    Route::get('printdospem/{id}','ManageKegiatanController@printdospem')->name('kegiatan.printdospem')->middleware('cekrole:dospem');
     
     Route::post('finishmahasiswa','ManageKegiatanController@finishmahasiswa')->name('kegiatan.finishmahasiswa')->middleware('cekrole:mahasiswa');
     Route::post('finishperusahaan','ManageKegiatanController@finishperusahaan')->name('kegiatan.finishperusahaan')->middleware('cekrole:perusahaan');
