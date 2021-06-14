@@ -154,6 +154,14 @@
         <table class="w-100">
             <tr class="align-top">
                 <td>
+                    <small>DOSPEM</small><br />
+                    <div class="mb-2">
+                        <small class="text-primary">{{ \App\Mahasiswa::getDospem() }}</small>
+                    </div>
+                </td>
+            </tr>
+            <tr class="align-top">
+                <td>
                     <small>Kelengkapan Profil</small><br />
                     @if(\App\Mahasiswa::isLengkap($univsb->mahasiswa_user_email))
                         <small class="text-primary"><i class="fas fa-check"></i> Lengkap</small>

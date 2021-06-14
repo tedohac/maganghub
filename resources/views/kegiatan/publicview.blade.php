@@ -23,9 +23,9 @@
 @section('content')
     <ol class="breadcrumb p-1 ml-auto">
         <li class="breadcrumb-item ml-auto"><a href="{{ route('/') }}">MagangHub</a></li>
-        <li class="breadcrumb-item"><a href="{{ url('perusahaan/detail/'.$rekrut->lowongan_perusahaan_id) }}">Profil Perusahaan</a></li>
-        <li class="breadcrumb-item"><a href="{{ url('perekrutan/pelamar/'.$rekrut->lowongan_id) }}">Pelamar</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Kegiatan Magang</li>
+        <li class="breadcrumb-item"><a href="{{ route('mahasiswa.pantau') }}">Daftar Mahasiswa</a></li>
+        <li class="breadcrumb-item"><a href="{{ url('dospem/lamaranlist-dospem/'.$rekrut->mahasiswa_id) }}">Daftar Lamaran</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Kegiatan</li>
     </ol>
 
     @if(session('errors'))
@@ -52,15 +52,18 @@
     @endif
 
     <!-- begin content -->
-    <h5 class="mb-2 p-0">
+    <h5 class="mb-2 p-0 pb-1">
         Kegiatan Magang Mahasiswa
+        
+        <a class="btn btn-outline-info p-1 mr-1 float-right" href="{{ route('kegiatan.printdospem', ['id' => $rekrut->rekrut_id]) }}">
+            <i class="fas fa-file-pdf"></i> Cetak Laporan
+        </a>
     </h5>
     @if($rekrut->rekrut_status=='finishmhs' || $rekrut->rekrut_status=='finishprs')
     <div class="alert alert-info">
         Mahasiswa telah menyelesaikan magang ini pada {{ date('d F Y H:i', strtotime($rekrut->rekrut_finish_mahasiswa)) }}. <br />
         
         @if($rekrut->rekrut_status=='finishmhs')
-            <input type="button" class="btn btn-primary p-1 text-small" value="Rating Mahasiswa" id="btnFinish">
         @elseif($rekrut->rekrut_status=="finishprs")
             Rating anda untuk mahasiswa: {{ $rekrut->rekrut_rating_perusahaan }}<br />
             Rating mahasiswa untuk perusahaan anda: {{ $rekrut->rekrut_rating_mahasiswa }}<br />
@@ -82,7 +85,7 @@
             </a>
         </div>
         <h5 class="text-center">{{ date('F Y', strtotime($firstDate)) }}</h5>
-        <table class="table table-bordered table-responsive" cellspacing="0">
+        <table class="table table-bordered table-responsive-sm" cellspacing="0">
             <thead>
             <tr>
                 <th class="bg-info text-white" width="114">Sun</th>
@@ -146,24 +149,12 @@
         <div class="py-1">Informasi Mahasiswa Pelamar</div>
         <table class="table table-sm" cellspacing="0">
             <tr>
-                <td class="greybox" width="10"><b>Kampus</b></td>
+                <td class="greybox"><b>Kampus</b></td>
                 <td>
                     <a href="{{ url('kampus/detail/'.$rekrut->univ_id) }}" class="text-dark">{{ $rekrut->univ_nama }}</a>
                     @if(\App\Univ::getIsBanned($rekrut->univ_id))
                         <span class="badge badge-danger"><i class="fas fa-exclamation-triangle"></i> Kampus ini sedang dalam pengawasan</span>
                     @endif
-                </td>
-            </tr>
-            <tr>
-                <td class="greybox"><b>Dosen Pembimbing</b></td>
-                <td>
-                    {{ $rekrut->dospem_nama }}
-                </td>
-            </tr>
-            <tr>
-                <td class="greybox"><b>E-Mail Dosen</b></td>
-                <td>
-                    {{ $rekrut->dospem_user_email }}
                 </td>
             </tr>
             <tr>
@@ -288,74 +279,9 @@
     </div>
     <!-- end info lowongan -->
 
-<form action="{{ route('kegiatan.finishperusahaan') }}" method="post" id="registform">
-@csrf
-<!-- Verify Modal -->
-<div class="modal fade" id="finishModal">
-    <div class="modal-dialog">
-    <div class="modal-content">
-
-        <!-- Modal Header -->
-        <div class="modal-header">
-        <h4 class="modal-title">Rating & Feedback</h4>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-
-        <!-- Modal body -->
-        <div class="modal-body">
-            Mohon berikan penilaian untuk {{ $rekrut->mahasiswa_nama }} dengan skala 1-10:<br />
-            
-            <div class="stars">
-                <input class="star star-5" id="star-10" type="radio" name="rekrut_rating_perusahaan" value="10"/>
-                <label class="star star-5" for="star-10">10</label>
-                <input class="star star-4" id="star-9" type="radio" name="rekrut_rating_perusahaan" value="9"/>
-                <label class="star star-4" for="star-9">9</label>
-                <input class="star star-4" id="star-8" type="radio" name="rekrut_rating_perusahaan" value="8"/>
-                <label class="star star-4" for="star-8">8</label>
-                <input class="star star-4" id="star-7" type="radio" name="rekrut_rating_perusahaan" value="7"/>
-                <label class="star star-4" for="star-7">7</label>
-                <input class="star star-4" id="star-6" type="radio" name="rekrut_rating_perusahaan" value="6"/>
-                <label class="star star-4" for="star-6">6</label>
-                <input class="star star-4" id="star-5" type="radio" name="rekrut_rating_perusahaan" value="5"/>
-                <label class="star star-4" for="star-5">5</label>
-                <input class="star star-4" id="star-4" type="radio" name="rekrut_rating_perusahaan" value="4"/>
-                <label class="star star-4" for="star-4">4</label>
-                <input class="star star-3" id="star-3" type="radio" name="rekrut_rating_perusahaan" value="3"/>
-                <label class="star star-3" for="star-3">3</label>
-                <input class="star star-2" id="star-2" type="radio" name="rekrut_rating_perusahaan" value="2"/>
-                <label class="star star-2" for="star-2">2</label>
-                <input class="star star-1" id="star-1" type="radio" name="rekrut_rating_perusahaan" value="1"/>
-                <label class="star star-1" for="star-1">1</label>
-            </div>
-
-            Feedback:<br />
-            <textarea class="form-control" placeholder="Feedback" name="rekrut_feedback" required="required"></textarea>
-        </div>
-
-        <!-- Modal footer -->
-        <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
-
-            <input  type="submit" class="btn btn-primary" id="sendsubmit" value="Selesaikan">
-        </div>
-
-    </div>
-    </div>
-</div>
-<!-- End Verify Modal -->
-</form>
 @endsection
 
 @section('bottom')
 <!-- SB-Admin-->
 <script src="{{ url('js/sb-admin.min.js') }}"></script>
-
-<script>
-    $(document).ready(function (){
-
-        $('#btnFinish').click(function(){
-            $('#finishModal').modal('show');
-        });
-    });
-</script>
 @endsection

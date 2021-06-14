@@ -12,6 +12,7 @@ use Auth;
 use PDF;
 use Session;
 use Storage;
+use Str;
 use Validator;
 
 class ManageKegiatanController extends Controller
@@ -38,6 +39,13 @@ class ManageKegiatanController extends Controller
         if(empty($rekrut)) abort(404);
 
         $rekrut->lowongan_jobdesk     = htmlspecialchars_decode($rekrut->lowongan_jobdesk);
+
+        // when there is already data there, focus month on first kegiatan day
+        $kegiatan = Kegiatan::where('kegiatan_rekrut_id', $rekrut->rekrut_id)->orderBy('kegiatan_tgl')->first();
+        if(!empty($kegiatan) && empty($request->filter_month))
+        {
+            $filter->month = substr($kegiatan->kegiatan_tgl,0,7);
+        }
 
     	return view('kegiatan.manage', [
             'filter' => $filter,
@@ -75,6 +83,13 @@ class ManageKegiatanController extends Controller
         $skills = Skill::where('skill_mahasiswa_id', $rekrut->rekrut_mahasiswa_id)
                         ->get();
 
+        // when there is already data there, focus month on first kegiatan day
+        $kegiatan = Kegiatan::where('kegiatan_rekrut_id', $rekrut->rekrut_id)->orderBy('kegiatan_tgl')->first();
+        if(!empty($kegiatan) && empty($request->filter_month))
+        {
+            $filter->month = substr($kegiatan->kegiatan_tgl,0,7);
+        }
+
     	return view('kegiatan.mentorview', [
             'filter' => $filter,
             'rekrut' => $rekrut,
@@ -111,7 +126,52 @@ class ManageKegiatanController extends Controller
         $skills = Skill::where('skill_mahasiswa_id', $rekrut->rekrut_mahasiswa_id)
                         ->get();
 
+        // when there is already data there, focus month on first kegiatan day
+        $kegiatan = Kegiatan::where('kegiatan_rekrut_id', $rekrut->rekrut_id)->orderBy('kegiatan_tgl')->first();
+        if(!empty($kegiatan) && empty($request->filter_month))
+        {
+            $filter->month = substr($kegiatan->kegiatan_tgl,0,7);
+        }
+
     	return view('dospem.kegiatan', [
+            'filter' => $filter,
+            'rekrut' => $rekrut,
+            'skills' => $skills
+        ]);
+    }
+
+    
+    public function publicview($rekrut_id, Request $request)
+    {
+        if(empty($request->key)) abort(404);
+
+        $filter = new \stdClass();
+
+        date_default_timezone_set('Asia/Jakarta');
+        if(!empty($request->filter_month)) $filter->month = $request->filter_month;
+        else $filter->month = date('Y').'-'.date('m');
+        
+        $rekrut = Rekrut::where('rekrut_id', $rekrut_id)
+                        ->where(function ($query) {
+                            $query->orWhere('rekrut_status', "lulus");
+                            $query->orWhere('rekrut_status', "finishmhs");
+                            $query->orWhere('rekrut_status', "finishprs");
+                        })->first();
+        if(empty($rekrut)) abort(404);
+
+        $rekrut->lowongan_jobdesk     = htmlspecialchars_decode($rekrut->lowongan_jobdesk);
+
+        $skills = Skill::where('skill_mahasiswa_id', $rekrut->rekrut_mahasiswa_id)
+                        ->get();
+
+        // when there is already data there, focus month on first kegiatan day
+        $kegiatan = Kegiatan::where('kegiatan_rekrut_id', $rekrut->rekrut_id)->orderBy('kegiatan_tgl')->first();
+        if(!empty($kegiatan) && empty($request->filter_month))
+        {
+            $filter->month = substr($kegiatan->kegiatan_tgl,0,7);
+        }
+        
+    	return view('kegiatan.publicview', [
             'filter' => $filter,
             'rekrut' => $rekrut,
             'skills' => $skills
@@ -418,17 +478,57 @@ class ManageKegiatanController extends Controller
                         ->where('mahasiswa_user_email', Auth::user()->user_email )->first();
         if(empty($rekrut)) abort(404);
 
+        $rekrut_key = "";
+        if($rekrut->rekrut_key=="")
+        {
+            $rekrut_key = Str::random(5);
+            try
+            {
+                Rekrut::where('rekrut_id',$rekrut->rekrut_id)
+                ->update([
+                    'rekrut_key' => $rekrut_key,
+                ]);
+            } catch (\Illuminate\Database\QueryException $e) {
+                Session::flash('error', 'Proses gagal, mohon hubungi admin MagangHub ');
+                return redirect()->back();
+            }
+        }
+        else
+        {
+            $rekrut_key = $rekrut->rekrut_key;
+        }
+
         $kegiatans = Kegiatan::where('kegiatan_rekrut_id', $rekrut->rekrut_id)->get();
 
         $skills = Skill::where('skill_mahasiswa_id', $rekrut->rekrut_mahasiswa_id)
                         ->get();
 
-        $pdf = PDF::loadview('kegiatan.printpreview',[
+        $public_url = 'http::\\\\'.$rekrut->rekrut_id.'&key='.$rekrut_key;
+
+        // generate QR
+        $qrcode = \QrCode::format('png')
+                 ->size(200)->errorCorrection('H')
+                 ->generate($public_url);
+        $qrcode = base64_encode($iamge);
+
+        // if (Storage::disk('public')->exists( 'kegiatan/QR-'.$rekrut->rekrut_id.'.png' )) Storage::delete('public/kegiatan/QR-'.$rekrut->rekrut_id.'.png');
+        // $request->file('kegiatan_path')->storeAs('public/kegiatan/QR-'.$rekrut->rekrut_id.'.png');
+
+        $pdf = PDF::loadview('kegiatan.print',[
             'rekrut' => $rekrut,
             'kegiatans' => $kegiatans,
-            'skills' => $skills
+            'skills' => $skills,
+            'qrcode' => $qrcode,
+            'public_url' => $public_url
         ]);
         return $pdf->stream();
+        
+    	// return view('kegiatan.print', [
+        //     'rekrut' => $rekrut,
+        //     'kegiatans' => $kegiatans,
+        //     'skills' => $skills,
+        //     'public_url' => $public_url
+        // ]);
     }
     
     
@@ -455,7 +555,7 @@ class ManageKegiatanController extends Controller
         $skills = Skill::where('skill_mahasiswa_id', $rekrut->rekrut_mahasiswa_id)
                         ->get();
 
-        $pdf = PDF::loadview('kegiatan.printpreview',[
+        $pdf = PDF::loadview('kegiatan.print',[
             'rekrut' => $rekrut,
             'kegiatans' => $kegiatans,
             'skills' => $skills
@@ -494,7 +594,7 @@ class ManageKegiatanController extends Controller
                 ]);
 
         } catch (\Illuminate\Database\QueryException $e) {
-            Session::flash('error', 'Proses gagal, mohon hubungi admin MagangHub '.$e);
+            Session::flash('error', 'Proses gagal, mohon hubungi admin MagangHub ');
             return redirect()->back();
         }
 
@@ -535,7 +635,7 @@ class ManageKegiatanController extends Controller
                 ]);
 
         } catch (\Illuminate\Database\QueryException $e) {
-            Session::flash('error', 'Proses gagal, mohon hubungi admin MagangHub '.$e);
+            Session::flash('error', 'Proses gagal, mohon hubungi admin MagangHub ');
             return redirect()->back();
         }
 
