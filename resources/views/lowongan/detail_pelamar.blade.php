@@ -217,6 +217,18 @@
                 </td>
             </tr>
             <tr>
+                <td class="greybox"><b>Dosen Pembimbing</b></td>
+                <td>
+                    {{ $rekrut->dospem_nama }}
+                </td>
+            </tr>
+            <tr>
+                <td class="greybox"><b>E-Mail Dosen</b></td>
+                <td>
+                    {{ $rekrut->dospem_user_email }}
+                </td>
+            </tr>
+            <tr>
                 <td class="greybox"><b>Prodi</b></td>
                 <td>
                     {{ ($rekrut->prodi_fakultas!="") ? $rekrut->prodi_fakultas."-" : "" }} {{ $rekrut->prodi_nama }}

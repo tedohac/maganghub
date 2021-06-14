@@ -24,6 +24,14 @@ class Mahasiswa extends Model
         return $mahasiswa->mahasiswa_status;
     }
     
+    
+    public static function getDospem()
+    {
+        $mahasiswa = Mahasiswa::join('dospems', 'dospems.dospem_id', '=', 'mahasiswas.mahasiswa_dospem_id')
+                                ->where('mahasiswa_user_email', Auth::User()->user_email)->first();
+        return $mahasiswa->dospem_nama;
+    }
+    
     public static function getCountByProdi($prodi_id)
     {
         return Mahasiswa::join('dospems', 'dospems.dospem_id', '=', 'mahasiswas.mahasiswa_dospem_id')
