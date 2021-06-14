@@ -91,13 +91,13 @@
             <tr>
                 <td class="greybox"><b>Dosen Pembimbing</b></td>
                 <td>
-                    {{ $rekrut->dospem_nama }}
+                    {{ $mahasiswa->dospem_nama }}
                 </td>
             </tr>
             <tr>
                 <td class="greybox"><b>E-Mail Dosen</b></td>
                 <td>
-                    {{ $rekrut->dospem_user_email }}
+                    {{ $mahasiswa->dospem_user_email }}
                 </td>
             </tr>
             <tr>
