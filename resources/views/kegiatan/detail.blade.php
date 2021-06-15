@@ -21,7 +21,7 @@
 @endsection
 
 @section('content')
-    @if(Auth::user()->user_role=='perusahaan')
+    @if(Auth::check() && Auth::user()->user_role=='perusahaan')
     <ol class="breadcrumb p-1 ml-auto">
         <li class="breadcrumb-item ml-auto"><a href="{{ route('/') }}">MagangHub</a></li>
         <li class="breadcrumb-item"><a href="{{ url('perusahaan/detail/'.$rekrut->lowongan_perusahaan_id) }}">Profil Perusahaan</a></li>
@@ -29,10 +29,16 @@
         <li class="breadcrumb-item"><a href="{{ url('kegiatan/mentorview/'.$rekrut->rekrut_id) }}">Kegiatan Magang</a></li>
         <li class="breadcrumb-item active" aria-current="page">Detail Kegiatan</li>
     </ol>
-    @elseif(Auth::user()->user_role=='mahasiswa')
+    @elseif(Auth::check() && Auth::user()->user_role=='mahasiswa')
     <ol class="breadcrumb p-1 ml-auto">
         <li class="breadcrumb-item ml-auto"><a href="{{ route('/') }}">MagangHub</a></li>
         <li class="breadcrumb-item"><a href="{{ route('kegiatan.manage') }}">Kegiatan Magang</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Detail Kegiatan</li>
+    </ol>
+    @else
+    <ol class="breadcrumb p-1 ml-auto">
+        <li class="breadcrumb-item ml-auto"><a href="{{ route('/') }}">MagangHub</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('kegiatan.publicview', ['id' => $rekrut->rekrut_id]).'?key='.$rekrut->rekrut_key }}">Kegiatan Magang</a></li>
         <li class="breadcrumb-item active" aria-current="page">Detail Kegiatan</li>
     </ol>
     @endif
@@ -112,7 +118,7 @@
     
     <!-- info mahasiswa -->
     <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-3">
-        <div class="py-1">Informasi Mahasiswa Pelamar</div>
+        <div class="py-1">Informasi Mahasiswa Magang</div>
         <table class="table table-sm" cellspacing="0">
             <tr>
                 <td class="greybox"><b>Kampus</b></td>

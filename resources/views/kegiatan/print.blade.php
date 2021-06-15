@@ -120,11 +120,27 @@
 
     </div>
     <!-- end info mahasiswa -->
-    <img src="data:image/png;base64, {!! $qrcode !!}">
-    {{ $public_url }}
+    
+    <!-- QR -->
+    <div>
+        <table border="0" cellspacing="0" style="width: 100%;margin-top:10px;">
+            <tr>
+                <td width="70">
+                    <img src="data:image/png;base64, {!! $qrcode !!}" width="90">
+                </td>
+                <td valign="top">
+                    Scan QR disamping untuk melihat laporan lebih lengkap, atau pada URL:<br />
+                    {{ $public_url }}
+                </td>
+            </tr>
+        </table>
+
+    </div>
+    <!-- end QR -->
+    
     <!-- kegiatan -->
     <div>
-        <h3 style="text-align: center;padding: 0 0.5rem;">
+        <h3 style="text-align: center;margin-top: 0;">
             Daftar Kegiatan
         </h3>
         <table border="1" cellspacing="0" style="width: 100%">
