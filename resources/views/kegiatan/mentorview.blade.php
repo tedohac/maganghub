@@ -143,7 +143,7 @@
     
     <!-- info mahasiswa -->
     <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-3">
-        <div class="py-1">Informasi Mahasiswa Pelamar</div>
+        <div class="py-1">Informasi Mahasiswa Magang</div>
         <table class="table table-sm" cellspacing="0">
             <tr>
                 <td class="greybox" width="10"><b>Kampus</b></td>

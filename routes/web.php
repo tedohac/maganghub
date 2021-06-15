@@ -182,8 +182,10 @@ Route::group(['prefix' => 'kegiatan', 'middleware' => 'web'], function () {
     Route::get('delete/{date}','ManageKegiatanController@delete')->name('kegiatan.delete')->middleware('cekrole:mahasiswa');
     
     Route::get('mentorview/{id}','ManageKegiatanController@mentorview')->name('kegiatan.mentorview')->middleware('cekrole:perusahaan');
+    Route::get('publicview/{id}','ManageKegiatanController@publicview')->name('kegiatan.publicview');
     Route::get('detail/{id}/{date}','ManageKegiatanController@detail')->name('kegiatan.detail')->middleware('cekrole:perusahaan|dospem');
     Route::get('detailmhs/{id}/{date}','ManageKegiatanController@detailmhs')->name('kegiatan.detailmhs')->middleware('cekrole:mahasiswa');
+    Route::get('detailpublic/{id}/{date}','ManageKegiatanController@detailpublic')->name('kegiatan.detailpublic');
     
     Route::get('verify/{id}','ManageKegiatanController@verify')->name('kegiatan.verify')->middleware('cekrole:perusahaan');
     

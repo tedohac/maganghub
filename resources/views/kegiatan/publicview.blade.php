@@ -23,8 +23,6 @@
 @section('content')
     <ol class="breadcrumb p-1 ml-auto">
         <li class="breadcrumb-item ml-auto"><a href="{{ route('/') }}">MagangHub</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('mahasiswa.pantau') }}">Daftar Mahasiswa</a></li>
-        <li class="breadcrumb-item"><a href="{{ url('dospem/lamaranlist-dospem/'.$rekrut->mahasiswa_id) }}">Daftar Lamaran</a></li>
         <li class="breadcrumb-item active" aria-current="page">Kegiatan</li>
     </ol>
 
@@ -54,10 +52,6 @@
     <!-- begin content -->
     <h5 class="mb-2 p-0 pb-1">
         Kegiatan Magang Mahasiswa
-        
-        <a class="btn btn-outline-info p-1 mr-1 float-right" href="{{ route('kegiatan.printdospem', ['id' => $rekrut->rekrut_id]) }}">
-            <i class="fas fa-file-pdf"></i> Cetak Laporan
-        </a>
     </h5>
     @if($rekrut->rekrut_status=='finishmhs' || $rekrut->rekrut_status=='finishprs')
     <div class="alert alert-info">
@@ -77,10 +71,10 @@
         @php($firstDate = $filter->month.'-01')
         
         <div class="d-flex justify-content-between mb-2">
-            <a class="btn btn-outline-info p-1 float-right" href="{{ url('kegiatan/mentorview/'.$rekrut->rekrut_id).'?filter_month='.date('Y-m', strtotime($firstDate.' -1 month')) }}">
+            <a class="btn btn-outline-info p-1 float-right" href="{{ url('kegiatan/publicview/'.$rekrut->rekrut_id).'?key='.$filter->key.'&filter_month='.date('Y-m', strtotime($firstDate.' -1 month')) }}">
                 <small>{{ date('F Y', strtotime($firstDate." -1 month")) }}</small>
             </a>
-            <a class="btn btn-outline-info p-1 float-right" href="{{ url('kegiatan/mentorview/'.$rekrut->rekrut_id).'?filter_month='.date('Y-m', strtotime($firstDate.' +1 month')) }}">
+            <a class="btn btn-outline-info p-1 float-right" href="{{ url('kegiatan/publicview/'.$rekrut->rekrut_id).'?key='.$filter->key.'&filter_month='.date('Y-m', strtotime($firstDate.' +1 month')) }}">
                 <small>{{ date('F Y', strtotime($firstDate." +1 month")) }}</small>
             </a>
         </div>
@@ -124,12 +118,7 @@
                             @php($info = \App\Kegiatan::getInfo($rekrut->rekrut_id,$thisDate))
 
                             @if(!empty($info))
-                                @if($info->kegiatan_verify_mentor)
-                                    <span class="badge badge-success w-100 mt-1">Terverifikasi</span>
-                                @else
-                                    <span class="badge badge-warning w-100 mt-1">Belum Verifikasi</span>
-                                @endif
-                                <a class="btn btn-outline-info p-0 mt-1 btn-block" href="{{ url('kegiatan/detail/'.$rekrut->rekrut_id.'/'.$thisDate) }}">
+                                <a class="btn btn-outline-info p-0 mt-1 btn-block" href="{{ url('kegiatan/detailpublic/'.$rekrut->rekrut_id.'/'.$thisDate) }}">
                                     <small>Kegiatan</small>
                                 </a>
                             @endif
@@ -146,7 +135,7 @@
     
     <!-- info mahasiswa -->
     <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-3">
-        <div class="py-1">Informasi Mahasiswa Pelamar</div>
+        <div class="py-1">Informasi Mahasiswa Magang</div>
         <table class="table table-sm" cellspacing="0">
             <tr>
                 <td class="greybox"><b>Kampus</b></td>
