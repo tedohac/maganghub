@@ -16,6 +16,9 @@
     <!-- Custom fonts for this template-->
     <link href="{{ url('fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
 
+    <!-- favicon -->
+    <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon"/>
+
     <style>
         body {
             /* background: linear-gradient(to bottom, rgba(255,144,139,1), rgba(255,144,139,0));
