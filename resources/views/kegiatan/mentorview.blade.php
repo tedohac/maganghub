@@ -55,22 +55,18 @@
     <h5 class="mb-2 p-0">
         Kegiatan Magang Mahasiswa
     </h5>
-    @if($rekrut->rekrut_status=='finishmhs' || $rekrut->rekrut_status=='finishprs')
-    <div class="alert alert-info">
-        Mahasiswa telah menyelesaikan magang ini pada {{ date('d F Y H:i', strtotime($rekrut->rekrut_finish_mahasiswa)) }}. <br />
-        
-        @if($rekrut->rekrut_status=='finishmhs')
-            <input type="button" class="btn btn-primary p-1 text-small" value="Rating Mahasiswa" id="btnFinish">
-        @elseif($rekrut->rekrut_status=="finishprs")
-            Rating anda untuk mahasiswa: {{ $rekrut->rekrut_rating_perusahaan }}<br />
-            Rating mahasiswa untuk perusahaan anda: {{ $rekrut->rekrut_rating_mahasiswa }}<br />
-            Feedback dari anda:<br />
-            {{ $rekrut->rekrut_feedback }}
-        @endif
-    </div>
-    @endif
     <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-3">
     
+        @if(\App\Kegiatan::getCountById($rekrut->rekrut_id)>0 && $rekrut->rekrut_status=='lulus')
+            @if(\App\Kegiatan::getCountUnverifById($rekrut->rekrut_id)>0)
+            <div class="alert alert-info mb-2">
+                Verifikasi semua kegiatan untuk menyelesaikan magang pada mahasiswa ini.
+            </div>
+            @else
+                <input type="button" class="btn btn-outline-primary btn-block text-small mb-2" value="Selesaikan Magang & Beri Nilai" id="btnFinish">
+            @endif
+        @endif
+
         @php($firstDate = $filter->month.'-01')
         
         <div class="d-flex justify-content-between mb-2">
@@ -82,7 +78,7 @@
             </a>
         </div>
         <h5 class="text-center">{{ date('F Y', strtotime($firstDate)) }}</h5>
-        <table class="table table-bordered table-responsive" cellspacing="0">
+        <table class="table table-bordered table-responsive table-100" cellspacing="0">
             <thead>
             <tr>
                 <th class="bg-info text-white" width="114">Sun</th>
@@ -141,6 +137,73 @@
     </div>
     <!-- end content -->
     
+    @if($rekrut->rekrut_status=='finish')
+    <!-- penilaian -->
+    <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-3">
+        <div class="py-1">Penilaian</div>
+        
+        @if($rekrut->rekrut_status=='finish')
+            <div class="alert alert-info">
+                Magang diselesaikan pada {{ date('d F Y', strtotime($rekrut->rekrut_finish)) }}.<br />
+                <br />
+
+                Feedback dari perusahaan:<br />
+                    {{ $rekrut->rekrut_feedback }}
+            </div>
+            
+            @if($rekrut->rekrut_ratingto_perusahaan=="")
+            <div class="alert alert-warning">
+                Menunggu mahasiswa memberikan rating untuk perusahaan.
+            </div>
+            @endif
+        @endif
+
+        <div class="row">
+        
+            <div class="col-6 mb-3 mr-0">
+                <div class="card text-white bg-primary o-hidden h-100 shadow">
+                    <div class="card-body p-1">
+                        Rating Mahasiswa & Kampus: <b>{{ $rekrut->rekrut_ratingto_mahasiswa }}</b>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 mb-3">
+                <div class="card text-white bg-primary o-hidden h-100 shadow">
+                    <div class="card-body p-1">
+                        Rating Perusahaan: <b>{{ empty($rekrut->rekrut_ratingto_perusahaan) ? "-" : $rekrut->rekrut_ratingto_perusahaan }}</b>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-4 mb-3">
+                <div class="card text-white bg-primary o-hidden h-100 shadow">
+                    <div class="card-body p-1">
+                        Nilai Aspek Kedisiplinan: <b>{{ $rekrut->rekrut_aspek_kedisiplinan }}</b>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-4 mb-3">
+                <div class="card text-white bg-primary o-hidden h-100 shadow">
+                    <div class="card-body p-1">
+                        Nilai Aspek Keterampilan: <b>{{ $rekrut->rekrut_aspek_keterampilan }}</b>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-4 mb-3">
+                <div class="card text-white bg-primary o-hidden h-100 shadow">
+                    <div class="card-body p-1">
+                        Nilai Aspek Sikap/Perilaku: <b>{{ $rekrut->rekrut_aspek_sikap }}</b>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end penilaian -->
+    @endif
+
     <!-- info mahasiswa -->
     <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-3">
         <div class="py-1">Informasi Mahasiswa Magang</div>
@@ -288,7 +351,7 @@
     </div>
     <!-- end info lowongan -->
 
-<form action="{{ route('kegiatan.finishperusahaan') }}" method="post" id="registform">
+<form action="{{ route('kegiatan.finish', ['id' => $rekrut->rekrut_id]) }}" method="post" id="finishform">
 @csrf
 <!-- Verify Modal -->
 <div class="modal fade" id="finishModal">
@@ -297,39 +360,72 @@
 
         <!-- Modal Header -->
         <div class="modal-header">
-        <h4 class="modal-title">Rating & Feedback</h4>
+        <h4 class="modal-title">Selesaikan Magang & Beri Nilai</h4>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
 
         <!-- Modal body -->
         <div class="modal-body">
-            Mohon berikan penilaian untuk {{ $rekrut->mahasiswa_nama }} dengan skala 1-10:<br />
+            Mohon berikan penilaian untuk {{ $rekrut->mahasiswa_nama }} dari 3 aspek berikut:<br />
+
+            Nilai Aspek Kedisiplinan:<br />
+            <input class="form-control" placeholder="0-100" name="rekrut_aspek_kedisiplinan" required="required"
+                data-parsley-required
+                data-parsley-required-message="Masukan nilai aspek kedisiplinan"
+                data-parsley-type="integer"
+                data-parsley-type-message="Masukan nilai 1-100"
+                data-parsley-range="[0, 100]"
+                data-parsley-range-message="Masukan nilai 1-100"><br />
+                
+            Nilai Aspek Keterampilan:<br />
+            <input class="form-control" placeholder="0-100" name="rekrut_aspek_keterampilan" required="required"
+                data-parsley-required
+                data-parsley-required-message="Masukan nilai aspek keterampilan"
+                data-parsley-type="integer"
+                data-parsley-type-message="Masukan nilai 1-100"
+                data-parsley-range="[0, 100]"
+                data-parsley-range-message="Masukan nilai 1-100"><br />
+                
+            Nilai Aspek Sikap/Perilaku:<br />
+            <input class="form-control" placeholder="0-100" name="rekrut_aspek_sikap" required="required"
+                data-parsley-required
+                data-parsley-required-message="Masukan nilai aspek Sikap/Perilaku"
+                data-parsley-type="integer"
+                data-parsley-type-message="Masukan nilai 1-100"
+                data-parsley-range="[0, 100]"
+                data-parsley-range-message="Masukan nilai 1-100"><br />
+                
+            Rating Mahasiswa & Kampus:<br />
             
             <div class="stars">
-                <input class="star star-5" id="star-10" type="radio" name="rekrut_rating_perusahaan" value="10"/>
+                <input class="star star-5" id="star-10" type="radio" name="rekrut_ratingto_mahasiswa" value="10"
+                    data-parsley-required
+                    data-parsley-required-message="Pilih rating untuk mahasiswa & kampus"/>
                 <label class="star star-5" for="star-10">10</label>
-                <input class="star star-4" id="star-9" type="radio" name="rekrut_rating_perusahaan" value="9"/>
+                <input class="star star-4" id="star-9" type="radio" name="rekrut_ratingto_mahasiswa" value="9"/>
                 <label class="star star-4" for="star-9">9</label>
-                <input class="star star-4" id="star-8" type="radio" name="rekrut_rating_perusahaan" value="8"/>
+                <input class="star star-4" id="star-8" type="radio" name="rekrut_ratingto_mahasiswa" value="8"/>
                 <label class="star star-4" for="star-8">8</label>
-                <input class="star star-4" id="star-7" type="radio" name="rekrut_rating_perusahaan" value="7"/>
+                <input class="star star-4" id="star-7" type="radio" name="rekrut_ratingto_mahasiswa" value="7"/>
                 <label class="star star-4" for="star-7">7</label>
-                <input class="star star-4" id="star-6" type="radio" name="rekrut_rating_perusahaan" value="6"/>
+                <input class="star star-4" id="star-6" type="radio" name="rekrut_ratingto_mahasiswa" value="6"/>
                 <label class="star star-4" for="star-6">6</label>
-                <input class="star star-4" id="star-5" type="radio" name="rekrut_rating_perusahaan" value="5"/>
+                <input class="star star-4" id="star-5" type="radio" name="rekrut_ratingto_mahasiswa" value="5"/>
                 <label class="star star-4" for="star-5">5</label>
-                <input class="star star-4" id="star-4" type="radio" name="rekrut_rating_perusahaan" value="4"/>
+                <input class="star star-4" id="star-4" type="radio" name="rekrut_ratingto_mahasiswa" value="4"/>
                 <label class="star star-4" for="star-4">4</label>
-                <input class="star star-3" id="star-3" type="radio" name="rekrut_rating_perusahaan" value="3"/>
+                <input class="star star-3" id="star-3" type="radio" name="rekrut_ratingto_mahasiswa" value="3"/>
                 <label class="star star-3" for="star-3">3</label>
-                <input class="star star-2" id="star-2" type="radio" name="rekrut_rating_perusahaan" value="2"/>
+                <input class="star star-2" id="star-2" type="radio" name="rekrut_ratingto_mahasiswa" value="2"/>
                 <label class="star star-2" for="star-2">2</label>
-                <input class="star star-1" id="star-1" type="radio" name="rekrut_rating_perusahaan" value="1"/>
+                <input class="star star-1" id="star-1" type="radio" name="rekrut_ratingto_mahasiswa" value="1"/>
                 <label class="star star-1" for="star-1">1</label>
-            </div>
+            </div><br />
 
             Feedback:<br />
-            <textarea class="form-control" placeholder="Feedback" name="rekrut_feedback" required="required"></textarea>
+            <textarea class="form-control" placeholder="Feedback" name="rekrut_feedback" required="required"
+                data-parsley-required
+                data-parsley-required-message="Isi feedback untuk mahasiswa"></textarea>
         </div>
 
         <!-- Modal footer -->
@@ -358,4 +454,16 @@
         });
     });
 </script>
+
+<!-- Parsley Form Validation -->
+<script src="{{ url('js/parsley.min.js') }}"></script>
+<script>
+    $("#finishform").parsley({
+        errorClass: 'is-invalid text-danger',
+        errorsWrapper: '<span class="form-text text-danger"></span>',
+        errorTemplate: '<span></span>',
+        trigger: 'change'
+    })
+</script>
+
 @endsection

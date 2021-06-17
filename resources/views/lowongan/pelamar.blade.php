@@ -100,8 +100,7 @@
                         <option value="cnfrmtest" {{ ($filter->status=='cnfrmtest') ? 'selected' : '' }}>Konfirmasi Test</option>
                         <option value="tdklulus" {{ ($filter->status=='tdklulus') ? 'selected' : '' }}>Tidak Lulus</option>
                         <option value="lulus" {{ ($filter->status=='lulus') ? 'selected' : '' }}>Magang Berjalan</option>
-                        <option value="finishmhs" {{ ($filter->status=='finishmhs') ? 'selected' : '' }}>Menunggu Rating</option>
-                        <option value="finishprs" {{ ($filter->status=='finishmhs') ? 'selected' : '' }}>Selesai</option>
+                        <option value="finishprs" {{ ($filter->status=='finish') ? 'selected' : '' }}>Selesai</option>
                     </select>
                 </div>
 
@@ -156,9 +155,7 @@
                             Undangan dikonfirmasi
                         @elseif($rekrut->rekrut_status=="tdklulus")
                             Tidak Lulus
-                        @elseif($rekrut->rekrut_status=="finishmhs")
-                            Menunggu Rating
-                        @elseif($rekrut->rekrut_status=="finishprs")
+                        @elseif($rekrut->rekrut_status=="finish")
                             Selesai
                         @else
                             {{ $rekrut->rekrut_status }}
@@ -168,7 +165,7 @@
                         <a class="btn btn-outline-info p-1 edit-form" href="{{ url('perekrutan/detailpelamar/'.$rekrut->rekrut_id) }}" title="Detail">
                             <small><i class="fas fa-ellipsis-h"></i></small>
                         </a>
-                        @if($rekrut->rekrut_status=='lulus' || $rekrut->rekrut_status=='finishmhs' || $rekrut->rekrut_status=='finishprs')
+                        @if($rekrut->rekrut_status=='lulus' || $rekrut->rekrut_status=='finish')
                         <a class="btn btn-outline-info px-1 py-0 mt-1 edit-form" href="{{ url('kegiatan/mentorview/'.$rekrut->rekrut_id) }}" title="Kegiatan">
                             <small>Kegiatan</small>
                         </a>

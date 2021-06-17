@@ -32,8 +32,7 @@ class ManageKegiatanController extends Controller
                         ->join('fungsis', 'fungsis.fungsi_id', '=', 'lowongans.lowongan_fungsi_id')
                         ->where(function ($query) {
                             $query->orWhere('rekrut_status', "lulus");
-                            $query->orWhere('rekrut_status', "finishmhs");
-                            $query->orWhere('rekrut_status', "finishprs");
+                            $query->orWhere('rekrut_status', "finish");
                         })
                         ->where('mahasiswa_user_email', Auth::user()->user_email )->first();
         if(empty($rekrut)) abort(404);
@@ -72,8 +71,7 @@ class ManageKegiatanController extends Controller
                         ->where('rekrut_id', $rekrut_id)
                         ->where(function ($query) {
                             $query->orWhere('rekrut_status', "lulus");
-                            $query->orWhere('rekrut_status', "finishmhs");
-                            $query->orWhere('rekrut_status', "finishprs");
+                            $query->orWhere('rekrut_status', "finish");
                         })
                         ->where('perusahaan_user_email', Auth::user()->user_email )->first();
         if(empty($rekrut)) abort(404);
@@ -116,8 +114,7 @@ class ManageKegiatanController extends Controller
                         ->where('rekrut_id', $rekrut_id)
                         ->where(function ($query) {
                             $query->orWhere('rekrut_status', "lulus");
-                            $query->orWhere('rekrut_status', "finishmhs");
-                            $query->orWhere('rekrut_status', "finishprs");
+                            $query->orWhere('rekrut_status', "finish");
                         })->first();
         if(empty($rekrut)) abort(404);
 
@@ -163,8 +160,7 @@ class ManageKegiatanController extends Controller
                         ->where('rekrut_id', $rekrut_id)
                         ->where(function ($query) {
                             $query->orWhere('rekrut_status', "lulus");
-                            $query->orWhere('rekrut_status', "finishmhs");
-                            $query->orWhere('rekrut_status', "finishprs");
+                            $query->orWhere('rekrut_status', "finish");
                         })->first();
         if(empty($rekrut)) abort(404);
 
@@ -204,8 +200,7 @@ class ManageKegiatanController extends Controller
                         ->where('rekrut_id', $rekrut_id)
                         ->where(function ($query) {
                             $query->orWhere('rekrut_status', "lulus");
-                            $query->orWhere('rekrut_status', "finishmhs");
-                            $query->orWhere('rekrut_status', "finishprs");
+                            $query->orWhere('rekrut_status', "finish");
                         })->first();
         if(empty($rekrut)) abort(404);
 
@@ -238,8 +233,7 @@ class ManageKegiatanController extends Controller
                         ->where('rekrut_id', $rekrut_id)
                         ->where(function ($query) {
                             $query->orWhere('rekrut_status', "lulus");
-                            $query->orWhere('rekrut_status', "finishmhs");
-                            $query->orWhere('rekrut_status', "finishprs");
+                            $query->orWhere('rekrut_status', "finish");
                         })->first();
         if(empty($rekrut)) abort(404);
 
@@ -272,8 +266,7 @@ class ManageKegiatanController extends Controller
                         ->where('rekrut_id', $rekrut_id)
                         ->where(function ($query) {
                             $query->orWhere('rekrut_status', "lulus");
-                            $query->orWhere('rekrut_status', "finishmhs");
-                            $query->orWhere('rekrut_status', "finishprs");
+                            $query->orWhere('rekrut_status', "finish");
                         })
                         ->where('mahasiswa_user_email', Auth::user()->user_email )->first();
         if(empty($rekrut)) abort(404);
@@ -515,8 +508,7 @@ class ManageKegiatanController extends Controller
                         ->join('univs', 'univs.univ_id', '=', 'prodis.prodi_univ_id')
                         ->where(function ($query) {
                             $query->orWhere('rekrut_status', "lulus");
-                            $query->orWhere('rekrut_status', "finishmhs");
-                            $query->orWhere('rekrut_status', "finishprs");
+                            $query->orWhere('rekrut_status', "finish");
                         })
                         ->where('mahasiswa_user_email', Auth::user()->user_email )->first();
         if(empty($rekrut)) abort(404);
@@ -524,7 +516,7 @@ class ManageKegiatanController extends Controller
         $rekrut_key = "";
         if($rekrut->rekrut_key=="")
         {
-            $rekrut_key = Str::random(5);
+            $rekrut_key = Str::random(15);
             try
             {
                 Rekrut::where('rekrut_id',$rekrut->rekrut_id)
@@ -585,8 +577,7 @@ class ManageKegiatanController extends Controller
                         ->where('rekrut_id', $rekrut_id)
                         ->where(function ($query) {
                             $query->orWhere('rekrut_status', "lulus");
-                            $query->orWhere('rekrut_status', "finishmhs");
-                            $query->orWhere('rekrut_status', "finishprs");
+                            $query->orWhere('rekrut_status', "finish");
                         })->first();
         if(empty($rekrut)) abort(404);
 
@@ -603,19 +594,13 @@ class ManageKegiatanController extends Controller
         return $pdf->stream();
     }
     
-    public function finishmahasiswa(Request $request)
+    public function rateperusahaan($rekrut_id, Request $request)
     {
         // if not exists
         $rekrut = Rekrut::join('mahasiswas', 'mahasiswas.mahasiswa_id', '=', 'rekruts.rekrut_mahasiswa_id')
-                        ->where('rekrut_status', "lulus")
-                        ->where('mahasiswa_user_email', Auth::user()->user_email )->first();
+                        ->where('mahasiswa_user_email', Auth::user()->user_email )
+                        ->where('rekrut_id', $rekrut_id)->first();
                 if(empty($rekrut)) abort(404);
-
-        if($request->rekrut_rating_mahasiswa>10 || $request->rekrut_rating_mahasiswa<1)
-        {
-            Session::flash('error', 'Masukkan rating untuk perusahaan dengan skala 1-10.');
-            return redirect()->back();
-        }
 
         try
         {
@@ -623,9 +608,7 @@ class ManageKegiatanController extends Controller
                 
             Rekrut::where('rekrut_id',$rekrut->rekrut_id)
                     ->update([
-                        'rekrut_status'           => 'finishmhs',
-                        'rekrut_rating_mahasiswa' => $request->rekrut_rating_mahasiswa,
-                        'rekrut_finish_mahasiswa' => date("Y-m-d H:i:s"),
+                        'rekrut_ratingto_perusahaan' => $request->rekrut_ratingto_perusahaan,
                     ]);
                     
             Mahasiswa::where('mahasiswa_id', $rekrut->rekrut_mahasiswa_id)
@@ -638,35 +621,32 @@ class ManageKegiatanController extends Controller
             return redirect()->back();
         }
 
-        Session::flash('success', 'Berhasil menyelesaikan magang, semoga pengalaman selama magang bermanfaat untuk masa depan anda!');
+        Session::flash('success', 'Berhasil memberikan rating untuk perusahaan, semoga pengalaman selama magang bermanfaat untuk masa depan anda!');
         return redirect()->back();
     }
     
-    public function finishperusahaan(Request $request)
+    public function finish($rekrut_id, Request $request)
     {
-        // if not exists
+ 
         $rekrut = Rekrut::join('lowongans', 'lowongans.lowongan_id', '=', 'rekruts.rekrut_lowongan_id')
                         ->join('perusahaans', 'perusahaans.perusahaan_id', '=', 'lowongans.lowongan_perusahaan_id')
-                        ->where('rekrut_status', "finishmhs")
-                        ->where('perusahaan_user_email', Auth::user()->user_email )->first();
-                if(empty($rekrut)) abort(404);
-
-        if($request->rekrut_rating_perusahaan>10 || $request->rekrut_rating_perusahaan<1 || $request->rekrut_feedback=="")
-        {
-            Session::flash('error', 'Masukkan feedback dan rating untuk mahasiswa dengan skala 1-10.');
-            return redirect()->back();
-        }
+                        ->where('perusahaan_user_email', Auth::user()->user_email )
+                        ->where('rekrut_id', $rekrut_id)->first();
+        if(empty($rekrut)) abort(404);
 
         try
         {
             date_default_timezone_set('Asia/Jakarta');
                 
-            Rekrut::where('rekrut_id',$rekrut->rekrut_id)
+            Rekrut::where('rekrut_id',$rekrut_id)
                     ->update([
-                        'rekrut_status'            => 'finishprs',
-                        'rekrut_rating_perusahaan'  => $request->rekrut_rating_perusahaan,
-                        'rekrut_finish_perusahaan'  => date("Y-m-d H:i:s"),
+                        'rekrut_status'             => 'finish',
+                        'rekrut_ratingto_mahasiswa'  => $request->rekrut_ratingto_mahasiswa,
+                        'rekrut_finish'             => date("Y-m-d H:i:s"),
                         'rekrut_feedback'           => $request->rekrut_feedback,
+                        'rekrut_aspek_kedisiplinan' => $request->rekrut_aspek_kedisiplinan,
+                        'rekrut_aspek_keterampilan' => $request->rekrut_aspek_keterampilan,
+                        'rekrut_aspek_sikap'        => $request->rekrut_aspek_sikap,
                     ]);
                     
             Mahasiswa::where('mahasiswa_id', $rekrut->rekrut_mahasiswa_id)
@@ -679,7 +659,7 @@ class ManageKegiatanController extends Controller
             return redirect()->back();
         }
 
-        Session::flash('success', 'Berhasil menyelesaikan magang, semoga pengalaman selama magang bermanfaat untuk masa depan anda!');
+        Session::flash('success', 'Berhasil menyelesaikan magang, ingatkan mahasiswa untuk memberikan rating untuk perusahaan anda.');
         return redirect()->back();
     }
 }

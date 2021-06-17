@@ -133,6 +133,73 @@
     </div>
     <!-- end content -->
     
+    @if($rekrut->rekrut_status=='finish')
+    <!-- penilaian -->
+    <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-3">
+        <div class="py-1">Penilaian</div>
+        
+        @if($rekrut->rekrut_status=='finish')
+            <div class="alert alert-info">
+                Magang diselesaikan pada {{ date('d F Y', strtotime($rekrut->rekrut_finish)) }}.<br />
+                <br />
+
+                Feedback dari perusahaan:<br />
+                    {{ $rekrut->rekrut_feedback }}
+            </div>
+            
+            @if($rekrut->rekrut_ratingto_perusahaan=="")
+            <div class="alert alert-warning">
+                Menunggu mahasiswa memberikan rating untuk perusahaan.
+            </div>
+            @endif
+        @endif
+
+        <div class="row">
+        
+            <div class="col-6 mb-3 mr-0">
+                <div class="card text-white bg-primary o-hidden h-100 shadow">
+                    <div class="card-body p-1">
+                        Rating Mahasiswa & Kampus: <b>{{ $rekrut->rekrut_ratingto_mahasiswa }}</b>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 mb-3">
+                <div class="card text-white bg-primary o-hidden h-100 shadow">
+                    <div class="card-body p-1">
+                        Rating Perusahaan: <b>{{ empty($rekrut->rekrut_ratingto_perusahaan) ? "-" : $rekrut->rekrut_ratingto_perusahaan }}</b>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-4 mb-3">
+                <div class="card text-white bg-primary o-hidden h-100 shadow">
+                    <div class="card-body p-1">
+                        Nilai Aspek Kedisiplinan: <b>{{ $rekrut->rekrut_aspek_kedisiplinan }}</b>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-4 mb-3">
+                <div class="card text-white bg-primary o-hidden h-100 shadow">
+                    <div class="card-body p-1">
+                        Nilai Aspek Keterampilan: <b>{{ $rekrut->rekrut_aspek_keterampilan }}</b>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-4 mb-3">
+                <div class="card text-white bg-primary o-hidden h-100 shadow">
+                    <div class="card-body p-1">
+                        Nilai Aspek Sikap/Perilaku: <b>{{ $rekrut->rekrut_aspek_sikap }}</b>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end penilaian -->
+    @endif
+
     <!-- info mahasiswa -->
     <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-3">
         <div class="py-1">Informasi Mahasiswa Magang</div>
