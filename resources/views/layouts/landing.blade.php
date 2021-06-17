@@ -16,6 +16,9 @@
     <!-- Font Awesome icons (free version)-->
     <script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" crossorigin="anonymous"></script>
 
+    <!-- favicon -->
+    <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon"/>
+    
     <title>{{ $title ?? config('app.name') }}</title>
     
     @yield('head')
