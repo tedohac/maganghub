@@ -35,4 +35,19 @@ class Kegiatan extends Model
                             ->get();
         return $kegiatan->count();
     }
+    
+    public static function getCountById($rekrut_id)
+    {
+        $kegiatan = Kegiatan::where('kegiatan_rekrut_id', $rekrut_id )
+                            ->get();
+        return $kegiatan->count();
+    }
+    
+    public static function getCountUnverifById($rekrut_id)
+    {
+        $kegiatan = Kegiatan::where('kegiatan_rekrut_id', $rekrut_id )
+                            ->whereNull('kegiatan_verify_mentor')
+                            ->get();
+        return $kegiatan->count();
+    }
 }

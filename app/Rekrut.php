@@ -49,7 +49,7 @@ class Rekrut extends Model
                         ->join('prodis', 'prodis.prodi_id', '=', 'dospems.dospem_prodi_id')
                         ->groupBy('prodi_univ_id')
                         ->where('prodi_univ_id', $univ_id)
-                        ->select(DB::raw('avg(rekrut_rating_perusahaan) AS rating'));
+                        ->select(DB::raw('avg(rekrut_ratingto_mahasiswa) AS rating'));
         return $rekrut->first();
     }
 }

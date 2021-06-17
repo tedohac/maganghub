@@ -90,8 +90,7 @@
                         <option value="cnfrmtest" {{ ($filter->status=='cnfrmtest') ? 'selected' : '' }}>Konfirmasi Test</option>
                         <option value="tdklulus" {{ ($filter->status=='tdklulus') ? 'selected' : '' }}>Tidak Lulus</option>
                         <option value="lulus" {{ ($filter->status=='lulus') ? 'selected' : '' }}>Magang Berjalan</option>
-                        <option value="finishmhs" {{ ($filter->status=='finishmhs') ? 'selected' : '' }}>Menunggu Rating</option>
-                        <option value="finishprs" {{ ($filter->status=='finishmhs') ? 'selected' : '' }}>Selesai</option>
+                        <option value="finishprs" {{ ($filter->status=='finish') ? 'selected' : '' }}>Selesai</option>
                     </select>
                 </div>
 
@@ -136,7 +135,7 @@
                     <td>{{ $rekrut->mahasiswa_nama }}</td>
                     <td>
                         @if($rekrut->rekrut_status=='magang')
-                            Sudah Magang
+                            Sudah Magang di Tempat Lain
                         @elseif($rekrut->rekrut_status=="melamartlk")
                             Ditolak
                         @elseif($rekrut->rekrut_status=="tlkundang")
@@ -145,9 +144,7 @@
                             Undangan dikonfirmasi
                         @elseif($rekrut->rekrut_status=="tdklulus")
                             Tidak Lulus
-                        @elseif($rekrut->rekrut_status=="finishmhs")
-                            Menunggu Rating
-                        @elseif($rekrut->rekrut_status=="finishprs")
+                        @elseif($rekrut->rekrut_status=="finish")
                             Selesai
                         @else
                             {{ $rekrut->rekrut_status }}

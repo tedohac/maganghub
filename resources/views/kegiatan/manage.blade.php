@@ -59,28 +59,8 @@
     </h5>
     <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-3">
     
-        @if($rekrut->rekrut_status=='finishmhs' || $rekrut->rekrut_status=='finishprs')
-        <div class="alert alert-info">
-            Anda telah menyelesaikan magang ini pada {{ date('d F Y H:i', strtotime($rekrut->rekrut_finish_mahasiswa)) }}.<br />
-            Rating anda untuk perusahaan: {{ $rekrut->rekrut_rating_mahasiswa }}<br />
-
-            @if($rekrut->rekrut_status=="finishmhs")
-                Menunggu admin perusahaan memberikan feedback dan rating untuk anda.
-            @elseif($rekrut->rekrut_status=="finishprs")
-                Rating perusahaan untuk anda: {{ $rekrut->rekrut_rating_perusahaan }}<br />
-                Feedback dari perusahaan:<br />
-                {{ $rekrut->rekrut_feedback }}
-            @endif
-
-        </div>
-        @elseif(\App\Kegiatan::getCountAll()>0 && $rekrut->rekrut_status=='lulus')
-            @if(\App\Kegiatan::getCountUnverif()>0)
-            <div class="alert alert-info mb-2">
-                Menunggu admin perusahaan verifikasi semua kegiatan magang anda agar dapat menyeselaikan magang.
-            </div>
-            @else
-                <input type="button" class="btn btn-outline-primary p-1 text-small mb-2" value="Selesaikan Magang" id="btnFinish">
-            @endif
+        @if($rekrut->rekrut_status=='finish' && $rekrut->rekrut_ratingto_perusahaan=="")
+            <input type="button" class="btn btn-outline-primary btn-block text-small mb-2" value="Beri Rating untuk Perusahaan" id="btnFinish">
         @endif
         
         @php($firstDate = $filter->month.'-01')
@@ -168,6 +148,73 @@
     </div>
     <!-- end content -->
     
+    @if($rekrut->rekrut_status=='finish')
+    <!-- penilaian -->
+    <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-3">
+        <div class="py-1">Penilaian</div>
+        
+        @if($rekrut->rekrut_status=='finish')
+            <div class="alert alert-info">
+                Magang diselesaikan pada {{ date('d F Y', strtotime($rekrut->rekrut_finish)) }}.<br />
+                <br />
+
+                Feedback dari perusahaan:<br />
+                    {{ $rekrut->rekrut_feedback }}
+            </div>
+            
+            @if($rekrut->rekrut_ratingto_perusahaan=="")
+            <div class="alert alert-warning">
+                Menunggu mahasiswa memberikan rating untuk perusahaan.
+            </div>
+            @endif
+        @endif
+
+        <div class="row">
+        
+            <div class="col-6 mb-3 mr-0">
+                <div class="card text-white bg-primary o-hidden h-100 shadow">
+                    <div class="card-body p-1">
+                        Rating Mahasiswa & Kampus: <b>{{ $rekrut->rekrut_ratingto_mahasiswa }}</b>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 mb-3">
+                <div class="card text-white bg-primary o-hidden h-100 shadow">
+                    <div class="card-body p-1">
+                        Rating Perusahaan: <b>{{ empty($rekrut->rekrut_ratingto_perusahaan) ? "-" : $rekrut->rekrut_ratingto_perusahaan }}</b>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-4 mb-3">
+                <div class="card text-white bg-primary o-hidden h-100 shadow">
+                    <div class="card-body p-1">
+                        Nilai Aspek Kedisiplinan: <b>{{ $rekrut->rekrut_aspek_kedisiplinan }}</b>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-4 mb-3">
+                <div class="card text-white bg-primary o-hidden h-100 shadow">
+                    <div class="card-body p-1">
+                        Nilai Aspek Keterampilan: <b>{{ $rekrut->rekrut_aspek_keterampilan }}</b>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-4 mb-3">
+                <div class="card text-white bg-primary o-hidden h-100 shadow">
+                    <div class="card-body p-1">
+                        Nilai Aspek Sikap/Perilaku: <b>{{ $rekrut->rekrut_aspek_sikap }}</b>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end penilaian -->
+    @endif
+
     <!-- info lowongan -->
     <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-5">
         <div class="py-1">Informasi Pekerjaan</div>
@@ -216,7 +263,7 @@
     </div>
     <!-- end info lowongan -->
 
-<form action="{{ route('kegiatan.finishmahasiswa') }}" method="post" id="registform">
+<form action="{{ route('kegiatan.rateperusahaan',['id' => $rekrut->rekrut_id]) }}" method="post" id="finishform">
 @csrf
 
 <!-- Verify Modal -->
@@ -226,35 +273,36 @@
 
         <!-- Modal Header -->
         <div class="modal-header">
-        <h4 class="modal-title">Selesaikan Magang</h4>
+        <h4 class="modal-title">Rating untuk perusahaan</h4>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
 
         <!-- Modal body -->
         <div class="modal-body">
-            Anda akan menyelesaikan magang dengan total <b>{{ \App\Kegiatan::getCountAll() }}</b> hari magang.<br />
-            Mohon berikan penilaian untuk {{ $rekrut->perusahaan_nama }} dengan skala 1-10:<br />
+            Beri rating untuk perusahaan:<br />
             
             <div class="stars">
-                <input class="star star-5" id="star-10" type="radio" name="rekrut_rating_mahasiswa" value="10"/>
+                <input class="star star-5" id="star-10" type="radio" name="rekrut_ratingto_perusahaan" value="10"
+                    data-parsley-required
+                    data-parsley-required-message="Pilih rating untuk perusahaan"/>
                 <label class="star star-5" for="star-10">10</label>
-                <input class="star star-4" id="star-9" type="radio" name="rekrut_rating_mahasiswa" value="9"/>
+                <input class="star star-4" id="star-9" type="radio" name="rekrut_ratingto_perusahaan" value="9"/>
                 <label class="star star-4" for="star-9">9</label>
-                <input class="star star-4" id="star-8" type="radio" name="rekrut_rating_mahasiswa" value="8"/>
+                <input class="star star-4" id="star-8" type="radio" name="rekrut_ratingto_perusahaan" value="8"/>
                 <label class="star star-4" for="star-8">8</label>
-                <input class="star star-4" id="star-7" type="radio" name="rekrut_rating_mahasiswa" value="7"/>
+                <input class="star star-4" id="star-7" type="radio" name="rekrut_ratingto_perusahaan" value="7"/>
                 <label class="star star-4" for="star-7">7</label>
-                <input class="star star-4" id="star-6" type="radio" name="rekrut_rating_mahasiswa" value="6"/>
+                <input class="star star-4" id="star-6" type="radio" name="rekrut_ratingto_perusahaan" value="6"/>
                 <label class="star star-4" for="star-6">6</label>
-                <input class="star star-4" id="star-5" type="radio" name="rekrut_rating_mahasiswa" value="5"/>
+                <input class="star star-4" id="star-5" type="radio" name="rekrut_ratingto_perusahaan" value="5"/>
                 <label class="star star-4" for="star-5">5</label>
-                <input class="star star-4" id="star-4" type="radio" name="rekrut_rating_mahasiswa" value="4"/>
+                <input class="star star-4" id="star-4" type="radio" name="rekrut_ratingto_perusahaan" value="4"/>
                 <label class="star star-4" for="star-4">4</label>
-                <input class="star star-3" id="star-3" type="radio" name="rekrut_rating_mahasiswa" value="3"/>
+                <input class="star star-3" id="star-3" type="radio" name="rekrut_ratingto_perusahaan" value="3"/>
                 <label class="star star-3" for="star-3">3</label>
-                <input class="star star-2" id="star-2" type="radio" name="rekrut_rating_mahasiswa" value="2"/>
+                <input class="star star-2" id="star-2" type="radio" name="rekrut_ratingto_perusahaan" value="2"/>
                 <label class="star star-2" for="star-2">2</label>
-                <input class="star star-1" id="star-1" type="radio" name="rekrut_rating_mahasiswa" value="1"/>
+                <input class="star star-1" id="star-1" type="radio" name="rekrut_ratingto_perusahaan" value="1"/>
                 <label class="star star-1" for="star-1">1</label>
             </div>
         </div>
@@ -263,7 +311,7 @@
         <div class="modal-footer">
             <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
 
-            <input  type="submit" class="btn btn-primary" id="sendsubmit" value="Selesaikan">
+            <input type="submit" class="btn btn-primary" id="sendsubmit" value="Kirim">
         </div>
 
     </div>
@@ -285,5 +333,16 @@
             $('#finishModal').modal('show');
         });
     });
+</script>
+
+<!-- Parsley Form Validation -->
+<script src="{{ url('js/parsley.min.js') }}"></script>
+<script>
+    $("#finishform").parsley({
+        errorClass: 'is-invalid text-danger',
+        errorsWrapper: '<span class="form-text text-danger"></span>',
+        errorTemplate: '<span></span>',
+        trigger: 'change'
+    })
 </script>
 @endsection
