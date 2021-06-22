@@ -99,7 +99,7 @@
                     <td valign="center" width="50" class="greybox"></td>
                     <td>
                     @if(empty($kegiatan->kegiatan_verify_mentor))
-                        @if(Auth::user()->user_role=='perusahaan')
+                        @if(Auth::check() && Auth::user()->user_role=='perusahaan')
                             @if($rekrut->rekrut_status=='lulus')
                                 <input type="button" class="btn btn-primary btn-block" value="Verifikasi" id="btnVerify">
                             @endif
