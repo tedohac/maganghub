@@ -53,9 +53,11 @@
     <h5 class="mb-2 p-0 pb-1">
         Kegiatan Magang
         
+        @if($rekrut->rekrut_status=='finish')
         <a class="btn btn-outline-info p-1 mr-1 float-right" href="{{ route('kegiatan.print') }}">
             <i class="fas fa-file-pdf"></i> Cetak Laporan
         </a>
+        @endif
     </h5>
     <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-3">
     
