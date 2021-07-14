@@ -586,10 +586,20 @@ class ManageKegiatanController extends Controller
         $skills = Skill::where('skill_mahasiswa_id', $rekrut->rekrut_mahasiswa_id)
                         ->get();
 
+        $public_url = route('kegiatan.publicview', ['id' => $rekrut->rekrut_id]).'?key='.$rekrut_key;
+
+        // generate QR
+        $qrcode = \QrCode::format('png')
+                    ->size(200)->errorCorrection('H')
+                    ->generate($public_url);
+        $qrcode = base64_encode($qrcode);
+
         $pdf = PDF::loadview('kegiatan.print',[
             'rekrut' => $rekrut,
             'kegiatans' => $kegiatans,
-            'skills' => $skills
+            'skills' => $skills,
+            'qrcode' => $qrcode,
+            'public_url' => $public_url
         ]);
         return $pdf->stream();
     }
