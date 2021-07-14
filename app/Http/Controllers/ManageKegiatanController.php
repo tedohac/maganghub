@@ -581,6 +581,26 @@ class ManageKegiatanController extends Controller
                         })->first();
         if(empty($rekrut)) abort(404);
 
+        $rekrut_key = "";
+        if($rekrut->rekrut_key=="")
+        {
+            $rekrut_key = Str::random(15);
+            try
+            {
+                Rekrut::where('rekrut_id',$rekrut->rekrut_id)
+                ->update([
+                    'rekrut_key' => $rekrut_key,
+                ]);
+            } catch (\Illuminate\Database\QueryException $e) {
+                Session::flash('error', 'Proses gagal, mohon hubungi admin MagangHub ');
+                return redirect()->back();
+            }
+        }
+        else
+        {
+            $rekrut_key = $rekrut->rekrut_key;
+        }
+        
         $kegiatans = Kegiatan::where('kegiatan_rekrut_id', $rekrut->rekrut_id)->get();
 
         $skills = Skill::where('skill_mahasiswa_id', $rekrut->rekrut_mahasiswa_id)
