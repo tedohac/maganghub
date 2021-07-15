@@ -3,7 +3,7 @@
 Admin kampus <b>{{ $param['univ_nama'] }}</b> telah mendaftarkan anda sebagai mahasiswa di MagangHub. Berikut identitas anda:<br />
 <table>
     <tr>
-        <td width="50">Kampus</td>
+        <td width="10%">Kampus</td>
         <td>: {{ $param['univ_nama'] }}</td>
     </tr>
     <tr>
