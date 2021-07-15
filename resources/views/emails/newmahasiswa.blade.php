@@ -3,7 +3,7 @@
 Admin kampus <b>{{ $param['univ_nama'] }}</b> telah mendaftarkan anda sebagai mahasiswa di MagangHub. Berikut identitas anda:<br>
 <table>
     <tr>
-        <td>Kampus</td>
+        <td width="50">Kampus</td>
         <td>: {{ $param['univ_nama'] }}</td>
     </tr>
     <tr>
@@ -22,7 +22,7 @@ Admin kampus <b>{{ $param['univ_nama'] }}</b> telah mendaftarkan anda sebagai ma
 Dan berikut informasi login untuk akun anda:<br><br>
 <table>
     <tr>
-        <td>e-mail</td>
+        <td width="50">e-mail</td>
         <td>: {{ $param['request']->mahasiswa_user_email }}</td>
     </tr>
     <tr>
