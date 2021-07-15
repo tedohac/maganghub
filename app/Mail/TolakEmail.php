@@ -11,14 +11,16 @@ class TolakEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $lowongan, $mahasiswa;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($rekrut, $mahasiswa)
     {
-        //
+        $this->rekrut = $rekrut;
+        $this->mahasiswa = $mahasiswa;
     }
 
     /**
@@ -28,6 +30,16 @@ class TolakEmail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.tolak');
+        $param = [
+            'url' => route('perekrutan.detaillamaran', [
+                'id' => $this->rekrut->rekrut_id 
+            ]),
+            'rekrut' => $this->rekrut,
+            'mahasiswa' => $this->mahasiswa,
+        ];
+
+        return $this->markdown('emails.apply')
+                    ->subject('Lamaran Magang Ditolak - MagangHub')
+                    ->with('param', $param);
     }
 }

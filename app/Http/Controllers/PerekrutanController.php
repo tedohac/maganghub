@@ -278,7 +278,7 @@ class PerekrutanController extends Controller
                     'rekrut_status' => 'melamartlk',
                 ]);
                 
-            Mail::to($rekrut->perusahaan_user_mail)->send(new TolakEmail($lowongan, $mahasiswa));
+            Mail::to($rekrut->mahasiswa_user_email)->send(new TolakEmail($rekrut, $mahasiswa));
         } catch (\Illuminate\Database\QueryException $e) {
             Session::flash('error', 'Proses gagal, mohon coba kembali beberapa saat lagi atau hubungi admin MagangHub');
             return redirect()->back();

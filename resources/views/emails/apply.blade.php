@@ -6,7 +6,7 @@ Anda mendapatkan lamaran magang baru atas lowongan:<br />
 Dari Mahasiswa:
 <table>
     <tr>
-        <td>Kampus</td>
+        <td width="50">Kampus</td>
         <td>: {{ $param['mahasiswa']->univ_nama }}</td>
     </tr>
     <tr>

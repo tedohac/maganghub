@@ -31,9 +31,7 @@ class ApplyEmail extends Mailable
     public function build()
     {
         $param = [
-            'url' => route('perekrutan.detailpelamar', [
-                'id' => $this->lowongan->lowongan_id 
-            ]),
+            'url' => route('perekrutan.pelamar'),
             'lowongan' => $this->lowongan,
             'mahasiswa' => $this->mahasiswa,
         ];
