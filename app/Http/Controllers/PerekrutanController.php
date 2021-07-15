@@ -426,6 +426,9 @@ class PerekrutanController extends Controller
         $rekrut = Rekrut::join('mahasiswas', 'mahasiswas.mahasiswa_id', '=', 'rekruts.rekrut_mahasiswa_id')
                         ->join('lowongans', 'lowongans.lowongan_id', '=', 'rekruts.rekrut_lowongan_id')
                         ->join('perusahaans', 'perusahaans.perusahaan_id', '=', 'lowongans.lowongan_perusahaan_id')
+                        ->join('dospems', 'dospems.dospem_id', '=', 'mahasiswas.mahasiswa_dospem_id')
+                        ->join('prodis', 'prodis.prodi_id', '=', 'dospems.dospem_prodi_id')
+                        ->join('univs', 'univs.univ_id', '=', 'prodis.prodi_univ_id')
                         ->where('mahasiswa_user_email', Auth::user()->user_email )
                         ->where('rekrut_id', $request->rekrut_id)->first();
         if(empty($rekrut)) return abort(404);
