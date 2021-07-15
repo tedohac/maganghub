@@ -8,6 +8,7 @@ use App\Mail\DiterimaEmail;
 use App\Mail\UndanganEmail;
 use App\Mail\ApplyEmail;
 use App\Mail\TolakEmail;
+use App\Mail\BataltolakEmail;
 use App\Notifications\Notifikasi;
 use App\Lowongan;
 use App\Mahasiswa;
@@ -312,6 +313,8 @@ class PerekrutanController extends Controller
                 ->update([
                     'rekrut_status' => 'melamar',
                 ]);
+                
+            Mail::to($rekrut->mahasiswa_user_email)->send(new BataltolakEmail($rekrut));
         } catch (\Illuminate\Database\QueryException $e) {
             Session::flash('error', 'Proses gagal, mohon coba kembali beberapa saat lagi atau hubungi admin MagangHub');
             return redirect()->back();
