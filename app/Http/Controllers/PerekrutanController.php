@@ -455,6 +455,7 @@ class PerekrutanController extends Controller
                     'rekrut_waktu_tolakundangan' => date("Y-m-d H:i:s"),
                 ]);
 
+                Mail::to($rekrut->perusahaan_user_email)->send(new ApplyEmail($rekrut, $request->alasan_penolakan));
         } catch (\Illuminate\Database\QueryException $e) {
             Session::flash('error', 'Proses gagal, mohon coba kembali beberapa saat lagi atau hubungi admin MagangHub');
             return redirect()->back();
