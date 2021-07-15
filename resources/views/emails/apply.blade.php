@@ -20,7 +20,7 @@ Dari Mahasiswa:
 <table><br>
 
 @component('mail::button', ['url' => $param['url']])
-Lihat Detail
+Lihat Detail Lamaran
 @endcomponent
 
 Thanks,<br>
