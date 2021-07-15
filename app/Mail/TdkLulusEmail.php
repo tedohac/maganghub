@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class TolakEmail extends Mailable
+class TdkLulusEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -36,8 +36,8 @@ class TolakEmail extends Mailable
             'rekrut' => $this->rekrut
         ];
 
-        return $this->markdown('emails.tolak')
-                    ->subject('Lamaran Magang Ditolak - MagangHub')
+        return $this->markdown('emails.tdklulus')
+                    ->subject('Tidak Lulus Test - MagangHub')
                     ->with('param', $param);
     }
 }

@@ -11,6 +11,7 @@ use App\Mail\TolakEmail;
 use App\Mail\BataltolakEmail;
 use App\Mail\TolakUndanganEmail;
 use App\Mail\ConfirmUndanganEmail;
+use App\Mail\TdkLulusEmail;
 use App\Notifications\Notifikasi;
 use App\Lowongan;
 use App\Mahasiswa;
@@ -562,6 +563,7 @@ class PerekrutanController extends Controller
                     'rekrut_status' => 'tdklulus'
                 ]);
 
+            Mail::to($rekrut->mahasiswa_user_email)->send(new TdkLulusEmail($rekrut));
         } catch (\Illuminate\Database\QueryException $e) {
             Session::flash('error', 'Proses gagal, mohon coba kembali beberapa saat lagi atau hubungi admin MagangHub ');
             return redirect()->back();
