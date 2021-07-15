@@ -20,7 +20,6 @@ class TolakEmail extends Mailable
     public function __construct($rekrut)
     {
         $this->rekrut = $rekrut;
-        $this->mahasiswa = $mahasiswa;
     }
 
     /**
