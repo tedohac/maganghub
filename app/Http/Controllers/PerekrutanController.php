@@ -10,6 +10,7 @@ use App\Mail\ApplyEmail;
 use App\Mail\TolakEmail;
 use App\Mail\BataltolakEmail;
 use App\Mail\TolakUndanganEmail;
+use App\Mail\ConfirmUndanganEmail;
 use App\Notifications\Notifikasi;
 use App\Lowongan;
 use App\Mahasiswa;
@@ -506,6 +507,9 @@ class PerekrutanController extends Controller
         $rekrut = Rekrut::join('lowongans', 'lowongans.lowongan_id', '=', 'rekruts.rekrut_lowongan_id')
                         ->join('perusahaans', 'perusahaans.perusahaan_id', '=', 'lowongans.lowongan_perusahaan_id')
                         ->join('mahasiswas', 'mahasiswas.mahasiswa_id', '=', 'rekruts.rekrut_mahasiswa_id')
+                        ->join('dospems', 'dospems.dospem_id', '=', 'mahasiswas.mahasiswa_dospem_id')
+                        ->join('prodis', 'prodis.prodi_id', '=', 'dospems.dospem_prodi_id')
+                        ->join('univs', 'univs.univ_id', '=', 'prodis.prodi_univ_id')
                         ->where('mahasiswa_user_email', Auth::user()->user_email )
                         ->where('rekrut_id', $id)->first();
         if(empty($rekrut)) return abort(404);
@@ -520,6 +524,7 @@ class PerekrutanController extends Controller
                     'rekrut_waktu_konfirmundangan'  => date("Y-m-d H:i:s"),
                 ]);
 
+            Mail::to($rekrut->perusahaan_user_email)->send(new ConfirmUndanganEmail($rekrut));
         } catch (\Illuminate\Database\QueryException $e) {
             Session::flash('error', 'Proses gagal, mohon coba kembali beberapa saat lagi atau hubungi admin MagangHub ');
             return redirect()->back();
