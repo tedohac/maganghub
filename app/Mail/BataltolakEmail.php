@@ -36,7 +36,7 @@ class BataltolakEmail extends Mailable
             'rekrut' => $this->rekrut
         ];
 
-        return $this->markdown('emails.tolak')
+        return $this->markdown('emails.bataltolak')
                     ->subject('Lamaran Magang Batal Ditolak - MagangHub')
                     ->with('param', $param);
     }
