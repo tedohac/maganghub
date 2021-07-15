@@ -60,7 +60,7 @@ class Mahasiswa extends Model
         if(empty($mahasiswa)) return false;
         
         $skillcount = Skill::join('mahasiswas', 'mahasiswas.mahasiswa_id', '=', 'skills.skill_mahasiswa_id')
-                            ->where('mahasiswa_user_email', Auth::user()->user_email)
+                            ->where('mahasiswa_user_email', $mahasiswa_user_email)
                             ->count();
 
         if($mahasiswa->mahasiswa_city_id!="" && 
