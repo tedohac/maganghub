@@ -66,7 +66,7 @@ class PerekrutanController extends Controller
                 route('perekrutan.pelamar').'?filter_status=melamar'
                 ));
 
-            Mail::to($lowongan->perusahaan_user_mail)->send(new ApplyEmail($lowongan, $mahasiswa));
+            Mail::to($lowongan->perusahaan_user_email)->send(new ApplyEmail($lowongan, $mahasiswa));
 
             Session::flash('success', 'Melamar lowongan berhasil, mohon tunggu perusahaan mengirim undangan test kepada anda.');
             return redirect()->back();
@@ -277,6 +277,8 @@ class PerekrutanController extends Controller
                 ->update([
                     'rekrut_status' => 'melamartlk',
                 ]);
+                
+            Mail::to($rekrut->perusahaan_user_mail)->send(new TolakEmail($lowongan, $mahasiswa));
         } catch (\Illuminate\Database\QueryException $e) {
             Session::flash('error', 'Proses gagal, mohon coba kembali beberapa saat lagi atau hubungi admin MagangHub');
             return redirect()->back();
