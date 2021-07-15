@@ -3,7 +3,7 @@
 {{ $param['rekrut']->perusahaan_nama }} mengundang anda untuk test pada:
 <table>
     <tr>
-        <td>Tanggal</td>
+        <td width="10%">Tanggal</td>
         <td>: {{ date('d M Y', strtotime($param['request']->undangan_tanggal)) }}</td>
     </tr>
     <tr>
@@ -14,12 +14,12 @@
         <td>Tempat</td>
         <td>: {{ $param['request']->undangan_alamat }}</td>
     </tr>
-<table><br>
+</table><br>
 
 Undangan ini dikirim atas lowongan:
 <table>
     <tr>
-        <td>Lowongan</td>
+        <td width="10%">Lowongan</td>
         <td>: {{ $param['rekrut']->lowongan_judul }}</td>
     </tr>
     <tr>
@@ -34,7 +34,7 @@ Undangan ini dikirim atas lowongan:
         <td>Penempatan</td>
         <td>: {{ $param['rekrut']->city_nama }}</td>
     </tr>
-<table><br>
+</table><br>
 
 Beberapa hal yang perlu diperhatikan:<br />
 {!!html_entity_decode($request->undangan_desc)!!}<br /><br />
