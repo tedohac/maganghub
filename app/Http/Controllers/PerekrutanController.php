@@ -7,6 +7,7 @@ use App\Exports\PelamarExport;
 use App\Mail\DiterimaEmail;
 use App\Mail\UndanganEmail;
 use App\Mail\ApplyEmail;
+use App\Mail\TolakEmail;
 use App\Notifications\Notifikasi;
 use App\Lowongan;
 use App\Mahasiswa;
@@ -65,7 +66,7 @@ class PerekrutanController extends Controller
                 route('perekrutan.pelamar').'?filter_status=melamar'
                 ));
 
-            Mail::to($mahasiswa->mahasiswa_user_email)->send(new ApplyEmail($lowongan, $mahasiswa));
+            Mail::to($lowongan->perusahaan_user_mail)->send(new ApplyEmail($lowongan, $mahasiswa));
 
             Session::flash('success', 'Melamar lowongan berhasil, mohon tunggu perusahaan mengirim undangan test kepada anda.');
             return redirect()->back();
