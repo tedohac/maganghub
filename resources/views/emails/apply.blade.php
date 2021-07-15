@@ -6,7 +6,7 @@ Anda mendapatkan lamaran magang baru atas lowongan:<br />
 Dari Mahasiswa:
 <table>
     <tr>
-        <td width="50">Kampus</td>
+        <td width="10%">Kampus</td>
         <td>: {{ $param['mahasiswa']->univ_nama }}</td>
     </tr>
     <tr>
@@ -17,7 +17,7 @@ Dari Mahasiswa:
         <td>Mahasiswa</td>
         <td>: {{ $param['mahasiswa']->mahasiswa_nama }}</td>
     </tr>
-<table><br>
+</table><br>
 
 @component('mail::button', ['url' => $param['url']])
 Lihat Detail Lamaran
