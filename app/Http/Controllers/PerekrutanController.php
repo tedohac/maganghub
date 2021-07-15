@@ -9,6 +9,7 @@ use App\Mail\UndanganEmail;
 use App\Mail\ApplyEmail;
 use App\Mail\TolakEmail;
 use App\Mail\BataltolakEmail;
+use App\Mail\TolakUndangan;
 use App\Notifications\Notifikasi;
 use App\Lowongan;
 use App\Mahasiswa;
@@ -455,6 +456,7 @@ class PerekrutanController extends Controller
                     'rekrut_waktu_tolakundangan' => date("Y-m-d H:i:s"),
                 ]);
 
+                Mail::to($rekrut->perusahaan_user_email)->send(new TolakUndangan($rekrut, $request->alasan_penolakan));
         } catch (\Illuminate\Database\QueryException $e) {
             Session::flash('error', 'Proses gagal, mohon coba kembali beberapa saat lagi atau hubungi admin MagangHub');
             return redirect()->back();
