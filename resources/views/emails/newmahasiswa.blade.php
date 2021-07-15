@@ -20,7 +20,7 @@ Admin kampus <b>{{ $param['univ_nama'] }}</b> telah mendaftarkan anda sebagai ma
             <td>: {{ $param['request']->mahasiswa_nama }}</td>
         </tr>
     </tbody>
-<table><br />
+</table><br />
 Dan berikut informasi login untuk akun anda:<br /><br />
 <table>
     <tbody>
@@ -33,7 +33,7 @@ Dan berikut informasi login untuk akun anda:<br /><br />
             <td>: {{ $param['password'] }}</td>
         </tr>
     </tbody>
-<table><br />
+</table><br />
 Untuk mulai menggunakan akun anda, langkah selanjutnya adalah mengaktifkan akun dengan cara klik pada tombol di bawah ini. Kemudian anda dapat langsung login menggunakan informasi di atas.<br>
 
 @component('mail::button', ['url' => $param['url']])
