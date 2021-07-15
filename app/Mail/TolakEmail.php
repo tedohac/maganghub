@@ -36,7 +36,7 @@ class TolakEmail extends Mailable
             'rekrut' => $this->rekrut
         ];
 
-        return $this->markdown('emails.apply')
+        return $this->markdown('emails.tolak')
                     ->subject('Lamaran Magang Ditolak - MagangHub')
                     ->with('param', $param);
     }
