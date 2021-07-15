@@ -11,13 +11,13 @@ class TolakEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $lowongan, $mahasiswa;
+    public $lowongan;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($rekrut, $mahasiswa)
+    public function __construct($rekrut)
     {
         $this->rekrut = $rekrut;
         $this->mahasiswa = $mahasiswa;
@@ -34,8 +34,7 @@ class TolakEmail extends Mailable
             'url' => route('perekrutan.detaillamaran', [
                 'id' => $this->rekrut->rekrut_id 
             ]),
-            'rekrut' => $this->rekrut,
-            'mahasiswa' => $this->mahasiswa,
+            'rekrut' => $this->rekrut
         ];
 
         return $this->markdown('emails.apply')
