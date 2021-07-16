@@ -7,6 +7,7 @@ use App\Kegiatan;
 use App\Mahasiswa;
 use App\Rekrut;
 use App\Skill;
+use App\User;
 use Artisan;
 use Auth;
 use PDF;
