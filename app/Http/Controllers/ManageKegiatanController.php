@@ -377,7 +377,7 @@ class ManageKegiatanController extends Controller
             $receiver = User::where('user_email', $rekrut->perusahaan_user_email)->first();
             Notification::send($receiver, new Notifikasi(
                 'Kegiatan baru dari <b>'.$rekrut->mahasiswa_nama.'</b> pada lowongan '.$rekrut->lowongan_judul.' untuk tanggal '.date('Y M d', strtotime($request->kegiatan_tgl)), 
-                route('kegiatan.mentorview' ['id' => $rekrut->rekrut_id])
+                route('kegiatan.mentorview', ['id' => $rekrut->rekrut_id])
             ));
             return redirect()->route('kegiatan.manage');
         } else {
