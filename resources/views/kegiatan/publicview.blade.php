@@ -23,7 +23,7 @@
 @section('content')
     <ol class="breadcrumb p-1 ml-auto">
         <li class="breadcrumb-item ml-auto"><a href="{{ route('/') }}">MagangHub</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Kegiatan</li>
+        <li class="breadcrumb-item active" aria-current="page">Kegiatan Magang</li>
     </ol>
 
     @if(session('errors'))
