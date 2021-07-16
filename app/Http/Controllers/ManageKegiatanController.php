@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Notifications\Notifikasi;
 use App\Kegiatan;
 use App\Mahasiswa;
 use App\Rekrut;
