@@ -10,6 +10,7 @@ use App\Skill;
 use App\User;
 use Artisan;
 use Auth;
+use Notification;
 use PDF;
 use Session;
 use Storage;
