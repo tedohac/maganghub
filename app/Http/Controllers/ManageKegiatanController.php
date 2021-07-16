@@ -7,6 +7,7 @@ use App\Kegiatan;
 use App\Mahasiswa;
 use App\Rekrut;
 use App\Skill;
+use App\User;
 use Artisan;
 use Auth;
 use PDF;
@@ -355,12 +356,6 @@ class ManageKegiatanController extends Controller
             $request->file('kegiatan_path')->storeAs('public/kegiatan', $filename_kegiatan_path);
 
             Artisan::call('cache:clear');
-            
-            $receiver = User::where('user_email', $rekrut->perusahaan_user_email)->first();
-            Notification::send($receiver, new Notifikasi(
-                'Kegiatan baru dari <b>'.$rekrut->mahasiswa_nama.'</b> pada lowongan '.$rekrut->lowongan_judul.' untuk tanggal '.date('Y M d', strtotime($request->kegiatan_tgl)), 
-                route('perekrutan.pelamar').'?filter_status=melamar'
-            ));
         } catch (\Illuminate\Database\QueryException $e) {
             Session::flash('error', 'Proses gagal, mohon coba kembali beberapa saat lagi ');
             return redirect()->back();
@@ -376,6 +371,12 @@ class ManageKegiatanController extends Controller
         if($simpankegiatan)
         {
             Session::flash('success', 'Berhasil menyimpan kegiatan untuk tanggal '.date('d F Y', strtotime($request->kegiatan_tgl)));
+            
+            $receiver = User::where('user_email', $rekrut->perusahaan_user_email)->first();
+            Notification::send($receiver, new Notifikasi(
+                'Kegiatan baru dari <b>'.$rekrut->mahasiswa_nama.'</b> pada lowongan '.$rekrut->lowongan_judul.' untuk tanggal '.date('Y M d', strtotime($request->kegiatan_tgl)), 
+                route('perekrutan.pelamar').'?filter_status=melamar'
+            ));
             return redirect()->route('kegiatan.manage');
         } else {
             Session::flash('error', 'Menyimpan kegiatan gagal! Mohon hubungi admin MagangHub');
