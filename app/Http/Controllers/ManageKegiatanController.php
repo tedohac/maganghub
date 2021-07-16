@@ -286,6 +286,7 @@ class ManageKegiatanController extends Controller
     public function add($kegiatan_tgl)
     {
         $rekrut = Rekrut::join('mahasiswas', 'mahasiswas.mahasiswa_id', '=', 'rekruts.rekrut_mahasiswa_id')
+                        ->join('lowongans', 'lowongans.lowongan_id', '=', 'rekruts.rekrut_lowongan_id')
                         ->where('rekrut_status', "lulus")
                         ->where('mahasiswa_user_email', Auth::user()->user_email )->first();
         if(empty($rekrut)) abort(404);
@@ -317,6 +318,8 @@ class ManageKegiatanController extends Controller
     {
  
         $rekrut = Rekrut::join('mahasiswas', 'mahasiswas.mahasiswa_id', '=', 'rekruts.rekrut_mahasiswa_id')
+                        ->join('lowongans', 'lowongans.lowongan_id', '=', 'rekruts.rekrut_lowongan_id')
+                        ->join('perusahaans', 'perusahaans.perusahaan_id', '=', 'lowongans.lowongan_perusahaan_id')
                         ->where('rekrut_status', "lulus")
                         ->where('mahasiswa_user_email', Auth::user()->user_email )->first();
         if(empty($rekrut)) abort(404);
@@ -352,6 +355,12 @@ class ManageKegiatanController extends Controller
             $request->file('kegiatan_path')->storeAs('public/kegiatan', $filename_kegiatan_path);
 
             Artisan::call('cache:clear');
+            
+            $receiver = User::where('user_email', $rekrut->perusahaan_user_email)->first();
+            Notification::send($receiver, new Notifikasi(
+                'Kegiatan baru dari <b>'.$rekrut->mahasiswa_nama.'</b> pada lowongan '.$rekrut->lowongan_judul.' untuk tanggal '.date('Y M d', strtotime($request->kegiatan_tgl)), 
+                route('perekrutan.pelamar').'?filter_status=melamar'
+            ));
         } catch (\Illuminate\Database\QueryException $e) {
             Session::flash('error', 'Proses gagal, mohon coba kembali beberapa saat lagi ');
             return redirect()->back();
