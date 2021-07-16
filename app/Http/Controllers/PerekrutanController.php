@@ -533,7 +533,7 @@ class PerekrutanController extends Controller
 
         $receiver = User::where('user_email', $rekrut->perusahaan_user_email)->first();
         Notification::send($receiver, new Notifikasi(
-            '<b>'.$rekrut->mahasiswa_nama.'</b> mengkonfirrmasi undangan test anda pada '.date('d F Y',strtotime($rekrut->undangan_tanggal)).' pukul '.$rekrut->undangan_waktu, 
+            '<b>'.$rekrut->mahasiswa_nama.'</b> mengkonfirrmasi undangan test anda pada lowongan '.$rekrut->lowongan_judul, 
             route('perekrutan.detailpelamar', ['id' => $rekrut->rekrut_id])
         ));
         
