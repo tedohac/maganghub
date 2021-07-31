@@ -86,15 +86,19 @@ class ManageKegiatanController extends Controller
 
         // when there is already data there, focus month on first kegiatan day
         $kegiatan = Kegiatan::where('kegiatan_rekrut_id', $rekrut->rekrut_id)->orderBy('kegiatan_tgl')->first();
+        
         if(!empty($kegiatan) && empty($request->filter_month))
         {
             $filter->month = substr($kegiatan->kegiatan_tgl,0,7);
         }
 
+        $kegiatanlist = Kegiatan::where('kegiatan_rekrut_id', $rekrut->rekrut_id)->get();
+
     	return view('kegiatan.mentorview', [
             'filter' => $filter,
             'rekrut' => $rekrut,
-            'skills' => $skills
+            'skills' => $skills,
+            'kegiatans' => $kegiatanlist
         ]);
     }
     
@@ -506,6 +510,26 @@ class ManageKegiatanController extends Controller
 
         Session::flash('success', 'Berhasil memverifikasi kegiatan magang untuk tanggal '.date('d F Y', strtotime($kegiatan->kegiatan_tgl)));
         return redirect()->route('kegiatan.mentorview', ['id' => $kegiatan->rekrut_id]);
+    }
+    
+    
+    public function verifyall($rekrut_id)
+    {
+        try
+        {
+            date_default_timezone_set('Asia/Jakarta');
+            
+            Kegiatan::where('kegiatan_rekrut_id',$rekrut_id)
+                    ->update([
+                        'kegiatan_verify_mentor' => date("Y-m-d H:i:s"),
+                    ]);
+        } catch (\Illuminate\Database\QueryException $e) {
+            Session::flash('error', 'Proses gagal, mohon coba kembali beberapa saat lagi ');
+            return redirect()->back();
+        }
+
+        Session::flash('success', 'Berhasil memverifikasi semua kegiatan');
+        return redirect()->route('kegiatan.mentorview', ['id' => $rekrut_id]);
     }
     
     public function print()

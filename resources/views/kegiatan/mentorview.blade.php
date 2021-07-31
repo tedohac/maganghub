@@ -134,6 +134,61 @@
             @endfor
             </tbody>
         </table>
+    
+        <h5 class="mb-2 p-0">
+            List View
+        </h5>
+    
+        <table class="table table-sm table-striped table-hover" id="dataTable" width="100%" cellspacing="0">
+            <thead class="greybox">
+                <tr>
+                    <th>#</th>
+                    <th>Tgl Kegiatan</th>
+                    <th>Deskripsi</th>
+                    <th>Berkas</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+            @php ($num = 1)
+            @php ($waitingverif = 0)
+            @foreach($kegiatans as $kegiatan)
+                <tr>
+                    <td>
+                        {{ $num }}
+                    </td>
+                    <td>
+                        {{ $kegiatan->kegiatan_tgl }}
+                    </td>
+                    <td>
+                        {!! htmlspecialchars_decode($kegiatan->kegiatan_desc) !!}
+                    </td>
+                    <td>
+                        <a class="btn btn-outline-success p-1" href="{{ url('storage/kegiatan/'.$kegiatan->kegiatan_path) }}"> 
+                            <small>
+                                Download Berkas
+                            </small>
+                        </a>
+                    </td>
+                    <td>
+                        @if($kegiatan->kegiatan_verify_mentor)
+                            <span class="badge badge-success w-100 mt-1">Terverifikasi</span>
+                        @else
+                            <span class="badge badge-warning w-100 mt-1">Belum Verifikasi</span>
+                            @php ($waitingverif++)
+                        @endif
+                    </td>
+                </tr>
+                @php ($num++)
+            @endforeach
+            </tbody>
+        </table>
+        
+        @if($waitingverif>0)
+        <a class="btn btn-outline-primary btn-block p-1" href="{{ url('kegiatan/verifyall/'.$rekrut->rekrut_id) }}"> 
+            Verifikasi Semua Kegiatan
+        </a>
+        @endif
     </div>
     <!-- end content -->
     
