@@ -579,9 +579,23 @@ class PerekrutanController extends Controller
         return redirect()->back();
     }
 
-    public function lulus($id)
+    public function lulus(Request $request)
     {
-        if(empty($id)) abort(404);
+        if(empty($request->rekrut_id)) abort(404);
+
+        $rules = [
+            'catatan_magang'     => 'required',
+        ];
+ 
+        $messages = [
+            'catatan_magang.required'    => 'Masukan catatan pertama magang',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+ 
+        if($validator->fails()){
+            return redirect()->back()->withErrors($validator)->withInput($request->all);
+        }
         
         $rekrut = Rekrut::join('lowongans', 'lowongans.lowongan_id', '=', 'rekruts.rekrut_lowongan_id')
                         ->join('perusahaans', 'perusahaans.perusahaan_id', '=', 'lowongans.lowongan_perusahaan_id')
@@ -589,7 +603,7 @@ class PerekrutanController extends Controller
                         ->join('fungsis', 'fungsis.fungsi_id', '=', 'lowongans.lowongan_fungsi_id')
                         ->join('mahasiswas', 'mahasiswas.mahasiswa_id', '=', 'rekruts.rekrut_mahasiswa_id')
                         ->where('perusahaan_user_email', Auth::user()->user_email )
-                        ->where('rekrut_id', $id)->first();
+                        ->where('rekrut_id', $request->rekrut_id)->first();
         if(empty($rekrut)) return abort(404);
 
         try
@@ -619,13 +633,14 @@ class PerekrutanController extends Controller
 
             date_default_timezone_set('Asia/Jakarta');
 
-            Rekrut::where('rekrut_id', $id)
+            Rekrut::where('rekrut_id', $request->rekrut_id)
                 ->update([
                     'rekrut_status' => 'lulus',
                     'rekrut_waktu_diterima'  => date("Y-m-d H:i:s"),
+                    'rekrut_note'  => $request->catatan_magang,
                 ]);
 
-            Rekrut::where('rekrut_id', '!=', $id)
+            Rekrut::where('rekrut_id', '!=', $request->rekrut_id)
                 ->where('rekrut_mahasiswa_id', $rekrut->mahasiswa_id)
                 ->update([
                     'rekrut_status' => 'magang',

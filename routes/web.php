@@ -166,7 +166,7 @@ Route::group(['prefix' => 'perekrutan', 'middleware' => 'web'], function () {
     Route::get('confirmundangan/{id}','PerekrutanController@confirmundangan')->name('perekrutan.confirmundangan')->middleware('cekrole:mahasiswa');
     Route::post('tolakundangan','PerekrutanController@tolakundangan')->name('perekrutan.tolakundangan')->middleware('cekrole:mahasiswa');
     
-    Route::get('lulus/{id}','PerekrutanController@lulus')->name('perekrutan.lulus')->middleware('cekrole:perusahaan');
+    Route::post('lulus','PerekrutanController@lulus')->name('perekrutan.lulus')->middleware('cekrole:perusahaan');
     Route::get('tdklulus/{id}','PerekrutanController@tdklulus')->name('perekrutan.tdklulus')->middleware('cekrole:perusahaan');
 });
 
@@ -188,6 +188,7 @@ Route::group(['prefix' => 'kegiatan', 'middleware' => 'web'], function () {
     Route::get('detailpublic/{id}/{date}','ManageKegiatanController@detailpublic')->name('kegiatan.detailpublic');
     
     Route::get('verify/{id}','ManageKegiatanController@verify')->name('kegiatan.verify')->middleware('cekrole:perusahaan');
+    Route::get('verifyall/{id}','ManageKegiatanController@verifyall')->name('kegiatan.verifyall')->middleware('cekrole:perusahaan');
     
     Route::get('print','ManageKegiatanController@print')->name('kegiatan.print')->middleware('cekrole:mahasiswa');
     Route::get('printdospem/{id}','ManageKegiatanController@printdospem')->name('kegiatan.printdospem')->middleware('cekrole:dospem');

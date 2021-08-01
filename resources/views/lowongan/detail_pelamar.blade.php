@@ -534,15 +534,16 @@
             <!-- Modal body -->
             <div class="modal-body">
                 Apakah anda yakin untuk menyatakan bahwa mahasiswa ini lulus test dan <b>DITERIMA</b> sebagai mahasiswa magang di perusahaan anda?
+                <br /><br />
+                <label class="mt-2">Catatan Pertama Magang</label><br />
+                <textarea id="catatanMagang" class="form-control" placeholder="Catatan Pertama Magang" name="catatan_magang"></textarea>
             </div>
 
             <!-- Modal footer -->
             <div class="modal-footer">
             <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
 
-            <a class="btn btn-primary" href="{{ url('perekrutan/lulus/'.$rekrut->rekrut_id) }}">
-                Ya
-            </a>
+            <input  type="submit" class="btn btn-primary" id="sendsubmit" value="Ya">
             </div>
 
         </div>
@@ -618,20 +619,16 @@
         });
 
         $('#btnLulus').click(function(){
+            // turn off parsley
+            $('#formadd').off('submit.Parsley');
+
+            $('#formadd').attr('action', '{{ route("perekrutan.lulus") }}');
             $('#lulusModal').modal('show');
         });
 
         $('#btnUndang').click(function(){
             $('#formadd').attr('action', '{{ route("perekrutan.undang") }}');
             $('#confirmUndangModal').modal('show');
-        });
-
-        $('#formadd').parsley().on('form:validate', function (formInstance) {
-            var success = formInstance.isValid();
-            
-            if (!success) {
-                $('#confirmModal').modal('hide');
-            }
         });
     });
 </script>
