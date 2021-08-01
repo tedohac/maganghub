@@ -5,12 +5,50 @@
     <!-- SB Admin Template -->
     <link href="{{ asset('styles/sb-admin.css?v=').time() }}" rel="stylesheet">
 
+    <!-- DataTable-->
+    <link href="{{ url('datatables/dataTables.bootstrap4.css') }}" rel="stylesheet">
+
     <!-- Profile -->
     <link href="{{ asset('styles/profile.css?v=').time() }}" rel="stylesheet">
 
     <style>
         .font-20 {
             font-size: 20px;
+        }
+        /* Style the tab */
+        .tab {
+        overflow: hidden;
+        border: 1px solid #ccc;
+        background-color: #f1f1f1;
+        }
+
+        /* Style the buttons that are used to open the tab content */
+        .tab button {
+        background-color: inherit;
+        float: left;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 14px 16px;
+        transition: 0.3s;
+        }
+
+        /* Change background color of buttons on hover */
+        .tab button:hover {
+        background-color: #ddd;
+        }
+
+        /* Create an active/current tablink class */
+        .tab button.active {
+        background-color: #ccc;
+        }
+
+        /* Style the tab content */
+        .tabcontent {
+        display: none;
+        padding: 6px 12px;
+        border: 1px solid #ccc;
+        border-top: none;
         }
     </style>
 @endsection
@@ -66,6 +104,15 @@
                 <input type="button" class="btn btn-outline-primary btn-block text-small mb-2" value="Selesaikan Magang & Beri Nilai" id="btnFinish">
             @endif
         @endif
+
+        <!-- Tab links -->
+        <div class="tab">
+            <button class="tablinks firstTabs" onclick="openCity(event, 'CalendarView')">Calendar View</button>
+            <button class="tablinks" onclick="openCity(event, 'ListView')">List View</button>
+        </div>
+
+        <!-- Tab content -->
+        <div id="CalendarView" class="tabcontent">
 
         @php($firstDate = $filter->month.'-01')
         
@@ -134,10 +181,12 @@
             @endfor
             </tbody>
         </table>
+
+        </div>
+        <!-- End Tab content -->
     
-        <h5 class="mb-2 p-0">
-            List View
-        </h5>
+        <!-- Tab content -->
+        <div id="ListView" class="tabcontent">
     
         <table class="table table-sm table-striped table-hover" id="dataTable" width="100%" cellspacing="0">
             <thead class="greybox">
@@ -189,6 +238,8 @@
             Verifikasi Semua Kegiatan
         </a>
         @endif
+        </div>
+        <!-- End Tab content -->
     </div>
     <!-- end content -->
     
@@ -498,16 +549,48 @@
 @endsection
 
 @section('bottom')
+<!-- DataTable-->
+<script src="{{ url('datatables/jquery.dataTables.js') }}"></script>
+<script src="{{ url('datatables/dataTables.bootstrap4.js') }}"></script>
+
 <!-- SB-Admin-->
 <script src="{{ url('js/sb-admin.min.js') }}"></script>
 
 <script>
     $(document).ready(function (){
+        var table = $('#dataTable').DataTable();
 
         $('#btnFinish').click(function(){
             $('#finishModal').modal('show');
         });
+
+        // open first tabs
+        $("#CalendarView").css("display", "block");
+        $('.firstTabs').addClass('active');
     });
+    
+    // Begin JS for tabs
+    function openCity(evt, cityName) {
+        // Declare all variables
+        var i, tabcontent, tablinks;
+
+        // Get all elements with class="tabcontent" and hide them
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+
+        // Get all elements with class="tablinks" and remove the class "active"
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+
+        // Show the current tab, and add an "active" class to the button that opened the tab
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+    // End JS for tabs
 </script>
 
 <!-- Parsley Form Validation -->

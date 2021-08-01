@@ -117,7 +117,9 @@
         </div>
         @elseif($rekrut->rekrut_status=="lulus")
         <div class="alert alert-warning">
-            Anda telah diterima magang pada lowongan ini, anda dapat langsung membuat kegiatan magang pada hari pertama magang anda.
+            Anda telah diterima magang pada lowongan ini, anda dapat langsung membuat kegiatan magang pada hari pertama magang anda.<br /><br />
+            Catatan dari perusahaan: <br />
+            {{ $rekrut->rekrut_note }}
         </div>
         @endif
 
