@@ -88,12 +88,16 @@
                 </tr>
                 <td valign="center" width="50" class="greybox"><b>Berkas</b></td>
                 <td>
+                    @if($kegiatan->kegiatan_path!="")
                     <a class="btn btn-outline-success p-1" href="{{ url('storage/kegiatan/'.$kegiatan->kegiatan_path) }}"> 
                         <small>
                             <i class="fas fa-cloud-download-alt"></i>
                             Download Berkas
                         </small>
                     </a>
+                    @else
+                    -
+                    @endif
                 </td>
                 <tr>
                     <td valign="center" width="50" class="greybox"></td>

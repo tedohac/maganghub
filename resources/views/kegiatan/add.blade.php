@@ -87,14 +87,10 @@
                     <small>Masukan ke zip jika berkas lebih dari satu</small>
                     <div class="input-group w-50">
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="kegiatanPath" name="kegiatan_path" required="required"
-                            data-parsley-required
-                            data-parsley-required-message="Pilih berkas kegiatan"
-                            data-parsley-errors-container="#errorkegiatanPath">
+                            <input type="file" class="custom-file-input" id="kegiatanPath" name="kegiatan_path">
                             <label class="custom-file-label" for="kegiatanPath">Pilih berkas kegiatan</label>
                         </div>
                     </div>
-                    <span id="errorkegiatanPath" class="form-text text-danger"></span>
                 </td>
                 <tr>
                     <td valign="center" width="50" class="greybox"></td>

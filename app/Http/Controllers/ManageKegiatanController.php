@@ -49,9 +49,12 @@ class ManageKegiatanController extends Controller
             $filter->month = substr($kegiatan->kegiatan_tgl,0,7);
         }
 
+        $kegiatanlist = Kegiatan::where('kegiatan_rekrut_id', $rekrut->rekrut_id)->get();
+
     	return view('kegiatan.manage', [
             'filter' => $filter,
-            'rekrut' => $rekrut
+            'rekrut' => $rekrut,
+            'kegiatans' => $kegiatanlist
         ]);
     }
     
@@ -137,10 +140,13 @@ class ManageKegiatanController extends Controller
             $filter->month = substr($kegiatan->kegiatan_tgl,0,7);
         }
 
+        $kegiatanlist = Kegiatan::where('kegiatan_rekrut_id', $rekrut->rekrut_id)->get();
+        
     	return view('dospem.kegiatan', [
             'filter' => $filter,
             'rekrut' => $rekrut,
-            'skills' => $skills
+            'skills' => $skills,
+            'kegiatans' => $kegiatanlist
         ]);
     }
 
@@ -183,10 +189,13 @@ class ManageKegiatanController extends Controller
             $filter->month = substr($kegiatan->kegiatan_tgl,0,7);
         }
         
+        $kegiatanlist = Kegiatan::where('kegiatan_rekrut_id', $rekrut->rekrut_id)->get();
+
     	return view('kegiatan.publicview', [
             'filter' => $filter,
             'rekrut' => $rekrut,
-            'skills' => $skills
+            'skills' => $skills,
+            'kegiatans' => $kegiatanlist
         ]);
     }
 
@@ -338,12 +347,10 @@ class ManageKegiatanController extends Controller
 
         $rules = [
             'kegiatan_desc' => 'required',
-            'kegiatan_path' => 'required',
         ];
  
         $messages = [
             'kegiatan_desc.required'=> 'Pilih kota penempatan',
-            'kegiatan_path.required'=> 'Kota tidak terdaftar',
         ];
  
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -352,25 +359,28 @@ class ManageKegiatanController extends Controller
             return redirect()->back()->withErrors($validator)->withInput($request->all);
         }
 
-        try
+        if ($request->hasFile('kegiatan_path')) 
         {
-            $tglformated = date('Ymd', strtotime($request->kegiatan_tgl));
-            $filename_kegiatan_path = $rekrut->rekrut_id.'-'.$tglformated.'.'.$request->file('kegiatan_path')->getClientOriginalExtension();
-                
-            // delete if exists
-            if (Storage::disk('public')->exists( 'kegiatan/'.$filename_kegiatan_path )) Storage::delete('public/kegiatan/'.$filename_kegiatan_path);
-            $request->file('kegiatan_path')->storeAs('public/kegiatan', $filename_kegiatan_path);
+            try
+            {
+                $tglformated = date('Ymd', strtotime($request->kegiatan_tgl));
+                $filename_kegiatan_path = $rekrut->rekrut_id.'-'.$tglformated.'.'.$request->file('kegiatan_path')->getClientOriginalExtension();
+                    
+                // delete if exists
+                if (Storage::disk('public')->exists( 'kegiatan/'.$filename_kegiatan_path )) Storage::delete('public/kegiatan/'.$filename_kegiatan_path);
+                $request->file('kegiatan_path')->storeAs('public/kegiatan', $filename_kegiatan_path);
 
-            Artisan::call('cache:clear');
-        } catch (\Illuminate\Database\QueryException $e) {
-            Session::flash('error', 'Proses gagal, mohon coba kembali beberapa saat lagi ');
-            return redirect()->back();
+                Artisan::call('cache:clear');
+            } catch (\Illuminate\Database\QueryException $e) {
+                Session::flash('error', 'Proses gagal, mohon coba kembali beberapa saat lagi ');
+                return redirect()->back();
+            }
         }
 
         $kegiatan = new Kegiatan;
         $kegiatan->kegiatan_rekrut_id   = $rekrut->rekrut_id;
         $kegiatan->kegiatan_tgl         = $request->kegiatan_tgl;
-        $kegiatan->kegiatan_path        = $filename_kegiatan_path;
+        $kegiatan->kegiatan_path        = ($request->hasFile('kegiatan_path')) ? $filename_kegiatan_path : null;
         $kegiatan->kegiatan_desc        = htmlspecialchars($request->kegiatan_desc);
         $simpankegiatan = $kegiatan->save();
 
@@ -444,9 +454,13 @@ class ManageKegiatanController extends Controller
         {
             try
             {
+                // delete if exists
+                if (Storage::disk('public')->exists( 'kegiatan/'.$kegiatan->kegiatan_path )) Storage::delete('public/kegiatan/'.$kegiatan->kegiatan_path);
+
                 Kegiatan::where('kegiatan_id',$kegiatan->kegiatan_id)
                         ->update([
                             'kegiatan_desc' => htmlspecialchars($request->kegiatan_desc),
+                            'kegiatan_path' => null,
                             'kegiatan_verify_mentor' => null,
                         ]);
             } catch (\Illuminate\Database\QueryException $e) {
@@ -590,15 +604,64 @@ class ManageKegiatanController extends Controller
             'public_url' => $public_url
         ]);
         return $pdf->stream();
-        
-    	// return view('kegiatan.print', [
-        //     'rekrut' => $rekrut,
-        //     'kegiatans' => $kegiatans,
-        //     'skills' => $skills,
-        //     'public_url' => $public_url
-        // ]);
     }
     
+    public function printnilai()
+    {        
+        $rekrut = Rekrut::join('lowongans', 'lowongans.lowongan_id', '=', 'rekruts.rekrut_lowongan_id')
+                        ->join('perusahaans', 'perusahaans.perusahaan_id', '=', 'lowongans.lowongan_perusahaan_id')
+                        ->join('cities', 'cities.city_id', '=', 'lowongans.lowongan_city_id')
+                        ->join('fungsis', 'fungsis.fungsi_id', '=', 'lowongans.lowongan_fungsi_id')
+                        ->join('mahasiswas', 'mahasiswas.mahasiswa_id', '=', 'rekruts.rekrut_mahasiswa_id')
+                        ->join('dospems', 'dospems.dospem_id', '=', 'mahasiswas.mahasiswa_dospem_id')
+                        ->join('prodis', 'prodis.prodi_id', '=', 'dospems.dospem_prodi_id')
+                        ->join('univs', 'univs.univ_id', '=', 'prodis.prodi_univ_id')
+                        ->where(function ($query) {
+                            $query->orWhere('rekrut_status', "lulus");
+                            $query->orWhere('rekrut_status', "finish");
+                        })
+                        ->where('mahasiswa_user_email', Auth::user()->user_email )->first();
+        if(empty($rekrut)) abort(404);
+
+        $rekrut_key = "";
+        if($rekrut->rekrut_key=="")
+        {
+            $rekrut_key = Str::random(15);
+            try
+            {
+                Rekrut::where('rekrut_id',$rekrut->rekrut_id)
+                ->update([
+                    'rekrut_key' => $rekrut_key,
+                ]);
+            } catch (\Illuminate\Database\QueryException $e) {
+                Session::flash('error', 'Proses gagal, mohon hubungi admin MagangHub ');
+                return redirect()->back();
+            }
+        }
+        else
+        {
+            $rekrut_key = $rekrut->rekrut_key;
+        }
+
+        $skills = Skill::where('skill_mahasiswa_id', $rekrut->rekrut_mahasiswa_id)
+                        ->get();
+
+        $public_url = route('kegiatan.publicview', ['id' => $rekrut->rekrut_id]).'?key='.$rekrut_key;
+
+        // generate QR
+        $qrcode = \QrCode::format('png')
+                 ->size(200)->errorCorrection('H')
+                 ->generate($public_url);
+        $qrcode = base64_encode($qrcode);
+
+        $pdf = PDF::loadview('kegiatan.printnilai',[
+            'rekrut' => $rekrut,
+            'skills' => $skills,
+            'qrcode' => $qrcode,
+            'public_url' => $public_url
+        ]);
+        return $pdf->stream();
+    }
     
     public function printdospem($rekrut_id)
     {        
@@ -653,6 +716,63 @@ class ManageKegiatanController extends Controller
         $pdf = PDF::loadview('kegiatan.print',[
             'rekrut' => $rekrut,
             'kegiatans' => $kegiatans,
+            'skills' => $skills,
+            'qrcode' => $qrcode,
+            'public_url' => $public_url
+        ]);
+        return $pdf->stream();
+    }
+    
+    public function printdospemnilai($rekrut_id)
+    {        
+        $rekrut = Rekrut::join('lowongans', 'lowongans.lowongan_id', '=', 'rekruts.rekrut_lowongan_id')
+                        ->join('perusahaans', 'perusahaans.perusahaan_id', '=', 'lowongans.lowongan_perusahaan_id')
+                        ->join('cities', 'cities.city_id', '=', 'lowongans.lowongan_city_id')
+                        ->join('fungsis', 'fungsis.fungsi_id', '=', 'lowongans.lowongan_fungsi_id')
+                        ->join('mahasiswas', 'mahasiswas.mahasiswa_id', '=', 'rekruts.rekrut_mahasiswa_id')
+                        ->join('dospems', 'dospems.dospem_id', '=', 'mahasiswas.mahasiswa_dospem_id')
+                        ->join('prodis', 'prodis.prodi_id', '=', 'dospems.dospem_prodi_id')
+                        ->join('univs', 'univs.univ_id', '=', 'prodis.prodi_univ_id')
+                        ->where('rekrut_id', $rekrut_id)
+                        ->where(function ($query) {
+                            $query->orWhere('rekrut_status', "lulus");
+                            $query->orWhere('rekrut_status', "finish");
+                        })->first();
+        if(empty($rekrut)) abort(404);
+
+        $rekrut_key = "";
+        if($rekrut->rekrut_key=="")
+        {
+            $rekrut_key = Str::random(15);
+            try
+            {
+                Rekrut::where('rekrut_id',$rekrut->rekrut_id)
+                ->update([
+                    'rekrut_key' => $rekrut_key,
+                ]);
+            } catch (\Illuminate\Database\QueryException $e) {
+                Session::flash('error', 'Proses gagal, mohon hubungi admin MagangHub ');
+                return redirect()->back();
+            }
+        }
+        else
+        {
+            $rekrut_key = $rekrut->rekrut_key;
+        }
+
+        $skills = Skill::where('skill_mahasiswa_id', $rekrut->rekrut_mahasiswa_id)
+                        ->get();
+
+        $public_url = route('kegiatan.publicview', ['id' => $rekrut->rekrut_id]).'?key='.$rekrut_key;
+
+        // generate QR
+        $qrcode = \QrCode::format('png')
+                    ->size(200)->errorCorrection('H')
+                    ->generate($public_url);
+        $qrcode = base64_encode($qrcode);
+
+        $pdf = PDF::loadview('kegiatan.printnilai',[
+            'rekrut' => $rekrut,
             'skills' => $skills,
             'qrcode' => $qrcode,
             'public_url' => $public_url
