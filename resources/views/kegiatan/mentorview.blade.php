@@ -213,11 +213,15 @@
                         {!! htmlspecialchars_decode($kegiatan->kegiatan_desc) !!}
                     </td>
                     <td>
+                        @if($kegiatan->kegiatan_path!="")
                         <a class="btn btn-outline-success p-1" href="{{ url('storage/kegiatan/'.$kegiatan->kegiatan_path) }}"> 
                             <small>
                                 Download Berkas
                             </small>
                         </a>
+                        @else
+                        -
+                        @endif
                     </td>
                     <td>
                         @if($kegiatan->kegiatan_verify_mentor)

@@ -192,6 +192,8 @@ Route::group(['prefix' => 'kegiatan', 'middleware' => 'web'], function () {
     
     Route::get('print','ManageKegiatanController@print')->name('kegiatan.print')->middleware('cekrole:mahasiswa');
     Route::get('printdospem/{id}','ManageKegiatanController@printdospem')->name('kegiatan.printdospem')->middleware('cekrole:dospem');
+    Route::get('printnilai','ManageKegiatanController@printnilai')->name('kegiatan.printnilai')->middleware('cekrole:mahasiswa');
+    Route::get('printdospemnilai/{id}','ManageKegiatanController@printdospemnilai')->name('kegiatan.printdospemnilai')->middleware('cekrole:dospem');
     
     Route::post('finish/{id}','ManageKegiatanController@finish')->name('kegiatan.finish')->middleware('cekrole:perusahaan');
     Route::post('rateperusahaan/{id}','ManageKegiatanController@rateperusahaan')->name('kegiatan.rateperusahaan')->middleware('cekrole:mahasiswa');

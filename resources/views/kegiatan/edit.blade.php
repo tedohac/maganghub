@@ -85,14 +85,16 @@
                 <tr>
                     <td valign="center" width="50" class="greybox"><b>Berkas</b></td>
                     <td>
+                        @if($kegiatan->kegiatan_path!="")
                         <a class="btn btn-outline-success p-1" href="{{ url('storage/kegiatan/'.$kegiatan->kegiatan_path) }}"> 
                             <small>
                                 <i class="fas fa-cloud-download-alt"></i>
                                 Download Berkas
                             </small>
                         </a><br />
+                        @endif
                         <small>Masukan ke zip jika berkas lebih dari satu.</small><br />
-                        <small>Kosongkan jika tidak ingin mengubah.</small>
+                        <small>Kosongkan jika ingin menghapus berkas mengubah.</small>
                         <div class="input-group w-50">
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input" id="kegiatanPath" name="kegiatan_path">
