@@ -92,6 +92,7 @@ Route::group(['prefix' => 'dospem', 'middleware' => 'web'], function () {
 Route::group(['prefix' => 'mahasiswa', 'middleware' => 'web'], function () {
 
     Route::get('pantau','ManageMahasiswaController@pantau')->name('mahasiswa.pantau')->middleware('cekrole:dospem');
+    Route::get('printpantaumahasiswa','ManageMahasiswaController@printpantaumahasiswa')->name('mahasiswa.printpantaumahasiswa')->middleware('cekrole:dospem');
 
     Route::get('manage','ManageMahasiswaController@manage')->name('mahasiswa.manage')->middleware('cekrole:admin kampus');
     Route::post('save','ManageMahasiswaController@save')->name('mahasiswa.save')->middleware('cekrole:admin kampus');
@@ -138,6 +139,7 @@ Route::group(['prefix' => 'lowongan', 'middleware' => 'web'], function () {
     Route::get('list','ManageLowonganController@list')->name('lowongan.list');
     Route::get('detail/{id}','ManageLowonganController@detail')->name('lowongan.detail')->middleware('cekrole:mahasiswa|dospem|perusahaan');
     Route::get('manage','ManageLowonganController@manage')->name('lowongan.manage')->middleware('cekrole:perusahaan');
+    Route::get('printlowongan','ManageLowonganController@printlowongan')->name('lowongan.printlowongan')->middleware('cekrole:perusahaan');
 
     Route::get('add','ManageLowonganController@add')->name('lowongan.add')->middleware('cekrole:perusahaan');
     Route::post('add','ManageLowonganController@save')->middleware('cekrole:perusahaan');

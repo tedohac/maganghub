@@ -15,6 +15,7 @@ use Auth;
 use DB;
 use Mail;
 use Notification;
+use PDF;
 use Session;
 use Validator;
 
@@ -33,6 +34,24 @@ class ManageLowonganController extends Controller
         ]);
     }
     
+    public function printlowongan()
+    {        
+        $perusahaan = Perusahaan::where('perusahaan_user_email', Auth::user()->user_email )->first();
+        if(empty($perusahaan)) return abort(404);
+
+        $lowongans = Lowongan::join('perusahaans', 'perusahaans.perusahaan_id', '=', 'lowongans.lowongan_perusahaan_id')
+                            ->join('fungsis', 'fungsis.fungsi_id', '=', 'lowongans.lowongan_fungsi_id')
+                            ->join('cities', 'cities.city_id', '=', 'lowongans.lowongan_city_id')
+                            ->select('*', DB::raw('(select count(rekrut_id) from rekruts where rekrut_lowongan_id=lowongan_id) as total_pelamar'))
+                            ->where('perusahaan_user_email', Auth::user()->user_email)->get();
+
+        $pdf = PDF::loadview('lowongan.printlowongan',[
+            'perusahaan' => $perusahaan,
+            'lowongans' => $lowongans
+        ]);
+        return $pdf->stream();
+    }
+
     public function list(Request $request)
     {
         $filter = new \stdClass();
