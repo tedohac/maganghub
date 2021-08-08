@@ -59,6 +59,11 @@
         <a class="btn btn-outline-info p-1 float-right" href="{{ route('lowongan.add') }}">
             <small><i class="fas fa-plus"></i> Tambah Lowongan</small>
         </a>
+        @if(count($lowongans))
+        <a class="btn btn-outline-info p-1 mr-1 float-right" href="{{ route('lowongan.printlowongan') }}">
+            <small><i class="fas fa-file-pdf"></i> Cetak Daftar Lowongan</small>
+        </a>
+        @endif
     </h5>
     <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-3">
     <div class="table-responsive">

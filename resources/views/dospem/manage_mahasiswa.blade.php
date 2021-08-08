@@ -51,8 +51,14 @@
     @endif
 
     <!-- Mahasiswa list -->
-    <h5 class="mb-2 p-0">
+    <h5 class="mb-2 p-0 pb-1">
         Data Mahasiswa
+
+        @if(count($mahasiswas))
+        <a class="btn btn-outline-info p-1 mr-1 float-right" href="{{ route('mahasiswa.printpantaumahasiswa') }}">
+            <i class="fas fa-file-pdf"></i> Cetak Daftar Mahasiswa
+        </a>
+        @endif
     </h5>
     <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-3">
     <div class="table-responsive">
