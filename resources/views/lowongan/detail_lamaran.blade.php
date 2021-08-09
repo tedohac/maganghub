@@ -74,6 +74,9 @@
 
     <h5 class="mb-2 p-0">
         Detail Lamaran
+        <a class="btn btn-outline-info p-1 mr-1 float-right" href="{{ route('perekrutan.printdetailpelamar', ['id' => $rekrut->rekrut_id]) }}">
+            <small><i class="fas fa-file-pdf"></i> Cetak Detail Lamaran</small>
+        </a>
     </h5>
     <!-- lamaran status -->
     <div class="bg-white shadow-sm border px-2 px-lg-3 py-3 mb-3">

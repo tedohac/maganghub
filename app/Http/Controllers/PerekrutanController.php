@@ -23,6 +23,7 @@ use Auth;
 use DB;
 use Mail;
 use Notification;
+use PDF;
 use Session;
 use Validator;
 use Maatwebsite\Excel\Facades\Excel;
@@ -233,6 +234,35 @@ class PerekrutanController extends Controller
             'rekrut' => $rekrut,
             'skills' => $skills
         ]);
+    }
+    
+    public function printdetailpelamar($id)
+    {        
+        // DB::enableQueryLog();
+        $rekrut = Rekrut::join('lowongans', 'lowongans.lowongan_id', '=', 'rekruts.rekrut_lowongan_id')
+                ->join('perusahaans', 'perusahaans.perusahaan_id', '=', 'lowongans.lowongan_perusahaan_id')
+                ->join('cities', 'cities.city_id', '=', 'lowongans.lowongan_city_id')
+                ->join('fungsis', 'fungsis.fungsi_id', '=', 'lowongans.lowongan_fungsi_id')
+                ->join('mahasiswas', 'mahasiswas.mahasiswa_id', '=', 'rekruts.rekrut_mahasiswa_id')
+                ->join('dospems', 'dospems.dospem_id', '=', 'mahasiswas.mahasiswa_dospem_id')
+                ->join('prodis', 'prodis.prodi_id', '=', 'dospems.dospem_prodi_id')
+                ->join('univs', 'univs.univ_id', '=', 'prodis.prodi_univ_id')
+                ->where('rekrut_id', $id)->first();
+                // dd(DB::getQueryLog());
+        if(empty($rekrut)) return abort(404);
+
+        $skills = Skill::where('skill_mahasiswa_id', $rekrut->rekrut_mahasiswa_id)
+                ->get();
+
+        $rekrut->lowongan_requirement = htmlspecialchars_decode($rekrut->lowongan_requirement);
+        $rekrut->lowongan_jobdesk     = htmlspecialchars_decode($rekrut->lowongan_jobdesk);
+        $rekrut->rekrut_undangan_desc = htmlspecialchars_decode($rekrut->rekrut_undangan_desc);
+
+        $pdf = PDF::loadview('dospem.print_detail_pelamar',[
+            'rekrut' => $rekrut,
+            'skills' => $skills
+        ]);
+        return $pdf->stream();
     }
     
     public function detailpelamar_dospem($id)
