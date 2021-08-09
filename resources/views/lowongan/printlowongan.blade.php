@@ -5,7 +5,7 @@
         <tr>
             <td width="50px">
                 <center>
-                    <img src="{{ url('storage/univ/'.$perusahaan->perusahaan_profile_pict) }}" style="width: 50px">
+                    <img src="{{ url('storage/perusahaan_profile/'.$perusahaan->perusahaan_profile_pict) }}" style="width: 50px">
                 </center>
             </td>
             <td>
