@@ -215,6 +215,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'web'], function () {
 
     Route::get('dospemlist','AdministratorController@dospemlist')->name('admin.dospemlist')->middleware('cekrole:superadmin');
     Route::get('mahasiswalist','AdministratorController@mahasiswalist')->name('admin.mahasiswalist')->middleware('cekrole:superadmin');
+    
+    Route::get('lowongandownload','AdministratorController@lowongandownload')->name('admin.lowongandownload')->middleware('cekrole:superadmin');
+    Route::get('kampusdownload','AdministratorController@kampusdownload')->name('admin.kampusdownload')->middleware('cekrole:superadmin');
 });
 
 Route::group(['prefix' => 'notification', 'middleware' => 'web'], function () {

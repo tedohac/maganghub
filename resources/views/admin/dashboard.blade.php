@@ -148,6 +148,15 @@
                 </a>
             </div>
 
+            <div class="col-xl-4 col-sm-6 mb-3">
+                <a class="btn btn-outline-info btn-block p-1 mr-1 float-right" href="{{ route('admin.lowongandownload') }}">
+                    <i class="fas fa-file-excel"></i> Download Lowongan Terpublikasi
+                </a>
+                <a class="btn btn-outline-info btn-block p-1 mr-1 float-right" href="{{ route('admin.kampusdownload') }}">
+                    <i class="fas fa-file-excel"></i> Download Kampus Terpublikasi
+                </a>
+            </div>
+            
         </div>
 
     </div>

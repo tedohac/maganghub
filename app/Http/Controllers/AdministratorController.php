@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Exports\LowonganExport;
+use App\Exports\KampusExport;
 use App\Dospem;
 use App\Lowongan;
 use App\Mahasiswa;
@@ -13,6 +15,7 @@ use App\User;
 use Auth;
 use DB;
 use Session;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AdministratorController extends Controller
 {
@@ -207,5 +210,15 @@ class AdministratorController extends Controller
     	return view('admin.mahasiswalist', [
             'mahasiswas' => $mahasiswas
         ]);
+    }
+
+    public function lowongandownload()
+    {
+		return Excel::download(new LowonganExport(), 'lowongan-'.date("Y-m-d_His").'.xlsx');
+    }
+
+    public function kampusdownload()
+    {
+		return Excel::download(new KampusExport(), 'kampus-'.date("Y-m-d_His").'.xlsx');
     }
 }
