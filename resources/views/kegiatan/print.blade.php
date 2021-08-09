@@ -133,25 +133,6 @@
                         {{ $rekrut->rekrut_feedback }}
                     </td>
                 </tr>
-                <tr>
-                    <td>
-                        Rating Mahasiswa & Kampus: <b>{{ $rekrut->rekrut_ratingto_mahasiswa }}</b>
-                    </td>
-                    <td colspan="2">
-                        Rating Perusahaan: <b>{{ empty($rekrut->rekrut_ratingto_perusahaan) ? "-" : $rekrut->rekrut_ratingto_perusahaan }}</b>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Nilai Aspek Kedisiplinan: <b>{{ $rekrut->rekrut_aspek_kedisiplinan }}</b>
-                    </td>
-                    <td>
-                        Nilai Aspek Keterampilan: <b>{{ $rekrut->rekrut_aspek_keterampilan }}</b>
-                    </td>
-                    <td>
-                        Nilai Aspek Sikap/Perilaku: <b>{{ $rekrut->rekrut_aspek_sikap }}</b>
-                    </td>
-                </tr>
             </thead>
         </table>
     </div>
