@@ -1,4 +1,4 @@
-<p align="center"><img src="http://maganghub.my.id/img/maganghub.png" width="100">## MagangHub</p>
+<p align="center"><img src="http://maganghub.my.id/img/maganghub.png" width="50"> MagangHub</p>
 
 ## Installing on Ubuntu
 - Run: git clone https://github.com/tedohac/maganghub.git
