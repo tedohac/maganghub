@@ -8,14 +8,18 @@
 - Restore DB on PHPMyAdmin (or run: php artisan migrate)
 
 ## Role Access (from restored DB)
-Admin Perusahaan : mayoraindah001@gmail.com
-Pass : mayora001
+- Admin Perusahaan 
+    - email: mayoraindah001@gmail.com
+    - pass : mayora001
 
-Universitas : admin@ui.co.id
-Pass : 12345
+- Universitas
+    - email: admin@ui.co.id
+    - pass : 12345
 
-Dospem : bambang@ui.co.id
-Pass : 12345
+- DOSPEM
+    - email: bambang@ui.co.id
+    - pass : 12345
 
-Admin website : admin@admin.com
-Pass : polman
+- Admin
+    - email: admin@admin.com
+    - pass : polman
