@@ -1,11 +1,11 @@
-<p align="center"><img src="http://maganghub.my.id/img/maganghub.png" width="50"> MagangHub</p>
+<h1 align="center"><img src="http://maganghub.my.id/img/maganghub.png" width="50"> MagangHub</h1>
 
 ## Installing on Ubuntu
 - Run: git clone https://github.com/tedohac/maganghub.git
 - Run: composer install
 - Create .env file
 - Run: php artisan key:generate
-- Restore DB on PHPMyAdmin (or run: php artisan migrate)
+- Restore DB (maganghub_restored_db.sql) on PHPMyAdmin or run: php artisan migrate
 
 ## Role Access (from restored DB)
 - Admin Perusahaan 
