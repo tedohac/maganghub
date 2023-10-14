@@ -1,4 +1,5 @@
-<h1 align="center"><img src="http://maganghub.my.id/img/maganghub.png" width="50"> MagangHub</h1>
+<h1 align="center">MagangHub</h1>
+Dibangun untuk memenuhi tugas akhir pendamping skripsi pendidikan jenjang Sarjana.
 
 ## Installing on Ubuntu
 - Run: git clone https://github.com/tedohac/maganghub.git
